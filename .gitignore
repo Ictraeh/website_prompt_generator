@@ -6,3 +6,4 @@
 # Copied by `node build-catalog.mjs` for Vercel `outputDirectory: public`
 public/*
 !public/.gitkeep
+.vercel
