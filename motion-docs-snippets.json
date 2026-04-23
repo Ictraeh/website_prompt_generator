@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "fetchedAt": "2026-04-23T04:30:17.128Z",
+  "attribution": "GSAP ScrollTrigger excerpts from gsap.com/docs (GreenSock Standard License applies to library). Anime.js excerpts from animejs.com (MIT).",
+  "maxCharsPerSnippet": 20000,
+  "snippets": [
+    {
+      "id": "gsap-st-cdn-link-0",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "CDN Link",
+      "label": "GSAP · CDN Link",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 220,
+      "code": "// GSAP ScrollTrigger — CDN Link\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\ngsap.registerPlugin(ScrollTrigger)"
+    },
+    {
+      "id": "gsap-st-minimal-usage-1",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Minimal usage",
+      "label": "GSAP · Minimal usage",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 298,
+      "code": "// GSAP ScrollTrigger — Minimal usage\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\ngsap.to(\".box\", {\n  scrollTrigger: \".box\", // start animation when \".box\" enters the viewport\n  x: 500,\n});"
+    },
+    {
+      "id": "gsap-st-simple-example-2",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Simple example",
+      "label": "GSAP · Simple example",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 310,
+      "code": "// GSAP ScrollTrigger — Simple example\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\ngsap.to(\".box\", {\n  scrollTrigger: \".box\", // start the animation when \".box\" enters the viewport (once)\n  x: 500,\n});"
+    },
+    {
+      "id": "gsap-st-advanced-example-3",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Advanced example",
+      "label": "GSAP · Advanced example",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 1280,
+      "code": "// GSAP ScrollTrigger — Advanced example\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nlet tl = gsap.timeline({\n  // yes, we can add it to an entire timeline!\n  scrollTrigger: {\n    trigger: \".container\",\n    pin: true, // pin the trigger element while active\n    start: \"top top\", // when the top of the trigger hits the top of the viewport\n    end: \"+=500\", // end after scrolling 500px beyond the start\n    scrub: 1, // smooth scrubbing, takes 1 second to \"catch up\" to the scrollbar\n    snap: {\n      snapTo: \"labels\", // snap to the closest label in the timeline\n      duration: { min: 0.2, max: 3 }, // the snap animation should be at least 0.2 seconds, but no more than 3 seconds (determined by velocity)\n      delay: 0.2, // wait 0.2 seconds from the last scroll event before doing the snapping\n      ease: \"power1.inOut\", // the ease of the snap animation (\"power3\" by default)\n    },\n  },\n});\n\n// add animations and labels to the timeline\ntl.addLabel(\"start\")\n  .from(\".box p\", { scale: 0.3, rotation: 45, autoAlpha: 0 })\n  .addLabel(\"color\")\n  .from(\".box\", { backgroundColor: \"#28a92b\" })\n  .addLabel(\"spin\")\n  .to(\".box\", { rotation: 360 })\n  .addLabel(\"end\");"
+    },
+    {
+      "id": "gsap-st-standalone-custom-example-4",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Standalone/Custom example",
+      "label": "GSAP · Standalone/Custom example",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 540,
+      "code": "// GSAP ScrollTrigger — Standalone/Custom example\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nScrollTrigger.create({\n  trigger: \"#id\",\n  start: \"top top\",\n  endTrigger: \"#otherID\",\n  end: \"bottom 50%+=100px\",\n  onToggle: (self) => console.log(\"toggled, isActive:\", self.isActive),\n  onUpdate: (self) => {\n    console.log(\"progress:\", self.progress.toFixed(3), \"direction:\", self.direction, \"velocity\", self.getVelocity());\n  },\n});"
+    },
+    {
+      "id": "gsap-st-description-5",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 288,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nmarkers: {startColor: \"white\", endColor: \"white\", fontSize: \"18px\", fontWeight: \"bold\", indent: 20}"
+    },
+    {
+      "id": "gsap-st-description-6",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 277,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonEnter: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-7",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 281,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonEnterBack: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-8",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 277,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonLeave: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-9",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 281,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonLeaveBack: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-10",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 279,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonRefresh: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-11",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 245,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonUpdate: self => console.log(\"progress\", self.progress)"
+    },
+    {
+      "id": "gsap-st-description-12",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 285,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonScrubComplete: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-13",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 284,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonSnapComplete: ({progress, direction, isActive}) => console.log(progress, direction, isActive)"
+    },
+    {
+      "id": "gsap-st-description-14",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "Description",
+      "label": "GSAP · Description",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 250,
+      "code": "// GSAP ScrollTrigger — Description\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\nonToggle: self => console.log(\"toggled to active:\", isActive)"
+    },
+    {
+      "id": "gsap-st-how-do-i-include-scrolltrigger-in-my-project-15",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "How do I include ScrollTrigger in my project?",
+      "label": "GSAP · How do I include ScrollTrigger in my project?",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 257,
+      "code": "// GSAP ScrollTrigger — How do I include ScrollTrigger in my project?\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\ngsap.registerPlugin(ScrollTrigger)"
+    },
+    {
+      "id": "gsap-st-it-works-fine-during-development-but-suddenly-stops-working-in-the-produ-16",
+      "library": "gsap",
+      "category": "ScrollTrigger",
+      "name": "It works fine during development, but suddenly stops working in the production b",
+      "label": "GSAP · It works fine during development, but suddenly stops working in the prod",
+      "sourceUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "siteUrl": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+      "charCount": 311,
+      "code": "// GSAP ScrollTrigger — It works fine during development, but suddenly stops working in the production build! What do I do?\n// Docs: https://gsap.com/docs/v3/Plugins/ScrollTrigger/\n// GreenSock license applies to GSAP library use: https://gsap.com/community/standard-license/\n\ngsap.registerPlugin(ScrollTrigger)"
+    },
+    {
+      "id": "anime-doc-block-1",
+      "library": "animejs",
+      "category": "Animation",
+      "name": "Doc example 1",
+      "label": "Anime.js · Example 1",
+      "sourceUrl": "https://animejs.com/documentation/animation/",
+      "siteUrl": "https://animejs.com/documentation/animation/",
+      "charCount": 217,
+      "code": "// Anime.js — documentation excerpt\n// https://animejs.com/documentation/animation/\n// MIT — https://github.com/juliangarnier/anime/\n\nimport { animate } from 'animejs';\n\nconst animation = animate(targets, parameters);"
+    },
+    {
+      "id": "anime-doc-block-2",
+      "library": "animejs",
+      "category": "Animation",
+      "name": "Doc example 2",
+      "label": "Anime.js · Example 2",
+      "sourceUrl": "https://animejs.com/documentation/animation/",
+      "siteUrl": "https://animejs.com/documentation/animation/",
+      "charCount": 178,
+      "code": "// Anime.js — documentation excerpt\n// https://animejs.com/documentation/animation/\n// MIT — https://github.com/juliangarnier/anime/\n\nimport { animate } from 'animejs/animation';"
+    },
+    {
+      "id": "anime-doc-block-3",
+      "library": "animejs",
+      "category": "Animation",
+      "name": "Doc example 3",
+      "label": "Anime.js · Example 3",
+      "sourceUrl": "https://animejs.com/documentation/animation/",
+      "siteUrl": "https://animejs.com/documentation/animation/",
+      "charCount": 221,
+      "code": "// Anime.js — documentation excerpt\n// https://animejs.com/documentation/animation/\n// MIT — https://github.com/juliangarnier/anime/\n\nimport { waapi } from 'animejs';\n\nconst animation = waapi.animate(targets, parameters);"
+    },
+    {
+      "id": "anime-doc-block-4",
+      "library": "animejs",
+      "category": "Animation",
+      "name": "Doc example 4",
+      "label": "Anime.js · Example 4",
+      "sourceUrl": "https://animejs.com/documentation/animation/",
+      "siteUrl": "https://animejs.com/documentation/animation/",
+      "charCount": 648,
+      "code": "// Anime.js — documentation excerpt\n// https://animejs.com/documentation/animation/\n// MIT — https://github.com/juliangarnier/anime/\n\nimport { animate, stagger, splitText } from 'animejs';\n\nconst { chars } = splitText(&#039;h2&#039;, { words: false, chars: true });\n\nanimate(chars, {\n  // Property keyframes\n  y: [\n    { to: &#039;-2.75rem&#039;, ease: &#039;outExpo&#039;, duration: 600 },\n    { to: 0, ease: &#039;outBounce&#039;, duration: 800, delay: 100 }\n  ],\n  // Property specific parameters\n  rotate: {\n    from: &#039;-1turn&#039;,\n    delay: 0\n  },\n  delay: stagger(50),\n  ease: &#039;inOutCirc&#039;,\n  loopDelay: 1000,\n  loop: true\n});"
+    },
+    {
+      "id": "anime-doc-block-5",
+      "library": "animejs",
+      "category": "Animation",
+      "name": "Doc example 5",
+      "label": "Anime.js · Example 5",
+      "sourceUrl": "https://animejs.com/documentation/animation/",
+      "siteUrl": "https://animejs.com/documentation/animation/",
+      "charCount": 225,
+      "code": "// Anime.js — documentation excerpt\n// https://animejs.com/documentation/animation/\n// MIT — https://github.com/juliangarnier/anime/\n\n<div class=\"large grid centered square-grid\">\n  <h2 class=\"text-xl\">HELLO WORLD</h2>\n</div>"
+    },
+    {
+      "id": "anime-doc-block-6",
+      "library": "animejs",
+      "category": "Animation",
+      "name": "Doc example 6",
+      "label": "Anime.js · Example 6",
+      "sourceUrl": "https://animejs.com/documentation/animation/",
+      "siteUrl": "https://animejs.com/documentation/animation/",
+      "charCount": 227,
+      "code": "// Anime.js — documentation excerpt\n// https://animejs.com/documentation/animation/\n// MIT — https://github.com/juliangarnier/anime/\n\n#animation .text-xl {\n  font-size: 1.5rem;\n  color: currentColor;\n  letter-spacing: 0.06em;\n}"
+    }
+  ],
+  "fetchErrors": []
+}

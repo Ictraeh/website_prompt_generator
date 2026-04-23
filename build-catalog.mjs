@@ -874,10 +874,10 @@ const colorVibes = [
   },
 ];
 
-/** 动效下拉分组：整站 §8 M-kit + React Bits 四大类（与下方代码区联动） */
+/** 动效下拉分组：整站 §8 M-kit + React Bits 四大类（与下方「动效代码集成」联动） */
 const motionKitGroups = [
   { id: "site", label: "整站 / 页面级（MotionSites §8）" },
-  { id: "reactbits", label: "React Bits 分类（在下方「动效代码」里选具体组件）" },
+  { id: "reactbits", label: "React Bits 分类（筛选下方集成区仅 React Bits；否则显示 GSAP / Anime 等全部）" },
 ];
 
 /** MotionSites §8 — id 保持英文供 Prompt 引用；label 为简明中文 */
@@ -1021,8 +1021,13 @@ const out = {
 };
 
 const dir = __dirname;
+const publicDir = path.join(dir, "public");
+fs.mkdirSync(publicDir, { recursive: true });
+
 fs.writeFileSync(path.join(dir, "catalog.json"), JSON.stringify(out, null, 2), "utf8");
-fs.writeFileSync(path.join(dir, "catalog.bundle.js"), `window.__VIBE_CATALOG__=${JSON.stringify(out)};`, "utf8");
+const catalogBundle = `window.__VIBE_CATALOG__=${JSON.stringify(out)};`;
+fs.writeFileSync(path.join(dir, "catalog.bundle.js"), catalogBundle);
+fs.writeFileSync(path.join(publicDir, "catalog.bundle.js"), catalogBundle);
 
 const indexPath = path.join(dir, "index.html");
 const appPath = path.join(dir, "app.js");
@@ -1038,17 +1043,36 @@ const rbPayload = fs.existsSync(rbJsonPath)
       attribution: "Run: node fetch-reactbits.mjs to download React Bits sources.",
       maxCharsPerSnippet: 20000,
     };
-fs.writeFileSync(
-  path.join(dir, "reactbits-snippets.bundle.js"),
-  `window.__REACTBITS_SNIPPETS__=${JSON.stringify(rbPayload)};`,
-  "utf8"
-);
+
+const motionDocPath = path.join(dir, "motion-docs-snippets.json");
+const docPayload = fs.existsSync(motionDocPath)
+  ? JSON.parse(fs.readFileSync(motionDocPath, "utf8"))
+  : {
+      version: 0,
+      snippets: [],
+      attribution: "Run: node fetch-motion-docs.mjs to add GSAP ScrollTrigger + Anime.js doc snippets.",
+      maxCharsPerSnippet: 20000,
+    };
+
+const rbSnips = (rbPayload.snippets || []).map((s) => ({ ...s, library: "reactbits" }));
+const docSnips = (docPayload.snippets || []).map((s) => ({ ...s }));
+const motionMerged = {
+  version: 1,
+  maxCharsPerSnippet: 20000,
+  snippets: [...rbSnips, ...docSnips].sort((a, b) => (a.label || "").localeCompare(b.label || "")),
+  attributions: [rbPayload.attribution, docPayload.attribution].filter(Boolean),
+};
+
+const motionBundle = `window.__MOTION_SNIPPETS__=${JSON.stringify(motionMerged)};`;
+fs.writeFileSync(path.join(dir, "motion-snippets.bundle.js"), motionBundle);
+fs.writeFileSync(path.join(publicDir, "motion-snippets.bundle.js"), motionBundle);
 
 const standalone = indexHtml.replace(
-  `<script src="catalog.bundle.js"></script>\n    <script src="reactbits-snippets.bundle.js"></script>\n    <script src="app.js"></script>`,
-  `<textarea id="__vibe_cat_data" hidden>${jsonText}</textarea>\n    <script>\nwindow.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").value);\n<\/script>\n    <script src="reactbits-snippets.bundle.js"><\/script>\n    <script>\n${appJs}\n<\/script>`
+  `<script src="catalog.bundle.js"></script>\n    <script src="motion-snippets.bundle.js"></script>\n    <script src="app.js"></script>`,
+  `<textarea id="__vibe_cat_data" hidden>${jsonText}</textarea>\n    <script>\nwindow.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").value);\n<\/script>\n    <script src="motion-snippets.bundle.js"><\/script>\n    <script>\n${appJs}\n<\/script>`
 );
 fs.writeFileSync(path.join(dir, "standalone.html"), standalone, "utf8");
+fs.writeFileSync(path.join(publicDir, "standalone.html"), standalone, "utf8");
 
 const launch = [
   "#!/bin/bash",
@@ -1100,10 +1124,19 @@ const openStandalone = [
 fs.writeFileSync(path.join(dir, "open-standalone.command"), openStandalone, "utf8");
 fs.chmodSync(path.join(dir, "open-standalone.command"), 0o755);
 
+/** Vercel static output: https://vercel.com/docs/errors/error-list#missing-public-directory */
+fs.copyFileSync(indexPath, path.join(publicDir, "index.html"));
+fs.copyFileSync(appPath, path.join(publicDir, "app.js"));
+for (const name of ["index.html", "app.js", "catalog.bundle.js", "motion-snippets.bundle.js", "standalone.html"]) {
+  const p = path.join(publicDir, name);
+  if (!fs.existsSync(p)) throw new Error(`[build-catalog] Missing Vercel output file: ${p}`);
+  if (fs.statSync(p).size < 32) throw new Error(`[build-catalog] Vercel output file too small: ${p}`);
+}
+
 console.log(
-  "Wrote catalog.json + catalog.bundle.js + reactbits-snippets.bundle.js + standalone.html + launch.command + open-standalone.command with",
+  "Wrote catalog.json + catalog.bundle.js + motion-snippets.bundle.js + standalone.html + launch.command + open-standalone.command + public/* with",
   styleObjects.length,
   "styles;",
-  "reactbits snippets:",
-  rbPayload.snippets?.length ?? 0
+  "motion snippets (reactbits+docs):",
+  motionMerged.snippets?.length ?? 0
 );

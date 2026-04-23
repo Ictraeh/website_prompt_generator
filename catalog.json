@@ -670,7 +670,7 @@
     },
     {
       "id": "reactbits",
-      "label": "React Bits 分类（在下方「动效代码」里选具体组件）"
+      "label": "React Bits 分类（筛选下方集成区仅 React Bits；否则显示 GSAP / Anime 等全部）"
     }
   ],
   "l4Blueprint": {

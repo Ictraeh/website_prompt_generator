@@ -416,7 +416,7 @@ ${uiLang}`;
     initReactBits();
   }
 
-  const REACTBITS_MAX = 20000;
+  const MOTION_SNIPPET_MAX = 20000;
 
   const RB_CAT_ZH = {
     Animations: "动画",
@@ -436,8 +436,8 @@ ${uiLang}`;
     const sel = el("reactbitsSelect");
     const codeEl = el("reactbitsCode");
     const meta = el("reactbitsMeta");
-    const rb = window.__REACTBITS_SNIPPETS__;
-    const fullList = rb?.snippets;
+    const motionBundle = window.__MOTION_SNIPPETS__;
+    const fullList = motionBundle?.snippets;
     if (!panel || !sel || !codeEl || !meta) return;
 
     if (!Array.isArray(fullList) || fullList.length === 0) {
@@ -445,12 +445,15 @@ ${uiLang}`;
       const o = document.createElement("option");
       o.value = "";
       o.textContent =
-        "（未加载：同目录需 reactbits-snippets.bundle.js；终端执行 node fetch-reactbits.mjs && node build-catalog.mjs）";
+        "（未加载：同目录需 motion-snippets.bundle.js；终端执行 node fetch-reactbits.mjs、node fetch-motion-docs.mjs 与 node build-catalog.mjs）";
       sel.appendChild(o);
       sel.disabled = true;
       codeEl.value = "";
       {
-        const raw = rb?.attribution || "React Bits 未就绪";
+        const raw =
+          (Array.isArray(motionBundle?.attributions) && motionBundle.attributions.length
+            ? motionBundle.attributions.join(" · ")
+            : motionBundle?.attribution) || "动效代码 bundle 未就绪";
         meta.textContent = raw.length > 120 ? `${raw.slice(0, 118).trim()}…` : raw;
       }
       return;
@@ -459,8 +462,8 @@ ${uiLang}`;
     function filteredSnippets() {
       const c = motionKitRbCategory();
       if (!c) return fullList;
-      const hit = fullList.filter((s) => s.category === c);
-      return hit.length ? hit : fullList;
+      const rbOnly = fullList.filter((s) => s.library === "reactbits" && s.category === c);
+      return rbOnly.length ? rbOnly : fullList;
     }
 
     function showSnippet(id) {
@@ -468,13 +471,14 @@ ${uiLang}`;
       const s = list.find((x) => x.id === id) || list[0];
       if (!s) return;
       let code = s.code || "";
-      if (code.length > REACTBITS_MAX) {
-        code = code.slice(0, REACTBITS_MAX - 80) + "\n\n// [...truncated]\n";
+      if (code.length > MOTION_SNIPPET_MAX) {
+        code = code.slice(0, MOTION_SNIPPET_MAX - 80) + "\n\n// [...truncated]\n";
       }
       codeEl.value = code;
       const catRb = motionKitRbCategory();
-      const filterNote = catRb ? `已筛选 ${catRb}` : "全部模块";
-      meta.textContent = `${s.name} · ${code.length} / ${REACTBITS_MAX} 字 · ${filterNote}`;
+      const filterNote = catRb ? `仅 React Bits · ${catRb}` : "全部来源";
+      const title = s.label || s.name;
+      meta.textContent = `${title} · ${code.length} / ${MOTION_SNIPPET_MAX} 字 · ${filterNote}`;
     }
 
     function rebuildReactbitsOptions() {
@@ -486,7 +490,11 @@ ${uiLang}`;
         const o = document.createElement("option");
         o.value = s.id;
         const zh = RB_CAT_ZH[s.category] || s.category;
-        o.textContent = narrow ? s.name : `${zh} · ${s.name}`;
+        if (s.library === "reactbits") {
+          o.textContent = narrow ? s.name : `${zh} · ${s.name}`;
+        } else {
+          o.textContent = s.label || s.name;
+        }
         sel.appendChild(o);
       });
       if ([...sel.options].some((o) => o.value === prev)) sel.value = prev;
