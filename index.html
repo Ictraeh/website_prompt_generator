@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vibe Prompt 生成器</title>
+    <title>Vibe Prompt Generator</title>
     <style>
       :root {
         --bg: #0a0c10;
@@ -201,104 +201,107 @@
   <body>
     <div class="wrap">
       <header>
-        <h1>Vibe Prompt 生成器</h1>
-        <p class="tagline">选条件 → 生成 → 复制到 vibe coding。输出上限 4999 字符。</p>
+        <h1>Vibe Prompt Generator</h1>
+        <p class="tagline">Pick options → generate → copy into your vibe coding workflow. Output capped at 4999 characters.</p>
         <details class="troubleshoot">
-          <summary>打不开页面或出现 <code>ERR_EMPTY_RESPONSE</code>？</summary>
+          <summary>Blank page or <code>ERR_EMPTY_RESPONSE</code> on localhost?</summary>
           <div class="troubleshoot-body">
-            通常是本机没有在 <code>127.0.0.1:8765</code> 跑 Python 服务，或端口被占用。<br />
-            <strong>做法：</strong>双击 <code>launch.command</code>（需保持终端不关）或双击 <code>open-standalone.command</code> 用
-            <code>file://</code> 打开 <code>standalone.html</code>。<br />
-            <strong>动效代码区空白：</strong>请将 <code>standalone.html</code> 与同目录的 <code>motion-snippets.bundle.js</code> 一起拷贝；需要更新时在终端执行
-            <code>node fetch-reactbits.mjs</code>、<code>node fetch-motion-docs.mjs</code> 与 <code>node build-catalog.mjs</code>。
+            Usually no server is running on <code>127.0.0.1:8765</code>, or the port is taken.<br />
+            <strong>Fix:</strong> double-click <code>launch.command</code> (keep the terminal open) or double-click <code>open-standalone.command</code> to open
+            <code>standalone.html</code> via <code>file://</code>.<br />
+            <strong>Motion code panel empty:</strong> keep <code>standalone.html</code> in the same folder as <code>motion-snippets.bundle.js</code>. To refresh snippets, run
+            <code>node fetch-reactbits.mjs</code>, <code>node fetch-motion-docs.mjs</code>, then <code>node build-catalog.mjs</code> (or <code>npm run build</code>).
           </div>
         </details>
       </header>
 
       <div class="panel">
-        <h2>选项</h2>
+        <h2>Options</h2>
         <div class="grid">
           <div>
-            <label for="platform">交付形态</label>
+            <label for="platform">Deliverable</label>
             <select id="platform"></select>
           </div>
           <div>
-            <label for="industry">行业（英文分类）</label>
+            <label for="industry">Industry</label>
             <select id="industry"></select>
           </div>
           <div>
-            <label for="style">主风格</label>
+            <label for="style">Primary style</label>
             <select id="style"></select>
           </div>
           <div>
-            <label for="secondaryBlend">次要混合（可选）</label>
+            <label for="secondaryBlend">Secondary blend (optional)</label>
             <select id="secondaryBlend"></select>
           </div>
           <div>
-            <label for="stackProfile">技术栈扩展（可选）</label>
+            <label for="stackProfile">Stack add-ons (optional)</label>
             <select id="stackProfile"></select>
           </div>
           <div>
-            <label for="fontVibe">字体气质</label>
+            <label for="fontVibe">Font vibe</label>
             <select id="fontVibe"></select>
           </div>
           <div>
-            <label for="colorVibe">色彩气质</label>
+            <label for="colorVibe">Color vibe</label>
             <select id="colorVibe"></select>
             <p id="colorVibeExplainer" class="field-hint"></p>
           </div>
           <div>
-            <label for="motion">动效</label>
+            <label for="motion">Motion</label>
             <select id="motion"></select>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
             <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
               <input type="checkbox" id="autoRecommend" checked />
-              换主风格时自动推荐字体 / 色彩 / 动效（可改）
+              When the primary style changes, auto-suggest font / color / motion (you can still override)
             </label>
           </div>
           <div>
-            <label for="outputLang">输出语言</label>
+            <label for="outputLang">Output language</label>
             <select id="outputLang"></select>
           </div>
           <div>
-            <label for="userNotes">补充说明（可选）</label>
-            <textarea id="userNotes" placeholder="例如：更克制、移动端优先…"></textarea>
+            <label for="userNotes">Extra notes (optional)</label>
+            <textarea id="userNotes" placeholder="e.g. tighter motion, mobile-first…"></textarea>
           </div>
         </div>
         <div class="actions">
-          <button type="button" id="generate">生成 Prompt</button>
-          <button type="button" id="copy">复制</button>
-          <span id="copyStatus"></span>
+          <button type="button" id="generate">Generate prompt</button>
         </div>
       </div>
 
       <div class="out-wrap panel">
         <h2>Prompt</h2>
-        <label for="output">输出</label>
-        <textarea id="output" readonly placeholder="点击「生成 Prompt」"></textarea>
+        <label for="output">Output</label>
+        <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
+        <div class="actions" style="margin-top: 0.75rem">
+          <button type="button" id="copy">Copy prompt</button>
+          <span id="copyStatus"></span>
+        </div>
         <p id="blindBoxNote" class="field-hint"></p>
         <p id="pexelsNote"></p>
       </div>
 
       <div class="out-wrap panel" id="reactbitsPanel">
-        <h2>动效代码集成</h2>
+        <h2>Motion code</h2>
         <p class="field-hint" style="margin-bottom: 0.75rem">
-          含 <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener" style="color: var(--accent)">React Bits</a>、
-          <a href="https://gsap.com/docs/v3/Plugins/ScrollTrigger/" target="_blank" rel="noopener" style="color: var(--accent)">GSAP ScrollTrigger</a>、
+          Snippets from
+          <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener" style="color: var(--accent)">React Bits</a>,
+          <a href="https://gsap.com/docs/v3/Plugins/ScrollTrigger/" target="_blank" rel="noopener" style="color: var(--accent)">GSAP ScrollTrigger</a>, and
           <a href="https://animejs.com/documentation/animation/" target="_blank" rel="noopener" style="color: var(--accent)">Anime.js</a>
-          文档摘录。选上方「React Bits」类动效时，仅筛 React Bits 模块；否则显示全部。单段 ≤ 20000 字节。
+          docs. Choosing a React Bits motion category above filters this list to React Bits only; otherwise all libraries are shown. Each snippet ≤ 20000 bytes.
         </p>
         <div class="grid" style="margin-bottom: 0.75rem">
           <div>
-            <label for="reactbitsSelect">模块</label>
+            <label for="reactbitsSelect">Module</label>
             <select id="reactbitsSelect"></select>
           </div>
         </div>
-        <label for="reactbitsCode">代码</label>
-        <textarea id="reactbitsCode" readonly placeholder="加载 bundle 后显示…" style="min-height: 200px"></textarea>
+        <label for="reactbitsCode">Code</label>
+        <textarea id="reactbitsCode" readonly placeholder="Loads after the snippet bundle…" style="min-height: 200px"></textarea>
         <div class="actions">
-          <button type="button" id="copyReactbits">复制代码</button>
+          <button type="button" id="copyReactbits">Copy code</button>
           <span id="reactbitsCopyStatus"></span>
         </div>
         <p id="reactbitsMeta" class="field-hint" style="margin-top: 0.5rem"></p>

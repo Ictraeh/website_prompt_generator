@@ -36,28 +36,28 @@
   "platforms": [
     {
       "id": "web_marketing_landing",
-      "label": "营销落地页（多区块）",
+      "label": "Marketing landing (multi-section)",
       "labelEn": "Marketing landing (multi-section)",
       "defaultSections": 5,
       "stackNote": "React + TypeScript + Vite + Tailwind + lucide-react; optional motion"
     },
     {
       "id": "web_hero_single",
-      "label": "单屏 Hero（首屏叙事）",
+      "label": "Single-viewport hero",
       "labelEn": "Single-viewport hero",
       "defaultSections": 1,
       "stackNote": "React + TypeScript + Vite + Tailwind"
     },
     {
       "id": "web_app_product",
-      "label": "Web 应用（产品界面）",
+      "label": "Product web app shell",
       "labelEn": "Product web app shell",
       "defaultSections": 4,
       "stackNote": "React + TypeScript + Vite + Tailwind; optional shadcn/ui"
     },
     {
       "id": "web_app_dashboard",
-      "label": "Web 应用（数据看板）",
+      "label": "Dashboard web app",
       "labelEn": "Dashboard web app",
       "defaultSections": 6,
       "stackNote": "React + TypeScript + Vite + Tailwind + dense tables/charts placeholders"
@@ -138,6 +138,7 @@
       "id": "editorial_premium",
       "pairingRecipeId": 1,
       "labelZh": "冷淡编辑 · 衬线权威",
+      "pickerLabel": "Editorial premium — serif display + neutral sans",
       "moodTags": [
         "美术馆",
         "时装",
@@ -152,6 +153,7 @@
       "id": "brutalist_poster",
       "pairingRecipeId": 2,
       "labelZh": "粗野海报 · 压缩无衬线",
+      "pickerLabel": "Brutalist poster — tight sans + mono body",
       "moodTags": [
         "实验",
         "地下",
@@ -166,6 +168,7 @@
       "id": "warm_saas",
       "pairingRecipeId": 3,
       "labelZh": "温暖 SaaS · 亲和几何",
+      "pickerLabel": "Warm SaaS — rounded geometry + serif accents",
       "moodTags": [
         "产品",
         "信任",
@@ -180,6 +183,7 @@
       "id": "technical_ai",
       "pairingRecipeId": 4,
       "labelZh": "技术 / AI · 冷静数据",
+      "pickerLabel": "Technical / AI — dense data + mono readouts",
       "moodTags": [
         "开发者",
         "指标",
@@ -195,6 +199,7 @@
       "id": "deck_subtitles",
       "pairingRecipeId": 5,
       "labelZh": "路演字幕 · 斜体衬线",
+      "pickerLabel": "Deck / keynote — italic serif + Barlow",
       "moodTags": [
         "Deck",
         "叙事",
@@ -209,6 +214,7 @@
       "id": "automotive_bold",
       "pairingRecipeId": 6,
       "labelZh": "汽车张力 · 超粗展示",
+      "pickerLabel": "Automotive / sports — ultra-bold display",
       "moodTags": [
         "速度",
         "全大写",
@@ -223,6 +229,7 @@
       "id": "spline_scifi",
       "pairingRecipeId": 7,
       "labelZh": "科幻启动 · 轨道感",
+      "pickerLabel": "Sci-fi launch — orbital display + Spline",
       "moodTags": [
         "太空",
         "HUD",
@@ -453,7 +460,7 @@
       "labelZh": "暗夜电影 · 深蓝黑底",
       "explainerZh": "电影感深色底，视频或大图上叠渐变蒙版保证字可读；不要随意加未定义的紫/靛，除非写进 token。",
       "styleLibraryAlign": "Tenebrism / cinematic hero / video-bg legibility",
-      "label": "暗色电影感",
+      "label": "Dark cinematic",
       "cssHint": "Deep navy/black HSL --background; scrim % stops on video; forbid random purple/indigo unless tokenized"
     },
     {
@@ -463,7 +470,7 @@
       "labelZh": "日光编辑 · 纸感留白",
       "explainerZh": "偏暖或偏冷的纸白底 + 炭黑字 + 极细分割线；留白本身就是「颜色」，适合长文与品牌故事页。",
       "styleLibraryAlign": "Light Academia / Japandi / editorial longform",
-      "label": "浅色编辑长文",
+      "label": "Light editorial paper",
       "cssHint": "Off-white base; charcoal type; hairline borders; generous margins"
     },
     {
@@ -473,7 +480,7 @@
       "labelZh": "霓虹赛博 · 黑底荧光",
       "explainerZh": "黑底上荧光绿/青/洋红只做小面积状态与线条；正文对比要过 WCAG，霓虹不是字体的借口。",
       "styleLibraryAlign": "Cybercore / Synthwave / Y2K chrome accents",
-      "label": "霓虹赛博",
+      "label": "Neon cyber",
       "cssHint": "Black base; neon green/cyan/magenta as accent tokens only; WCAG on body"
     },
     {
@@ -483,7 +490,7 @@
       "labelZh": "大地陶土 · 暖灰绿",
       "explainerZh": "陶土、沙、橄榄、奶油互相做邻居色，像自然材料摆在一起；高饱和只留给小标签或图标。",
       "styleLibraryAlign": "Bohemian / Farmhouse / Mystical Western earth palette",
-      "label": "暖色大地",
+      "label": "Warm earth",
       "cssHint": "Terracotta sand olive cream; low-chrome neutrals; wood texture optional <TEXTURE_IMAGE>"
     },
     {
@@ -493,7 +500,7 @@
       "labelZh": "冷色信任 · 蓝灰企业",
       "explainerZh": "蓝灰白建立信任感，图表与表格只用同一冷族里的明度阶；一枚品牌蓝贯穿链接与焦点。",
       "styleLibraryAlign": "Bento / utilitarian / SaaS trust density",
-      "label": "冷色企业信任",
+      "label": "Cool corporate trust",
       "cssHint": "Slate blue-gray white; single accent hue; tables/charts neutrals"
     },
     {
@@ -503,7 +510,7 @@
       "labelZh": "粉彩雾面 · 柔和界面",
       "explainerZh": "粉彩面 + 深灰字，避免粉配白字；可加极轻噪点层增加质感，但不改变色相数量。",
       "styleLibraryAlign": "Ethereal / Kawaii / Coquette soft UI",
-      "label": "粉彩柔和",
+      "label": "Soft pastel",
       "cssHint": "Pastel surfaces + charcoal text; verify contrast; optional grain overlay z-50 pointer-events-none"
     },
     {
@@ -513,7 +520,7 @@
       "labelZh": "黑白香槟 · 奢华克制",
       "explainerZh": "黑、白、香槟金属三色阶；贵气来自留白和金属边，而不是彩虹渐变。",
       "styleLibraryAlign": "Luxury Typography / Neoclassical / Art Deco metals",
-      "label": "黑白奢华",
+      "label": "Monochrome luxury",
       "cssHint": "Black white champagne; metallic borders via pseudo rings not rainbow gradients"
     },
     {
@@ -523,154 +530,154 @@
       "labelZh": "高饱和波普 · CMY 冲击",
       "explainerZh": "黄青品 + 黑描边，像波普海报；每个高饱和块要有 token 名，禁止随手吸色破坏成套感。",
       "styleLibraryAlign": "Memphis / Pop Art / Kitsch campaigns",
-      "label": "高饱和波普",
+      "label": "High-saturation pop",
       "cssHint": "CMY + black outlines; token-locked roles for fill/stroke/text; halftone optional"
     }
   ],
   "colorVibeGroups": [
     {
       "id": "brand_intersection",
-      "label": "品牌多色「交集」— 几色互相牵制仍整体协调（Huemint Brand）"
+      "label": "Brand intersection palettes (Huemint-style multi-hue lock)"
     },
     {
       "id": "website_magazine",
-      "label": "杂志式网页 — 约四色分工、像版面分栏（Huemint Website · Magazine）"
+      "label": "Magazine-style web palettes (~4 roles, editorial rhythm)"
     },
     {
       "id": "website_monochrome",
-      "label": "单色阶网页 — 大量留白 + 中间灰做层次（Huemint Website · Monochrome）"
+      "label": "Monochrome web palettes (whitespace + mid-gray structure)"
     },
     {
       "id": "gradient_bridge",
-      "label": "小跨度渐变 / 暗底光晕 — 色相变化窄、易做成套 Token"
+      "label": "Tight hue bridges / dark-base glows (token-safe gradients)"
     },
     {
       "id": "classic_vibes",
-      "label": "经典气质 — 深色 / 霓虹 / 大地 / 波普等（原有）"
+      "label": "Classic vibes — cinematic, neon, earth, pop"
     }
   ],
   "motionKits": [
     {
       "id": "M-fade-rise",
       "group": "site",
-      "label": "淡入上移 — 区块依次轻轻浮出",
+      "label": "Fade-rise — sections ease in upward",
       "detail": "~0.8s ease-out; translateY(24px)→0; stagger via animation-delay"
     },
     {
       "id": "M-char-cascade",
       "group": "site",
-      "label": "标题逐字出现 — 适合大标题抢注意力",
-      "detail": "30ms/字; 200ms 起延迟; opacity + translateX on inline-block spans"
+      "label": "Character cascade — headline attention",
+      "detail": "~30ms/char; 200ms start delay; opacity + translateX on inline-block spans"
     },
     {
       "id": "M-delay-fade",
       "group": "site",
-      "label": "延迟淡入 — 慢半拍再显现，更克制",
+      "label": "Delayed fade — calmer entrance",
       "detail": "opacity 0→1 after delay; transition-opacity ~1000ms"
     },
     {
       "id": "M-media-zoom",
       "group": "site",
-      "label": "图片 / 视频悬停轻微放大",
+      "label": "Image/video hover zoom",
       "detail": "group overflow-hidden rounded-[14px]; child duration-700 group-hover:scale-[1.03]"
     },
     {
       "id": "M-button-lift",
       "group": "site",
-      "label": "按钮悬停微微浮起",
+      "label": "Button hover lift",
       "detail": "hover:-translate-y-0.5 transition-all duration-200 + subtle bg"
     },
     {
       "id": "M-video-raf-loop",
       "group": "site",
-      "label": "视频首尾淡接 — 无缝循环感",
+      "label": "Video loop crossfade — seamless feel",
       "detail": "rAF near loop ends; guard re-entrancy; on ended reset currentTime"
     },
     {
       "id": "M-scroll-text-reveal",
       "group": "site",
-      "label": "滚动时文字渐显 — 叙事长页常用",
+      "label": "Scroll-linked text reveal",
       "detail": "motion useScroll + useTransform per word/char opacity"
     },
     {
       "id": "M-horizontal-marquee",
       "group": "site",
-      "label": "横向跑马灯 — Logo / 公告条",
+      "label": "Horizontal marquee — logos / ticker",
       "detail": "duplicate row translateX(-50%) infinite linear; optional edge masks"
     },
     {
       "id": "M-scroll-scrub-video",
       "group": "site",
-      "label": "滚动 scrub 视频 — 进度跟手",
+      "label": "Scroll-scrubbed video — progress follows scroll",
       "detail": "GSAP ScrollTrigger scrub→video.currentTime; seek coalescing; buffer overlay"
     },
     {
       "id": "M-clip-circle-menu",
       "group": "site",
-      "label": "圆形展开全屏菜单",
+      "label": "Circular expanding fullscreen menu",
       "detail": "clip-path circle expand; stagger links; body scroll lock"
     },
     {
       "id": "M-slide-deck",
       "group": "site",
-      "label": "幻灯片 / 多屏切换",
+      "label": "Slide deck / multi-screen",
       "detail": "slides mounted; opacity+z+pointerEvents; keyboard + dots"
     },
     {
       "id": "M-spline-bg",
       "group": "site",
-      "label": "Spline 3D 场景做背景",
+      "label": "Spline 3D scene as background",
       "detail": "lazy @splinetool/react-spline; pointer-events vs CTAs"
     },
     {
       "id": "M-spotlight-mask",
       "group": "site",
-      "label": "鼠标聚光灯 / 光斑揭示",
+      "label": "Cursor spotlight / masked reveal",
       "detail": "SVG mask trails; perf gate + mobile fallback"
     },
     {
       "id": "minimal",
       "group": "site",
-      "label": "几乎不动 — 只有简单悬停",
+      "label": "Minimal — hover-only micro motion",
       "detail": "No entrance choreography; respect prefers-reduced-motion"
     },
     {
       "id": "RB-Animations",
       "group": "reactbits",
       "rbCategory": "Animations",
-      "label": "动画类 — 光标、粒子、点击火花、GSAP 等",
-      "detail": "React Bits / Animations: 在页面下方「动效代码」里选具体 TSX；可与整站 M-kit 叠加，注意 §3.2 性能与 reduced-motion"
+      "label": "React Bits · Animations (cursor, particles, GSAP, …)",
+      "detail": "React Bits / Animations: pick TSX in Motion code panel; layer lightly with site M-kits; mind §3.2 perf + reduced-motion"
     },
     {
       "id": "RB-Backgrounds",
       "group": "reactbits",
       "rbCategory": "Backgrounds",
-      "label": "背景类 — 渐变、网格、极光、动态底",
-      "detail": "React Bits / Backgrounds: 作 hero 或区块底纹；注意层级 z-index 与正文对比度"
+      "label": "React Bits · Backgrounds (gradients, grids, aurora)",
+      "detail": "React Bits / Backgrounds: hero or section fills; watch z-index vs body text contrast"
     },
     {
       "id": "RB-Components",
       "group": "reactbits",
       "rbCategory": "Components",
-      "label": "组件类 — 轮播、折叠、卡片等整块 UI",
-      "detail": "React Bits / Components: 可复用区块级组件；按需裁剪 props"
+      "label": "React Bits · Components (carousels, accordions, cards)",
+      "detail": "React Bits / Components: reusable blocks; trim props to need"
     },
     {
       "id": "RB-TextAnimations",
       "group": "reactbits",
       "rbCategory": "TextAnimations",
-      "label": "文字动画类 — 渐变字、拆分标题、滚动字效",
-      "detail": "React Bits / TextAnimations: 标题与标语层次；避免整页滥用"
+      "label": "React Bits · Text (gradients, splits, scroll type)",
+      "detail": "React Bits / TextAnimations: headline/tagline hierarchy; avoid whole-page overload"
     }
   ],
   "motionKitGroups": [
     {
       "id": "site",
-      "label": "整站 / 页面级（MotionSites §8）"
+      "label": "Site / page-level (MotionSites §8)"
     },
     {
       "id": "reactbits",
-      "label": "React Bits 分类（筛选下方集成区仅 React Bits；否则显示 GSAP / Anime 等全部）"
+      "label": "React Bits categories (filters panel to React Bits; else show GSAP / Anime.js too)"
     }
   ],
   "l4Blueprint": {
@@ -688,7 +695,7 @@
   "styleBlends": [
     {
       "id": "none",
-      "label": "无次要混合",
+      "label": "None (no secondary blend)",
       "hint": ""
     },
     {
@@ -720,33 +727,33 @@
   "stackProfiles": [
     {
       "id": "vite_default",
-      "label": "默认：Vite + React18 + TS + Tailwind3 + lucide",
+      "label": "Default: Vite + React 18 + TS + Tailwind 3 + lucide-react",
       "optionalLines": []
     },
     {
       "id": "next_optional",
-      "label": "扩展：Next.js 14 App Router（替代 Vite 路由壳）",
+      "label": "Add-on: Next.js 14 App Router (instead of Vite shell)",
       "optionalLines": [
         "OPTIONAL framework: Next.js 14 App Router for routing/layout where spec requires SSR or nested routes; keep Tailwind content globs for `app/` + `components/`."
       ]
     },
     {
       "id": "hls_broadcast",
-      "label": "扩展：长视频 Hero · hls.js（.m3u8）",
+      "label": "Add-on: long-form hero video · hls.js (.m3u8)",
       "optionalLines": [
         "OPTIONAL media: `hls.js` + `<video>` with Safari native HLS fallback; `enableWorker: false` if sandboxed; attach MediaSource per MotionSites §3.1."
       ]
     },
     {
       "id": "gsap_scroll",
-      "label": "扩展：GSAP 时间线 / ScrollTrigger（scrub、pin）",
+      "label": "Add-on: GSAP timeline / ScrollTrigger (scrub, pin)",
       "optionalLines": [
         "OPTIONAL timeline: `gsap` + `ScrollTrigger` (+ ScrollToPlugin if scroll-to anchors); version floor in package.json; respect reduced-motion."
       ]
     },
     {
       "id": "spline_3d",
-      "label": "扩展：Spline 3D 场景",
+      "label": "Add-on: Spline 3D scene",
       "optionalLines": [
         "OPTIONAL 3D: `@splinetool/react-spline` lazy scene; `pointer-events-none` on canvas chrome, `pointer-events-auto` on CTAs; mobile static fallback (perf tier S)."
       ]
