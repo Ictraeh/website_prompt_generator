@@ -1,0 +1,11 @@
+{
+  "name": "vibe-prompt-tool",
+  "private": true,
+  "description": "MotionSites-style vibe prompt generator (static)",
+  "scripts": {
+    "build": "node build-catalog.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

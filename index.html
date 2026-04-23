@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vibe Prompt 生成器</title>
+    <style>
+      :root {
+        --bg: #0a0c10;
+        --panel: #12151c;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #e8eaef;
+        --muted: #9aa3b2;
+        --accent: #7dd3c0;
+        --accent-dim: rgba(125, 211, 192, 0.15);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        background: radial-gradient(1200px 600px at 10% -10%, rgba(125, 211, 192, 0.08), transparent),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 1.75rem 1.1rem 3rem;
+      }
+      header h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0 0 0.5rem;
+      }
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        max-width: 52rem;
+      }
+      .grid {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1.25rem;
+      }
+      @media (min-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin-bottom: 0.35rem;
+      }
+      select,
+      textarea {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        padding: 0.65rem 0.75rem;
+        font-size: 0.9rem;
+      }
+      select:focus,
+      textarea:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+      textarea {
+        min-height: 4.5rem;
+        resize: vertical;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        align-items: center;
+      }
+      button {
+        border: none;
+        border-radius: 999px;
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease;
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+      #generate {
+        background: var(--accent);
+        color: #06221a;
+      }
+      #generate:hover {
+        filter: brightness(1.05);
+      }
+      #copy {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      #copy:hover {
+        background: var(--accent-dim);
+        border-color: rgba(125, 211, 192, 0.35);
+      }
+      #copyStatus {
+        font-size: 0.85rem;
+        color: var(--accent);
+      }
+      .out-wrap {
+        margin-top: 1.15rem;
+      }
+      .out-wrap label {
+        margin-bottom: 0.5rem;
+      }
+      #output {
+        min-height: 280px;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+      #pexelsNote {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      .panel {
+        background: rgba(18, 21, 28, 0.65);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.1rem 1.2rem;
+        margin-top: 1.15rem;
+      }
+      .panel h2 {
+        margin: 0 0 0.75rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .tagline {
+        margin: 0.35rem 0 0;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+      details.troubleshoot {
+        margin-top: 1rem;
+        border-radius: 10px;
+        border: 1px solid rgba(125, 211, 192, 0.22);
+        background: rgba(125, 211, 192, 0.06);
+        padding: 0.5rem 0.85rem;
+      }
+      details.troubleshoot summary {
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+        list-style: none;
+      }
+      details.troubleshoot summary::-webkit-details-marker {
+        display: none;
+      }
+      details.troubleshoot .troubleshoot-body {
+        margin-top: 0.65rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      details.troubleshoot code {
+        font-size: 0.78em;
+        color: var(--accent);
+      }
+      .field-hint {
+        margin: 0.3rem 0 0;
+        font-size: 0.78rem;
+        line-height: 1.45;
+        color: var(--muted);
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Vibe Prompt 生成器</h1>
+        <p class="tagline">选条件 → 生成 → 复制到 vibe coding。输出上限 4999 字符。</p>
+        <details class="troubleshoot">
+          <summary>打不开页面或出现 <code>ERR_EMPTY_RESPONSE</code>？</summary>
+          <div class="troubleshoot-body">
+            通常是本机没有在 <code>127.0.0.1:8765</code> 跑 Python 服务，或端口被占用。<br />
+            <strong>做法：</strong>双击 <code>launch.command</code>（需保持终端不关）或双击 <code>open-standalone.command</code> 用
+            <code>file://</code> 打开 <code>standalone.html</code>。<br />
+            <strong>动效代码区空白：</strong>请将 <code>standalone.html</code> 与同目录的 <code>reactbits-snippets.bundle.js</code> 一起拷贝；需要更新时在终端执行
+            <code>node fetch-reactbits.mjs</code> 与 <code>node build-catalog.mjs</code>。
+          </div>
+        </details>
+      </header>
+
+      <div class="panel">
+        <h2>选项</h2>
+        <div class="grid">
+          <div>
+            <label for="platform">交付形态</label>
+            <select id="platform"></select>
+          </div>
+          <div>
+            <label for="industry">行业（英文分类）</label>
+            <select id="industry"></select>
+          </div>
+          <div>
+            <label for="style">主风格</label>
+            <select id="style"></select>
+          </div>
+          <div>
+            <label for="secondaryBlend">次要混合（可选）</label>
+            <select id="secondaryBlend"></select>
+          </div>
+          <div>
+            <label for="stackProfile">技术栈扩展（可选）</label>
+            <select id="stackProfile"></select>
+          </div>
+          <div>
+            <label for="fontVibe">字体气质</label>
+            <select id="fontVibe"></select>
+          </div>
+          <div>
+            <label for="colorVibe">色彩气质</label>
+            <select id="colorVibe"></select>
+            <p id="colorVibeExplainer" class="field-hint"></p>
+          </div>
+          <div>
+            <label for="motion">动效</label>
+            <select id="motion"></select>
+          </div>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
+            <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
+              <input type="checkbox" id="autoRecommend" checked />
+              换主风格时自动推荐字体 / 色彩 / 动效（可改）
+            </label>
+          </div>
+          <div>
+            <label for="outputLang">输出语言</label>
+            <select id="outputLang"></select>
+          </div>
+          <div>
+            <label for="userNotes">补充说明（可选）</label>
+            <textarea id="userNotes" placeholder="例如：更克制、移动端优先…"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" id="generate">生成 Prompt</button>
+          <button type="button" id="copy">复制</button>
+          <span id="copyStatus"></span>
+        </div>
+      </div>
+
+      <div class="out-wrap panel">
+        <h2>Prompt</h2>
+        <label for="output">输出</label>
+        <textarea id="output" readonly placeholder="点击「生成 Prompt」"></textarea>
+        <p id="blindBoxNote" class="field-hint"></p>
+        <p id="pexelsNote"></p>
+      </div>
+
+      <div class="out-wrap panel" id="reactbitsPanel">
+        <h2>React Bits</h2>
+        <p class="field-hint" style="margin-bottom: 0.75rem">
+          与 Prompt 独立。选上方「React Bits」类动效时，此处列表会按分类筛选。
+          <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener" style="color: var(--accent)">reactbits.dev</a>
+        </p>
+        <div class="grid" style="margin-bottom: 0.75rem">
+          <div>
+            <label for="reactbitsSelect">模块</label>
+            <select id="reactbitsSelect"></select>
+          </div>
+        </div>
+        <label for="reactbitsCode">代码</label>
+        <textarea id="reactbitsCode" readonly placeholder="加载 bundle 后显示…" style="min-height: 200px"></textarea>
+        <div class="actions">
+          <button type="button" id="copyReactbits">复制代码</button>
+          <span id="reactbitsCopyStatus"></span>
+        </div>
+        <p id="reactbitsMeta" class="field-hint" style="margin-top: 0.5rem"></p>
+      </div>
+    </div>
+
+    <script src="catalog.bundle.js"></script>
+    <script src="reactbits-snippets.bundle.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
