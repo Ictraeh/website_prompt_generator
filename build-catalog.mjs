@@ -1044,7 +1044,7 @@ const motionKits = [
 ];
 
 const out = {
-  version: "1.1.3",
+  version: "1.2.0",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     "Design Style Layout Markdown Library/Style Library/style-library-aesthetic-vibe-coding.md",

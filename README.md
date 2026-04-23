@@ -2,6 +2,8 @@
 
 Static page: pick options → generate an English implementation spec (≤4999 characters) → optionally copy motion snippets from [React Bits](https://reactbits.dev), [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/), and [Anime.js](https://animejs.com/documentation/animation/) (≤20000 bytes per snippet).
 
+When **Include DESIGN.md** is checked (default), the prompt adds a `[DESIGN_MD]` block that tells the coding agent to maintain `./DESIGN.md` using the format from [**Ictraeh/design.md**](https://github.com/Ictraeh/design.md): YAML front matter for design tokens (colors, typography, rounded, spacing, components with `{token}` refs) plus Markdown `##` sections in the canonical order (Overview → … → Do's and Don'ts). Validate with [`@google/design.md`](https://www.npmjs.com/package/@google/design.md) (`npx @google/design.md lint DESIGN.md`) when useful.
+
 ## Local development
 
 ```bash

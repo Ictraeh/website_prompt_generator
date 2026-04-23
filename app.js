@@ -119,6 +119,16 @@
     p.textContent = [c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || "";
   }
 
+  /** https://github.com/Ictraeh/design.md — compact agent contract (keep short for 4999 cap). */
+  function buildDesignMdClause() {
+    return (
+      "[DESIGN_MD] Add or update ./DESIGN.md at repo root per https://github.com/Ictraeh/design.md (YAML token front matter + Markdown body). " +
+      "Front matter: name; colors as #hex keys; typography roles (fontFamily, fontSize, fontWeight, lineHeight, letterSpacing); rounded; spacing; components.* using literals or {colors.*} refs. " +
+      "Body ## sections in spec order when present: Overview → Colors → Typography → Layout → Elevation & Depth → Shapes → Components → Do's and Don'ts. " +
+      "Align tokens with [FONTS]/[COLOR] and the Tailwind theme you ship. Optional: `npx @google/design.md lint DESIGN.md`; export Tailwind: `npx @google/design.md export --format tailwind DESIGN.md`.\n"
+    );
+  }
+
   function sectionPlan(platform, industryLabel) {
     if (platform.id === "web_hero_single") {
       return ["Hero (single viewport): nav + headline + supporting copy + primary/secondary CTAs + optional social proof row"];
@@ -163,6 +173,7 @@
       blend,
       stackProfile,
       blindRollLine = "",
+      includeDesignMd = true,
     } = opts;
 
     const sections = sectionPlan(platform, industry.label);
@@ -226,6 +237,7 @@
     const hueRef = colorVibe.huemintRef || "palette";
 
     const moodFont = (fontVibe.moodTags || []).join("/");
+    const designMdBlock = includeDesignMd ? buildDesignMdClause() : "";
     const body = `${langPreamble}[ROLE] Senior FE — compact spec ≤${MAX_PROMPT_CHARS}ch. Name files when critical: index.html, src/index.css, tailwind.config.ts. Exact Tailwind for nav/hero; placeholders <BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.
 [STACK] React18+TS+Vite+Tailwind3+lucide-react content ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
 [BIND] ${platform.labelEn}|${industry.label}|style#${style.libraryNumber} ${style.name}|notes:${notesShort}
@@ -238,7 +250,7 @@ ${glassLine}
 [FONTS] tool:${fontVibe.pickerLabel || fontVibe.labelZh || fontVibe.label}|${pairingRef}|roles display=${fontVibe.display} body=${fontVibe.body}${fontVibe.mono ? " mono=" + fontVibe.mono : ""}|moodTags:${moodFont}|${fontVibe.notes}|libraryPair:${style.fontPairingHint}
 [COLOR] tool:${colorVibe.label || colorVibe.labelZh}|huemint:${hueRef}|${colorAlign}|cohesion:${colorIntent}|css:${colorVibe.cssHint}|libraryPalette:${style.colorSystemHint}
 [MOTION_KIT] ${motion.id}: ${motion.detail} | ${motionLib}
-[HERO] infer ${style.skillTags.join(",")} → center|bottom|split; CTA:${style.id === "neo-brutalism" ? "neo-brutal shadow/border" : "solid+outline/glass+lift"}
+${designMdBlock}[HERO] infer ${style.skillTags.join(",")} → center|bottom|split; CTA:${style.id === "neo-brutalism" ? "neo-brutal shadow/border" : "solid+outline/glass+lift"}
 [SECTIONS] ${sectionLine}
 ${mediaSlots}
 [GUARD] ${forbidden.join(" | ") || "no AI-slop blobs unless style demands"}
@@ -397,6 +409,7 @@ ${uiLang}`;
         blend,
         stackProfile,
         blindRollLine,
+        includeDesignMd: Boolean(el("includeDesignMd")?.checked),
       });
       el("output").value = text;
       el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;

@@ -202,7 +202,11 @@
     <div class="wrap">
       <header>
         <h1>Vibe Prompt Generator</h1>
-        <p class="tagline">Pick options → generate → copy into your vibe coding workflow. Output capped at 4999 characters.</p>
+        <p class="tagline">
+          Pick options → generate → copy into your vibe coding workflow. Output capped at 4999 characters. Optional
+          <a href="https://github.com/Ictraeh/design.md" target="_blank" rel="noopener" style="color: var(--accent)">DESIGN.md</a>
+          deliverable for coding agents (YAML tokens + rationale).
+        </p>
         <details class="troubleshoot">
           <summary>Blank page or <code>ERR_EMPTY_RESPONSE</code> on localhost?</summary>
           <div class="troubleshoot-body">
@@ -255,6 +259,14 @@
             <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
               <input type="checkbox" id="autoRecommend" checked />
               When the primary style changes, auto-suggest font / color / motion (you can still override)
+            </label>
+          </div>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
+            <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
+              <input type="checkbox" id="includeDesignMd" checked />
+              Include
+              <a href="https://github.com/Ictraeh/design.md" target="_blank" rel="noopener" style="color: var(--accent)">DESIGN.md</a>
+              instructions (YAML design tokens + markdown sections for agents)
             </label>
           </div>
           <div>
