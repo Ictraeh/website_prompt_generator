@@ -190,6 +190,45 @@
         line-height: 1.45;
         color: var(--muted);
       }
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.1rem;
+      }
+      .tab-btn {
+        border-radius: 999px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+      .tab-btn-active {
+        color: var(--text);
+        border-color: rgba(125, 211, 192, 0.45);
+        background: var(--accent-dim);
+      }
+      .tab-panel.is-hidden {
+        display: none !important;
+      }
+      #cloneOutput {
+        min-height: 220px;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+      #cloneFetch {
+        background: var(--panel);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      #cloneGenerate {
+        background: var(--accent);
+        color: #06221a;
+      }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -219,6 +258,14 @@
         </details>
       </header>
 
+      <nav class="tabs" role="tablist" aria-label="Tool mode">
+        <button type="button" class="tab-btn tab-btn-active" data-tab-btn="builder" role="tab" aria-selected="true">
+          Builder
+        </button>
+        <button type="button" class="tab-btn" data-tab-btn="site" role="tab" aria-selected="false">From website</button>
+      </nav>
+
+      <div data-tab-panel="builder" class="tab-panel">
       <div class="panel">
         <h2>Options</h2>
         <div class="grid">
@@ -318,10 +365,52 @@
         </div>
         <p id="reactbitsMeta" class="field-hint" style="margin-top: 0.5rem"></p>
       </div>
+      </div>
+
+      <div data-tab-panel="site" class="tab-panel is-hidden">
+        <div class="panel">
+          <h2>From website → clone prompt</h2>
+          <p class="field-hint" style="margin-bottom: 0.85rem">
+            Paste a public page URL and use <strong>Fetch HTML</strong> on Vercel (server fetches the page; browsers cannot read most cross-origin sites).
+            If you run the tool locally without that API, use <strong>View Page Source</strong> on the target site and paste HTML below. The tool parses structure (headings, classes, linked CSS/JS, hex colors, fonts) and emits a
+            <strong>MotionSites-style spec-first</strong> prompt to rebuild a <em>similar</em> site elsewhere — not a byte-for-byte copy; respect copyright and trademarks.
+          </p>
+          <label for="cloneUrl">Page URL</label>
+          <input
+            id="cloneUrl"
+            type="url"
+            placeholder="https://example.com/"
+            autocomplete="url"
+            style="
+              width: 100%;
+              border-radius: 10px;
+              border: 1px solid var(--border);
+              background: var(--panel);
+              color: var(--text);
+              padding: 0.65rem 0.75rem;
+              font-size: 0.9rem;
+            "
+          />
+          <div class="actions">
+            <button type="button" id="cloneFetch">Fetch HTML</button>
+            <button type="button" id="cloneGenerate">Generate clone prompt</button>
+          </div>
+          <p id="cloneStatus" class="field-hint" style="margin-top: 0.5rem"></p>
+          <label for="cloneHtmlPaste">Page HTML (paste or filled by Fetch)</label>
+          <textarea id="cloneHtmlPaste" placeholder="Paste full HTML here…" style="min-height: 140px"></textarea>
+          <label for="cloneOutput">Generated prompt</label>
+          <textarea id="cloneOutput" readonly placeholder="Generate to see MotionSites-style reverse spec…"></textarea>
+          <div class="actions" style="margin-top: 0.75rem">
+            <button type="button" id="cloneCopy">Copy prompt</button>
+            <span id="cloneCopyStatus" style="font-size: 0.85rem; color: var(--accent)"></span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="catalog.bundle.js"></script>
     <script src="motion-snippets.bundle.js"></script>
     <script src="app.js"></script>
+    <script src="site-from-url.js"></script>
   </body>
 </html>

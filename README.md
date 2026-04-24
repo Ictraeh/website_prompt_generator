@@ -4,6 +4,10 @@ Static page: pick options → generate an English implementation spec (≤4999 c
 
 When **Include DESIGN.md** is checked (default), the prompt adds a `[DESIGN_MD]` block that tells the coding agent to maintain `./DESIGN.md` using the format from [**Ictraeh/design.md**](https://github.com/Ictraeh/design.md): YAML front matter for design tokens (colors, typography, rounded, spacing, components with `{token}` refs) plus Markdown `##` sections in the canonical order (Overview → … → Do's and Don'ts). Validate with [`@google/design.md`](https://www.npmjs.com/package/@google/design.md) (`npx @google/design.md lint DESIGN.md`) when useful.
 
+### “From website” tab
+
+Switch to **From website** to paste a URL and (on **Vercel**) click **Fetch HTML** — the app calls **`/api/fetch-page`**, a small serverless route that downloads the page HTML (browsers alone cannot fetch most third-party URLs because of CORS). Locally, paste **View Page Source** HTML instead. **Generate clone prompt** parses the DOM in the browser (headings, body classes, stylesheet/script URLs, hex colors, frequent class tokens, inline `<style>` sample) and builds a **MotionSites-style** spec-first prompt to recreate a *similar* implementation (not a verbatim rip). Respect site terms and intellectual property.
+
 ## Local development
 
 ```bash

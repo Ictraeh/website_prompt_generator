@@ -1044,7 +1044,7 @@ const motionKits = [
 ];
 
 const out = {
-  version: "1.2.0",
+  version: "1.2.1",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     "Design Style Layout Markdown Library/Style Library/style-library-aesthetic-vibe-coding.md",
@@ -1076,8 +1076,10 @@ fs.writeFileSync(path.join(publicDir, "catalog.bundle.js"), catalogBundle);
 
 const indexPath = path.join(dir, "index.html");
 const appPath = path.join(dir, "app.js");
+const siteFromUrlPath = path.join(dir, "site-from-url.js");
 const indexHtml = fs.readFileSync(indexPath, "utf8");
 const appJs = fs.readFileSync(appPath, "utf8");
+const siteFromUrlJs = fs.readFileSync(siteFromUrlPath, "utf8");
 const jsonText = JSON.stringify(out);
 const rbJsonPath = path.join(dir, "reactbits-snippets.json");
 const rbPayload = fs.existsSync(rbJsonPath)
@@ -1113,8 +1115,8 @@ fs.writeFileSync(path.join(dir, "motion-snippets.bundle.js"), motionBundle);
 fs.writeFileSync(path.join(publicDir, "motion-snippets.bundle.js"), motionBundle);
 
 const standalone = indexHtml.replace(
-  `<script src="catalog.bundle.js"></script>\n    <script src="motion-snippets.bundle.js"></script>\n    <script src="app.js"></script>`,
-  `<textarea id="__vibe_cat_data" hidden>${jsonText}</textarea>\n    <script>\nwindow.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").value);\n<\/script>\n    <script src="motion-snippets.bundle.js"><\/script>\n    <script>\n${appJs}\n<\/script>`
+  `<script src="catalog.bundle.js"></script>\n    <script src="motion-snippets.bundle.js"></script>\n    <script src="app.js"></script>\n    <script src="site-from-url.js"></script>`,
+  `<textarea id="__vibe_cat_data" hidden>${jsonText}</textarea>\n    <script>\nwindow.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").value);\n<\/script>\n    <script src="motion-snippets.bundle.js"><\/script>\n    <script>\n${appJs}\n${siteFromUrlJs}\n<\/script>`
 );
 fs.writeFileSync(path.join(dir, "standalone.html"), standalone, "utf8");
 fs.writeFileSync(path.join(publicDir, "standalone.html"), standalone, "utf8");
@@ -1172,7 +1174,15 @@ fs.chmodSync(path.join(dir, "open-standalone.command"), 0o755);
 /** Vercel static output: https://vercel.com/docs/errors/error-list#missing-public-directory */
 fs.copyFileSync(indexPath, path.join(publicDir, "index.html"));
 fs.copyFileSync(appPath, path.join(publicDir, "app.js"));
-for (const name of ["index.html", "app.js", "catalog.bundle.js", "motion-snippets.bundle.js", "standalone.html"]) {
+fs.copyFileSync(siteFromUrlPath, path.join(publicDir, "site-from-url.js"));
+for (const name of [
+  "index.html",
+  "app.js",
+  "site-from-url.js",
+  "catalog.bundle.js",
+  "motion-snippets.bundle.js",
+  "standalone.html",
+]) {
   const p = path.join(publicDir, name);
   if (!fs.existsSync(p)) throw new Error(`[build-catalog] Missing Vercel output file: ${p}`);
   if (fs.statSync(p).size < 32) throw new Error(`[build-catalog] Vercel output file too small: ${p}`);
