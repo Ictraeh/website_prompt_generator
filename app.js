@@ -129,6 +129,66 @@
     );
   }
 
+  function hashMod(str, mod) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+    return mod ? Math.abs(h) % mod : Math.abs(h);
+  }
+
+  const NAMING_STRATEGIES = [
+    "Portmanteau from two concrete nouns in the industry (e.g. VoltCanvas, HarborLedger).",
+    "Plain confident product English (two words max, no French article).",
+    "Compound noun stack (Material + Tool + noun) readable in nav lockup.",
+    "Invented Latinate suffix on a short stem (-ora, -ium, -lytics) but avoid faux-French house words.",
+    "Scandi-style compound with consonant cluster (Fjordstack, Klarbyte).",
+    "Japanese romanization vibe for tech/creative (e.g. KumoLayer) when genre fits.",
+    "Single evocative English word + numeric suffix only if SaaS/devtools tone.",
+    "Oblique metaphor + category suffix (CopperHarbor Studio, SlatePilot Labs).",
+  ];
+
+  function buildNamingBlock(style, industry) {
+    const seed = `${style.id}|${industry.id}`;
+    const strat = NAMING_STRATEGIES[hashMod(seed, NAMING_STRATEGIES.length)];
+    return `[NAMING] ${strat} <BRAND> must feel specific to ${industry.label} + ${style.name}. Forbidden lazy defaults: do NOT name the product "Maison …", "Maison & …", "L'Atelier …", "Atelier …", "House of …", or similar French-house clichés unless user notes explicitly require that heritage.`;
+  }
+
+  const FONT_VARIATION_AXES = [
+    "mono-led: data readouts in mono + calm humanist sans for marketing copy",
+    "slab headline + geometric sans body (avoid Inter-only body if recipe allows)",
+    "single variable family with weight/width axis for display+UI",
+    "ultra-condensed grotesk display + generous rounded sans body",
+    "soft serif editorial + narrow tech sans for labels/captions",
+    "display black weight + light book serif for pull quotes only",
+  ];
+
+  function buildFontVariationBlock(style, fontVibe, rec) {
+    const axis = FONT_VARIATION_AXES[hashMod(`${style.id}|fv`, FONT_VARIATION_AXES.length)];
+    const alts = rec?.fontVibeIds?.filter((id) => id !== fontVibe.id).slice(0, 4).join("|") || "browse_catalog_fontVibes";
+    return `[FONT_VARIATION] ${axis}. If display+body would repeat generic "one serif + Inter" across builds, pivot using CATALOG_REC alternates: ${alts}. Keep §5.1_recipe when pairingRecipeId is set, but still vary secondary/mono/caption role fonts.`;
+  }
+
+  function buildMotionSnippetsBlock(style, motion, motionLib) {
+    const mood = (style.libraryMood || "").slice(0, 140);
+    return `[MOTION_SNIPPETS] Map intensity to mood: "${mood}". React Bits (reactbits.dev): name 2+ modules to import (e.g. Aurora/Silk/Galaxy for hero atmosphere; TextType/DecryptedText/AnimatedList for kinetic copy or lists) and file them under src/components/reactbits/*. anime.js (animejs.com): import from 'animejs' — stagger letters in hero H1, timeline section reveals (opacity+translateY), optional scroll observers for editorial blocks. ${motionLib} Hero: headline stagger + subtle bg drift; sections: card/list stagger + 1 icon micro-motion; nav: short blur/height transition only; respect prefers-reduced-motion.`;
+  }
+
+  function buildRichMediaSlots(style) {
+    const pool = cat.pexelsPool || {};
+    const vids = pool.heroVideos && pool.heroVideos.length ? pool.heroVideos : [style.pexels.heroVideo];
+    const imgs = pool.heroImages && pool.heroImages.length ? pool.heroImages : [style.pexels.heroImage];
+    const thumbs = pool.cardThumbs && pool.cardThumbs.length ? pool.cardThumbs : [style.pexels.cardThumb];
+    const n = style.libraryNumber || hashMod(style.id, 99);
+    const v0 = style.pexels.heroVideo;
+    const v1 = vids[(n + 3) % vids.length];
+    const i0 = style.pexels.heroImage;
+    const i1 = imgs[(n + 1) % imgs.length];
+    const i2 = imgs[(n + 5) % imgs.length];
+    const t0 = style.pexels.cardThumb;
+    const t1 = thumbs[(n + 2) % thumbs.length];
+    const kw = (style.triggerKeywords || []).slice(0, 5).join(", ");
+    return `[MEDIA_ASSETS] (A) Pexels video: hero=${v0}; mid-page strip or second hero=${v1}. (B) Pexels stills: hero_img=${i0}; section_bg_1=${i1}; section_bg_2=${i2}; card_thumbs=${t0},${t1} — search pexels.com with keywords: ${kw} for extra fills. (C) lummi.ai: place 1–3 generative stills (abstract, portrait, or product mood) as <LUMMI_1>… URLs from https://lummi.ai — distinct from Pexels subjects. (D) lucide-react: ≥14 distinct named imports across shell. (E) Optional short muted Pexels clip in a feature column (poster frame + controls). (F) No duplicate same remote media id for hero+card; HTML comment attribution per asset.`;
+  }
+
   function sectionPlan(platform, industryLabel) {
     if (platform.id === "web_hero_single") {
       return ["Hero (single viewport): nav + headline + supporting copy + primary/secondary CTAs + optional social proof row"];
@@ -180,10 +240,16 @@
     const l4Short = L4_HINTS[style.layoutArchetype] || style.layoutArchetype;
     const l4Doc = (cat.l4Blueprint && (cat.l4Blueprint[style.layoutArchetype] || cat.l4Blueprint.L4_DEFAULT)) || "";
     const sectionLine = sections.join(" → ");
-    const kw = style.triggerKeywords.join(", ");
     const notesShort = (userNotes.trim() || "—").slice(0, 320);
 
-    const mediaSlots = `MEDIA_SLOTS <HERO_VIDEO> <SECTION_2_VIDEO> <CARD_THUMB_*> — rules: muted loop playsInline object-cover; scrim stops in %; example fill: ${style.pexels.heroVideo}`;
+    const rec = style.recommendations;
+    const recLine = rec
+      ? `CATALOG_REC: fontCandidates=${rec.fontVibeIds.join("|")} colorCandidates=${rec.colorVibeIds.join("|")} motionCandidates=${rec.motionIds.join("|")}`
+      : "";
+
+    const namingBlock = buildNamingBlock(style, industry);
+    const fontVarBlock = buildFontVariationBlock(style, fontVibe, rec);
+    const mediaSlots = buildRichMediaSlots(style);
 
     const forbidden = [];
     if (colorVibe.id === "dark_cinematic") forbidden.push("no random purple/indigo unless tokenized");
@@ -207,10 +273,7 @@
       ? "GLASS: reusable .liquid-glass per §7.1 (luminosity blend, blur(4px), inset highlight, ::before 1.4px gradient mask ring); apply <GLASS_TINT> rgba to nav/CTAs/cards."
       : "";
 
-    const rec = style.recommendations;
-    const recLine = rec
-      ? `CATALOG_REC: fontCandidates=${rec.fontVibeIds.join("|")} colorCandidates=${rec.colorVibeIds.join("|")} motionCandidates=${rec.motionIds.join("|")}`
-      : "";
+    const motionSnippetsBlock = buildMotionSnippetsBlock(style, motion, motionLib);
 
     const langPreamble =
       outputLang === "zh"
@@ -241,6 +304,7 @@
     const body = `${langPreamble}[ROLE] Senior FE — compact spec ≤${MAX_PROMPT_CHARS}ch. Name files when critical: index.html, src/index.css, tailwind.config.ts. Exact Tailwind for nav/hero; placeholders <BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.
 [STACK] React18+TS+Vite+Tailwind3+lucide-react content ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
 [BIND] ${platform.labelEn}|${industry.label}|style#${style.libraryNumber} ${style.name}|notes:${notesShort}
+${namingBlock}
 ${blindRollLine ? `${blindRollLine}\n` : ""}[LIB_MOOD] ${style.libraryMood} | [LIB_LAYOUT] ${style.libraryLayout}
 ${blendLine}
 [L4] ${style.layoutArchetype}: ${l4Short} | DOC: ${(l4Doc || "").slice(0, 360)}
@@ -248,8 +312,10 @@ ${blendLine}
 [SPACING] §6 ladder px-4 sm:px-6 md:px-12 lg:px-16; sections py-16 md:py-28; nav gap-6–8; grids gap-6–8
 ${glassLine}
 [FONTS] tool:${fontVibe.pickerLabel || fontVibe.labelZh || fontVibe.label}|${pairingRef}|roles display=${fontVibe.display} body=${fontVibe.body}${fontVibe.mono ? " mono=" + fontVibe.mono : ""}|moodTags:${moodFont}|${fontVibe.notes}|libraryPair:${style.fontPairingHint}
+${fontVarBlock}
 [COLOR] tool:${colorVibe.label || colorVibe.labelZh}|huemint:${hueRef}|${colorAlign}|cohesion:${colorIntent}|css:${colorVibe.cssHint}|libraryPalette:${style.colorSystemHint}
 [MOTION_KIT] ${motion.id}: ${motion.detail} | ${motionLib}
+${motionSnippetsBlock}
 ${designMdBlock}[HERO] infer ${style.skillTags.join(",")} → center|bottom|split; CTA:${style.id === "neo-brutalism" ? "neo-brutal shadow/border" : "solid+outline/glass+lift"}
 [SECTIONS] ${sectionLine}
 ${mediaSlots}

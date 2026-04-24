@@ -133,6 +133,7 @@
     const canonical = finalUrl || sourceUrl;
     const lines = [
       "[ROLE] Senior FE — reverse-engineer a **new** site **inspired by** the reference layout/typography/motion grammar. Do not copy proprietary assets, logos, or licensed copy; recreate structure with original content and royalty-free media placeholders.",
+      "[NAMING] Invent a fresh fictitious <BRAND> tied to the vertical implied by headings/copy — avoid lazy luxury defaults: do NOT use \"Maison …\", \"L'Atelier …\", \"House of …\" unless the reference is explicitly that niche.",
       `[SOURCE_URL] ${canonical}`,
       "[STACK] React 18 + TypeScript + Vite + Tailwind CSS 3 + lucide-react. Content globs: ./index.html + ./src/**/*.{ts,tsx}. Optional: shadcn/ui, motion/react, GSAP+ScrollTrigger if scroll choreography is implied.",
       `[PAGE_TITLE] ${analysis.title}`,
@@ -145,7 +146,7 @@
       analysis.videos.length ? `[VIDEO_SOURCES]\n${analysis.videos.join("\n")}` : "",
       analysis.fontLinks.length
         ? `[FONT_CDNS]\n${analysis.fontLinks.join("\n")}`
-        : "[FONT_CDNS] infer display/body pairing from heading/body scale in reference (Instrument Serif + Inter is common in MotionSites-style landings unless evidence suggests otherwise).",
+        : "[FONT_CDNS] infer display/body from reference scale/weight; avoid automatic \"serif display + Inter\" if evidence points elsewhere — consider mono data UI, slab headline, condensed grotesk, or variable-font single family.",
       analysis.stylesheets.length
         ? `[STYLESHEET_HREFS]\n${analysis.stylesheets.join("\n")}`
         : "",
@@ -160,9 +161,10 @@
         : "",
       "[L4_INFER] Pick closest MotionSites L4 archetype (§4): L4.1 full-bleed hero, L4.3 multi-section landing, L4.4 SaaS split/bento, L4.6 card wall, etc. State hero placement (center | bottom | split) and max-w token.",
       "[MOTION_INFER] From class tokens + scripts: default M-fade-rise + M-button-lift; add M-scroll-text-reveal or GSAP ScrollTrigger only if evidence of scrub/parallax; respect prefers-reduced-motion.",
+      "[MOTION_LIBS] anime.js (animejs.com): stagger hero headline tokens, timeline section entrances where editorial density fits. reactbits.dev: cite 1–2 React Bits modules (e.g. Aurora/Silk for hero bg, AnimatedList for features) under src/components/reactbits/ when decorative layer matches reference energy.",
       "[HERO_CONTRACT] min-h-screen overflow-hidden pattern; media absolute inset-0 object-cover with explicit z-index vs content; nav glass or transparent max-w-7xl.",
       "[SECTIONS] Propose 3–6 section story matching heading ladder and media density observed.",
-      "[MEDIA_SLOTS] <HERO_VIDEO> <SECTION_2_VIDEO> <CARD_THUMB_*> — muted loop playsInline object-cover; scrim % stops for WCAG text on video.",
+      "[MEDIA_ASSETS] Mix sources: Pexels (≥1 hero video + ≥2 stills + card thumbs from distinct searches), lummi.ai (1–2 generative stills for contrast), lucide-react (≥12 named icons). Placeholders <HERO_VIDEO> <SECTION_STILL_*> <LUMMI_*>; muted loop playsInline object-cover; scrim % stops for WCAG on video; no duplicate same remote asset id across hero and cards.",
       "[DESIGN_MD] After implementation, add ./DESIGN.md per https://github.com/Ictraeh/design.md — YAML tokens for colors/typography/rounded/spacing + ## sections (Overview…Components).",
       "[GUARD] No trademark theft; replace brand names with <BRAND>; no hotlinking competitor assets in production.",
       "[QA] responsive sm/md/lg; CLS reserve; focus-visible; Lighthouse-sane bundle.",

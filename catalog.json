@@ -15,7 +15,10 @@
       "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
       "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
       "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
-      "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4"
+      "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
+      "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
+      "https://videos.pexels.com/video-files/1916785/1916785-uhd_2560_1440_25fps.mp4",
+      "https://videos.pexels.com/video-files/3255275/3255275-uhd_3840_2160_25fps.mp4"
     ],
     "heroImages": [
       "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
@@ -25,12 +28,18 @@
       "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
       "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
       "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
-      "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920"
+      "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      "https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1920"
     ],
     "cardThumbs": [
       "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800",
       "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800",
-      "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+      "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
     ]
   },
   "platforms": [
@@ -915,7 +924,7 @@
       "pexels": {
         "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Weightless soft hierarchy",
       "libraryLayout": "Cinematic centered stack + translucent chrome; generous vertical air (style library).",
@@ -960,7 +969,7 @@
       "pexels": {
         "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Ornamental linework",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1001,7 +1010,7 @@
       "pexels": {
         "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
         "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Botanical ornament columns",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1047,7 +1056,7 @@
       "pexels": {
         "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Character-led",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1089,7 +1098,7 @@
       "pexels": {
         "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
         "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Hard grid HUD",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1134,9 +1143,9 @@
         "draft aesthetic"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Collage, annotations, blueprint overlays",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1177,9 +1186,9 @@
         "editorial minimal"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/1916785/1916785-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Type-led prestige",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1224,9 +1233,9 @@
         "calm interface"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3255275/3255275-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Calm function",
       "libraryLayout": "Modular product grids + split hero with secondary panel (style library + L4.4).",
@@ -1270,9 +1279,9 @@
         "clashing colors"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Broken grid",
       "libraryLayout": "Fixed grid card wall on full-page background; small-type mixed font roles (style library).",
@@ -1315,9 +1324,9 @@
         "earthy texture"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Layered media",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1357,9 +1366,9 @@
         "lace"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Soft ornamental borders",
       "libraryLayout": "Newsletter/email-width inner shell, stacked rhythm, centered dividers, fixed-aspect hero media (style library).",
@@ -1401,9 +1410,9 @@
         "rustic"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Story-first column",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1442,8 +1451,8 @@
         "damask"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Framed modules",
@@ -1483,8 +1492,8 @@
         "gatsby"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Symmetric glamour",
@@ -1524,8 +1533,8 @@
         "floral curve"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Curvilinear separators",
@@ -1563,9 +1572,9 @@
         "desert occult"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Desert dusk",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1603,9 +1612,9 @@
         "ironic retro"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Scrapbook clutter",
       "libraryLayout": "Fixed grid card wall on full-page background; small-type mixed font roles (style library).",
@@ -1644,9 +1653,9 @@
         "glossy futurism"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/1916785/1916785-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Chrome gloss",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1685,9 +1694,9 @@
         "form follows function"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3255275/3255275-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Rigid grid",
       "libraryLayout": "Modular product grids + split hero with secondary panel (style library + L4.4).",
@@ -1728,9 +1737,9 @@
         "raw ui"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Heavy borders",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1774,9 +1783,9 @@
         "glitch neon"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "HUD panels",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1819,9 +1828,9 @@
         "neon grid"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Neon horizon",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1858,9 +1867,9 @@
         "glitch collage"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Desktop windows collage",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -1904,9 +1913,9 @@
         "speech bubble"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Halftone",
       "libraryLayout": "Fixed grid card wall on full-page background; small-type mixed font roles (style library).",
@@ -1947,9 +1956,9 @@
         "modular cards"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
         "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Rounded modular grid mixed spans",
       "libraryLayout": "Modular product grids + split hero with secondary panel (style library + L4.4).",
@@ -1990,9 +1999,9 @@
         "spray paint"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Angled comps",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2035,9 +2044,9 @@
         "dramatic darkness"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
         "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Spotlight portraits",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2075,7 +2084,7 @@
         "medieval dark"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
         "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
@@ -2114,7 +2123,7 @@
         "stipple texture"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/1916785/1916785-uhd_2560_1440_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
@@ -2156,8 +2165,8 @@
         "analog digital"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/3255275/3255275-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Collage z-index storytelling",
@@ -2195,9 +2204,9 @@
         "clockwork fantasy"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Brass gears",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2236,9 +2245,9 @@
         "pastel playful"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Rounded cards",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2281,9 +2290,9 @@
         "feminine vintage"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Ribbon separators",
       "libraryLayout": "Newsletter/email-width inner shell, stacked rhythm, centered dividers, fixed-aspect hero media (style library).",
@@ -2325,9 +2334,9 @@
         "dream logic"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Dream logic",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2364,9 +2373,9 @@
         "logistics dashboard"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Dense tables",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2406,9 +2415,9 @@
         "boomerang motif"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Curved masks",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2445,9 +2454,9 @@
         "handwritten collage"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Polaroid tape layers",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2491,9 +2500,9 @@
         "glossy y2k ui"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Glossy bubbles",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2535,9 +2544,9 @@
         "candlelit library"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Candlelit library",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2575,9 +2584,9 @@
         "poetic soft"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/1916785/1916785-uhd_2560_1440_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Sunlit books",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2621,9 +2630,9 @@
         "imperfection beauty"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/325044/pexels-photo-325044.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/3255275/3255275-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Asymmetric anchors",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2662,9 +2671,9 @@
         "western slab"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Desert landscapes",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2707,8 +2716,8 @@
         "navy stripe"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/378570/pexels-photo-378570.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Stripe dividers",
@@ -2750,8 +2759,8 @@
         "visual pun"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/1448735/1448735-uhd_2560_1440_25fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/3129671/3129671-uhd_3840_2160_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Pictogram puzzle flow",
@@ -2793,8 +2802,8 @@
         "frosted ui"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2796070/2796070-sd_640_360_24fps.mp4",
-        "heroImage": "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=1920",
+        "heroVideo": "https://videos.pexels.com/video-files/3195394/3195394-sd_640_360_25fps.mp4",
+        "heroImage": "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1920",
         "cardThumb": "https://images.pexels.com/photos/6476586/pexels-photo-6476586.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Frosted depth",
@@ -2836,9 +2845,9 @@
         "geometric letterform"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/2495381/2495381-hd_1920_1080_30fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
         "heroImage": "https://images.pexels.com/photos/2387863/pexels-photo-2387863.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476588/pexels-photo-6476588.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Visible grid",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
@@ -2879,9 +2888,9 @@
         "hard shadow"
       ],
       "pexels": {
-        "heroVideo": "https://videos.pexels.com/video-files/3044077/3044077-uhd_3840_2160_25fps.mp4",
+        "heroVideo": "https://videos.pexels.com/video-files/2614134/2614134-sd_640_360_30fps.mp4",
         "heroImage": "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1920",
-        "cardThumb": "https://images.pexels.com/photos/6476587/pexels-photo-6476587.jpeg?auto=compress&cs=tinysrgb&w=800"
+        "cardThumb": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=800"
       },
       "libraryMood": "Thick borders hard shadows usable-bold",
       "libraryLayout": "Clear hierarchy, varied rhythm, purposeful sections (style-library global rules).",
