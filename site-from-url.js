@@ -165,7 +165,9 @@
       "[HERO_CONTRACT] min-h-screen overflow-hidden pattern; media absolute inset-0 object-cover with explicit z-index vs content; nav glass or transparent max-w-7xl.",
       "[SECTIONS] Propose 3–6 section story matching heading ladder and media density observed.",
       "[MEDIA_ASSETS] Mix sources: Pexels (≥1 hero video + ≥2 stills + card thumbs from distinct searches), lummi.ai (1–2 generative stills for contrast), lucide-react (≥12 named icons). Placeholders <HERO_VIDEO> <SECTION_STILL_*> <LUMMI_*>; muted loop playsInline object-cover; scrim % stops for WCAG on video; no duplicate same remote asset id across hero and cards.",
-      "[DESIGN_MD] After implementation, add ./DESIGN.md per https://github.com/Ictraeh/design.md — YAML tokens for colors/typography/rounded/spacing + ## sections (Overview…Components).",
+      "[DESIGN_MD] After implementation, add ./DESIGN.md per https://github.com/Ictraeh/design.md + Stitch format https://stitch.withgoogle.com/docs/design-md/format/ — YAML tokens + ## sections (Overview…Don'ts). Align with [DESIGN_MD_REFS] below.",
+      "[DESIGN_MD_REFS] From https://github.com/VoltAgent/awesome-design-md pick 2 getdesign.md/<slug>/design-md hubs closest to the reference site's vertical (e.g. Linear+Vercel+Stripe for devtools; Framer+Webflow+Clay for creative). Patterns/tokens only—no trademark assets or copy.",
+      "[AGENCY_BAR] Bold+clean+contemporary studio execution: strict grid, confident type scale, one accent system, credible headlines. Vary section compositions vs generic hero+3 identical cards unless reference is explicitly that. [QUALITY_GUARDS] Ban low-contrast grey mush, lorem marketing, untokenized gradients, stock clichés (handshake rows), decorative-only blobs, duplicate card chrome; enforce WCAG AA on media overlays.",
       "[GUARD] No trademark theft; replace brand names with <BRAND>; no hotlinking competitor assets in production.",
       "[QA] responsive sm/md/lg; CLS reserve; focus-visible; Lighthouse-sane bundle.",
     ];

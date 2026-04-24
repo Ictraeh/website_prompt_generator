@@ -5,8 +5,16 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import {
+  enrichDesignMdRefs,
+  resolveDesignMdSlugs,
+  DESIGN_MD_INDEX,
+  DESIGN_MD_STITCH_FORMAT,
+} from "./design-md-refs.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const designMdSlugsResolved = resolveDesignMdSlugs(fs, path, __dirname);
+const designMdReferences = enrichDesignMdRefs(designMdSlugsResolved);
 
 const pexelsPool = {
   heroVideos: [
@@ -1053,12 +1061,19 @@ const motionKits = [
 ];
 
 const out = {
-  version: "1.2.1",
+  version: "1.3.0",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     "Design Style Layout Markdown Library/Style Library/style-library-aesthetic-vibe-coding.md",
     "Huemint palette patterns — https://huemint.com/brand-intersection/ · https://huemint.com/website-magazine/ · https://huemint.com/website-monochrome/",
+    `VoltAgent awesome-design-md — ${DESIGN_MD_INDEX} (DESIGN.md references for agency-grade UI discipline)`,
   ],
+  designMdMeta: {
+    indexUrl: DESIGN_MD_INDEX,
+    stitchFormatUrl: DESIGN_MD_STITCH_FORMAT,
+    getdesignPattern: "https://getdesign.md/<slug>/design-md",
+  },
+  designMdReferences,
   pexelsAttribution: "Placeholder media from https://www.pexels.com/ — replace with licensed assets for production.",
   pexelsPool,
   platforms,

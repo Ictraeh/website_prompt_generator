@@ -119,14 +119,99 @@
     p.textContent = [c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || "";
   }
 
-  /** https://github.com/Ictraeh/design.md — compact agent contract (keep short for 4999 cap). */
+  /** https://github.com/Ictraeh/design.md + Stitch DESIGN.md — compact (4999 cap). */
   function buildDesignMdClause() {
+    const stitch = (cat.designMdMeta && cat.designMdMeta.stitchFormatUrl) || "https://stitch.withgoogle.com/docs/design-md/format/";
     return (
-      "[DESIGN_MD] Add or update ./DESIGN.md at repo root per https://github.com/Ictraeh/design.md (YAML token front matter + Markdown body). " +
-      "Front matter: name; colors as #hex keys; typography roles (fontFamily, fontSize, fontWeight, lineHeight, letterSpacing); rounded; spacing; components.* using literals or {colors.*} refs. " +
-      "Body ## sections in spec order when present: Overview → Colors → Typography → Layout → Elevation & Depth → Shapes → Components → Do's and Don'ts. " +
-      "Align tokens with [FONTS]/[COLOR] and the Tailwind theme you ship. Optional: `npx @google/design.md lint DESIGN.md`; export Tailwind: `npx @google/design.md export --format tailwind DESIGN.md`.\n"
+      "[DESIGN_MD] Ship ./DESIGN.md per https://github.com/Ictraeh/design.md + Stitch " +
+      stitch +
+      " — YAML: colors #hex, typography roles, rounded, spacing, components.*. Body: Overview→Colors→Typography→Layout→Elevation→Shapes→Components→Do's. " +
+      "Align with [FONTS]/[COLOR]/[DESIGN_MD_REFS]. Optional: npx @google/design.md lint|export.\n"
     );
+  }
+
+  function tokenizeStr(s) {
+    return (s || "")
+      .toLowerCase()
+      .split(/[^a-z0-9]+/)
+      .filter((w) => w.length > 2);
+  }
+
+  /** Slugs from awesome-design-md / getdesign.md — boost picks by vertical. */
+  const INDUSTRY_DESIGN_SLUG_BOOST = {
+    art_design: ["framer", "figma", "clay", "webflow"],
+    photography: ["airbnb", "apple", "notion"],
+    portfolio_cv: ["linear.app", "vercel", "stripe", "framer"],
+    fashion_beauty: ["clay", "framer", "apple"],
+    fitness_wellness: ["spotify", "apple", "uber"],
+    food_restaurants: ["airbnb", "uber", "notion"],
+    real_estate_home: ["airbnb", "ibm", "clay"],
+    travel_tourism: ["airbnb", "uber", "wise"],
+    weddings_events: ["notion", "clay", "intercom"],
+    education: ["mintlify", "notion", "sanity", "cursor"],
+    professional_services: ["linear.app", "intercom", "stripe", "cal"],
+    community_nonprofits: ["notion", "zapier", "airtable"],
+    entertainment_media: ["spotify", "pinterest", "runwayml"],
+    hobbies_lifestyle: ["pinterest", "miro", "airtable"],
+    saas_it_services: ["vercel", "linear.app", "stripe", "resend", "supabase", "cursor"],
+    ecommerce: ["stripe", "airbnb", "coinbase", "apple"],
+    industrial: ["ibm", "spacex", "tesla", "mongodb"],
+  };
+
+  function buildDesignMdRefBlock(style, industry) {
+    const pool = cat.designMdReferences || [];
+    const meta = cat.designMdMeta || {};
+    const idx = meta.indexUrl || "https://github.com/VoltAgent/awesome-design-md";
+    if (!pool.length) {
+      return `[DESIGN_MD_REFS] Open two getdesign.md/<slug>/design-md pages from ${idx} matching ${industry.label}; copy spacing/type/CTA discipline only for <BRAND>.`;
+    }
+    const boost = INDUSTRY_DESIGN_SLUG_BOOST[industry.id] || [];
+    const boostSet = new Set(boost);
+    const indTok = new Set([...tokenizeStr(industry.label), ...tokenizeStr(industry.id)]);
+    const kwTok = new Set();
+    for (const k of style.triggerKeywords || []) tokenizeStr(k).forEach((t) => kwTok.add(t));
+    const scored = pool.map((r, i) => {
+      let s = 0;
+      if (boostSet.has(r.slug)) s += 8;
+      for (const t of r.tags || []) {
+        if (kwTok.has(t)) s += 3;
+        if (indTok.has(t)) s += 2;
+      }
+      for (const t of tokenizeStr(r.label)) {
+        if (kwTok.has(t)) s += 1;
+      }
+      return { r, s, i };
+    });
+    scored.sort((a, b) => b.s - a.s || a.i - b.i);
+    const picks = [];
+    const used = new Set();
+    for (const x of scored) {
+      if (picks.length >= 2) break;
+      if (x.s > 0 && !used.has(x.r.slug)) {
+        picks.push(x.r);
+        used.add(x.r.slug);
+      }
+    }
+    const h = hashMod(`${style.id}|${industry.id}|dm`, pool.length || 1);
+    let hop = 0;
+    while (picks.length < 2 && pool.length) {
+      const r = pool[(h + hop * 13) % pool.length];
+      hop++;
+      if (!used.has(r.slug)) {
+        picks.push(r);
+        used.add(r.slug);
+      }
+      if (hop > pool.length + 5) break;
+    }
+    const a = picks[0];
+    const b = picks[1] || picks[0];
+    const fmt = (r) => (r ? `${r.label}→${r.hub}` : "");
+    const stitch = meta.stitchFormatUrl || "https://stitch.withgoogle.com/docs/design-md/format/";
+    return `[DESIGN_MD_REFS] Patterns-only (no trademark clone): ${fmt(a)} · ${fmt(b)} · format ${stitch} · index ${idx}`;
+  }
+
+  function buildAgencyGuardBlock(style, industry) {
+    return `[AGENCY_BAR] Bold+clean+contemporary studio bar: decisive type ramp, strict grid + airy whitespace, one disciplined accent, photography with clear focal depth. Layout diversity is mandatory—${style.layoutArchetype} sets the spine; vary section compositions (split, bento, editorial band, asymmetric grid, logo rail, FAQ) vs generic "hero + 3 same cards" unless L4.6 card-wall. Copy must sound specific to ${industry.label}. [QUALITY_GUARDS] Ban: grey-mush contrast, hollow lorem-as-marketing, untokenized rainbow gradients, handshake/cityscape stock clichés, duplicate identical card chrome >2×, decorative blobs with no narrative job, type-scale chaos. Enforce: WCAG AA on media (scrim), tokens in DESIGN.md, motion only per MOTION blocks.`;
   }
 
   function hashMod(str, mod) {
@@ -248,6 +333,8 @@
       : "";
 
     const namingBlock = buildNamingBlock(style, industry);
+    const designMdRefBlock = buildDesignMdRefBlock(style, industry);
+    const agencyGuardBlock = buildAgencyGuardBlock(style, industry);
     const fontVarBlock = buildFontVariationBlock(style, fontVibe, rec);
     const mediaSlots = buildRichMediaSlots(style);
 
@@ -305,6 +392,8 @@
 [STACK] React18+TS+Vite+Tailwind3+lucide-react content ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
 [BIND] ${platform.labelEn}|${industry.label}|style#${style.libraryNumber} ${style.name}|notes:${notesShort}
 ${namingBlock}
+${designMdRefBlock}
+${agencyGuardBlock}
 ${blindRollLine ? `${blindRollLine}\n` : ""}[LIB_MOOD] ${style.libraryMood} | [LIB_LAYOUT] ${style.libraryLayout}
 ${blendLine}
 [L4] ${style.layoutArchetype}: ${l4Short} | DOC: ${(l4Doc || "").slice(0, 360)}
