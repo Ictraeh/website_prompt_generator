@@ -294,6 +294,14 @@
             <label for="stackProfile">Stack add-ons (optional)</label>
             <select id="stackProfile"></select>
           </div>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
+            <label for="creativeVoice">Creative voice</label>
+            <select id="creativeVoice"></select>
+            <p class="field-hint">
+              <strong>Spec-first</strong> keeps the classic layer tags. <strong>Dramatic / Wild card</strong> injects
+              <code>[CREATIVE_DIVERGENCE]</code> (composition dice + anti-template bans) and rewrites ROLE/L0 so the page is pushed away from “random SaaS English” — stack and BIND stay the same.
+            </p>
+          </div>
           <div>
             <label for="fontVibe">Font vibe</label>
             <select id="fontVibe"></select>
@@ -328,6 +336,12 @@
             <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
               <input type="checkbox" id="splitPromptParts" />
               Split prompt into <strong>Part A</strong> (layout, type, color, content) and <strong>Part B</strong> (motion only)—helps stay under ~5000 chars when pasting in two steps
+            </label>
+          </div>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
+            <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
+              <input type="checkbox" id="compactPrompt" />
+              <strong>Compact prompt</strong> — TITLE/SUB + plain sentences; drops most <code>[L0]</code>-style tags, long excerpts, and font-variation block for a shorter, more scannable spec (pairs well with Split)
             </label>
           </div>
           <div>
@@ -456,6 +470,114 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
     "L4.8": "Scroll-scrub video: GSAP ScrollTrigger→video.currentTime; seek guards.",
     "L4.11": "Styleguide page: swatches, type ramp, button matrix.",
   };
+
+  /** UI: filled in init — user picks how much "anti-template" creative pressure to inject (BIND/stack unchanged). */
+  const CREATIVE_VOICE_OPTIONS = [
+    { id: "spec_first", label: "Spec-first — dense MotionSites layers (default)" },
+    { id: "dramatic", label: "Dramatic — anti-generic layout + composition dice" },
+    { id: "wild_card", label: "Wild card — maximum visual divergence (still BIND/stack)" },
+  ];
+
+  const COMPOSITION_DICE = [
+    "Asymmetric hero: 55/45 split with type bleeding into media safe-zone, not centered stack.",
+    "Single-column editorial first fold: narrow measure + huge whitespace, hero image only enters at fold-2.",
+    "Card mosaic or dense grid (≥10 small cells), not three fat feature cards.",
+    "Bottom-weighted hero: primary story sits lower third; top is atmosphere only.",
+    "Diagonal or stepped section seams (CSS clip/mask), not flat horizontal bands only.",
+    "One oversized typographic lockup (H1 spans 2 lines, 12–18vw) with minimal chrome.",
+    "Bento-first above fold: ≥5 unequal tiles; no single hero rectangle.",
+    "Off-grid nav or vertical side-rail labels on desktop; break F-pattern predictability.",
+    "Full-bleed color field with inset floating panel (inset shadow), not card-on-gray.",
+    "Alternating L/R media rails per section; forbid three identical section templates.",
+    "Sticky chapter numbers or progress spine; narrative feels like a document, not slides.",
+    "Hero is a single interactive surface (scrub, drag, hover state) not static image+text.",
+  ];
+
+  const ANTI_GENERIC_CLI = [
+    "Ban centered headline + subhead + two CTAs as the entire above-the-fold story unless deliverable is single-viewport card (L4.2).",
+    "Ban Inter-only + soft gray bg + three purple-gradient icons as the default vibe.",
+    "Ban generic handshake / laptop stock; use abstract, product, or industry-specific metaphors only.",
+    "Ban identical card chrome repeated >2×; vary elevation, radius, or media ratio between cards.",
+    "Ban decorative blobs without a layout job; every shape must align to grid or type.",
+    "Ban 12-column marketing clone: if layout feels swappable with any SaaS template, redesign hero + first feature band.",
+    "Ban rainbow mesh behind all text; confine iridescence to ≤40% viewport height.",
+    "Ban more than one scroll-scrub driver; pick UI choreography XOR cinematic BG.",
+  ];
+
+  const VISUAL_TWISTS = [
+    "Texture: subtle grain OR paper noise on backgrounds (opacity≤0.08), not flat fills only.",
+    "One brutalist move allowed: hard shadow, rule lines, or stark black/white moment—if style allows.",
+    "Accent color appears in ≤2 sharp places (rule, dot, underline), not washed across gradients.",
+    "Photography treatment: duotone, high-contrast crop, or extreme crop—avoid stock framing.",
+    "Typography tension: mix display scale jump OR mono data callouts against humanist body.",
+    "Motion personality: one playful micro-interaction (spring ≤260ms) on primary CTA only; rest calm.",
+    "Dark mode depth: use layered surfaces (zinc 950/900/850) not one flat #000.",
+    "Light mode warmth: off-white base + ink text; avoid pure #fff + #111 only.",
+  ];
+
+  const ROLE_VARIANTS = {
+    dramatic:
+      "Senior FE + art direction — ship UI that survives a thumbnail scroll test: it must not read as 'Tailwind marketing default with new hex'. L-layers are binding rails; composition must still feel authored.",
+    wild_card:
+      "Senior FE as set designer — the page is a scene, not a framework demo. If the hero could be pasted into any startup template unchanged, revise. L-layers are rails; CREATIVE_DIVERGENCE wins on silhouette, tension, and negative space (WCAG non-negotiable).",
+  };
+
+  const WORK_ORDER_VARIANTS = {
+    dramatic:
+      "[L0_EXEC_ORDER] (1)Section tree comments (2)tailwind.config+semantic tokens (3)App+Section*.tsx (4)motion+prefers-reduced-motion (5)DESIGN.md — After (3), sanity-check hero vs generic three-block trope; ONE composition revision pass if it reads as template-default.",
+    wild_card:
+      "[L0_EXEC_ORDER] (1)Comment a one-line hero composition intent BEFORE markup (2)tokens (3)App+Section*.tsx (4)motion+reduced-motion (5)DESIGN.md — Mandatory second pass: if first fold matches cliché SaaS hero, redesign asymmetry, type scale, or media treatment before shipping.",
+  };
+
+  function creativeVoiceSeed(style, industry, platform, voiceId) {
+    return `${style.id}|${industry.id}|${platform.id}|${voiceId}`;
+  }
+
+  function pickCreativeLines(arr, seed, count) {
+    const out = [];
+    const n = arr.length;
+    if (!n) return out;
+    for (let i = 0; i < count; i++) {
+      out.push(arr[hashMod(`${seed}|${i}`, n)]);
+    }
+    return out;
+  }
+
+  function buildCreativeDivergenceBlock(voiceId, style, industry, platform, seed) {
+    if (voiceId === "spec_first") return "";
+    const isWild = voiceId === "wild_card";
+    const comps = pickCreativeLines(COMPOSITION_DICE, seed, isWild ? 3 : 2);
+    const bans = pickCreativeLines(ANTI_GENERIC_CLI, seed, isWild ? 4 : 2);
+    const twist = VISUAL_TWISTS[hashMod(`${seed}|tw`, VISUAL_TWISTS.length)];
+    const tone = isWild
+      ? "VISUAL_PRIORITY: Memorable > safe. One bold, a11y-safe compositional risk is REQUIRED."
+      : "VISUAL_PRIORITY: Distinct > generic. One strong compositional idea beats extra polish.";
+    let s = `[CREATIVE_DIVERGENCE] ${tone} Vertical:${industry.label}. Style:"${style.name}". Deliverable:${platform.labelEn || platform.label}.\n`;
+    s += `Composition dice (pick ONE primary + at most ONE secondary):\n— ${comps.join("\n— ")}\n`;
+    s += `Anti-template bans:\n— ${bans.join("\n— ")}\n`;
+    s += `Palette/texture twist: ${twist}\n`;
+    if (isWild) {
+      s +=
+        "WILD_CARD: Steal energy from editorial print, club posters, museum wayfinding, or fashion lookbooks — NOT from generic Dribbble SaaS heroes. If two adjacent sections could swap with any tech product site, redesign one.\n";
+    }
+    const kw = (style.triggerKeywords || []).slice(0, 5).join(", ");
+    if (kw) s += `Surface these keywords visually (not only in copy): ${kw}.\n`;
+    const out = `${s.trim()}\n`;
+    return out.length > 1300 ? `${out.slice(0, 1270).trimEnd()}…\n` : out;
+  }
+
+  function buildCreativeDivergenceCompact(voiceId, style, industry, platform, seed) {
+    if (voiceId === "spec_first") return "";
+    const comp = COMPOSITION_DICE[hashMod(`${seed}|cc`, COMPOSITION_DICE.length)];
+    const ban = ANTI_GENERIC_CLI[hashMod(`${seed}|bb`, ANTI_GENERIC_CLI.length)];
+    const twist = VISUAL_TWISTS[hashMod(`${seed}|tt`, VISUAL_TWISTS.length)];
+    const wild =
+      voiceId === "wild_card"
+        ? " Wild: one bold memorable move (a11y-safe); avoid Dribbble SaaS hero clone."
+        : "";
+    const line = `CREATIVE: Avoid generic startup landing. ${comp} · Ban: ${ban} · Twist: ${twist}.${wild}`;
+    return line.length > 340 ? `${line.slice(0, 330).trimEnd()}…` : line;
+  }
 
   function clampPrompt(s, max) {
     if (s.length <= max) return s;
@@ -758,6 +880,11 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
       " — YAML: colors #hex, typography roles, rounded, spacing, components.*. Body: Overview→Colors→Typography→Layout→Elevation→Shapes→Components→Do's. " +
       "Align with [FONTS]/[COLOR]/[DESIGN_MD_REFS]. Optional: npx @google/design.md lint|export.\n"
     );
+  }
+
+  function buildDesignMdClauseCompact() {
+    const stitch = (cat.designMdMeta && cat.designMdMeta.stitchFormatUrl) || "https://stitch.withgoogle.com/docs/design-md/format/";
+    return `DESIGN.md (optional): one ./DESIGN.md with YAML tokens + markdown sections per github.com/Ictraeh/design.md and Stitch ${stitch} — mirror fonts/colors in this prompt.`;
   }
 
   function tokenizeStr(s) {
@@ -1087,6 +1214,8 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
       blindRollLine = "",
       includeDesignMd = true,
       splitPromptParts = false,
+      compactPrompt = false,
+      creativeVoice = "spec_first",
     } = opts;
 
     const sections = sectionPlan(platform, industry.label);
@@ -1126,12 +1255,28 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
         : "§5.1_custom";
     const moodFont = (fontVibe.moodTags || []).join("/");
 
-    const indFit = cat.industryMotionFit?.[industry.id];
-    const industryMotionLine = indFit?.hint
-      ? `[INDUSTRY_MOTION] ${industry.label}: ${indFit.hint.replace(/\s+/g, " ").trim().slice(0, 220)}`
-      : "";
-    const motionPack = `${industryMotionLine ? `${industryMotionLine}\n` : ""}${buildStyleMotionUxBlock(style, motionEl, motionBg)}\n${buildDualMotionLayer(motionEl, motionBg, style)}`;
-    const workOrder = buildWorkOrderLayer();
+    const crSeed = creativeVoiceSeed(style, industry, platform, creativeVoice);
+    const creativeBlockFull = buildCreativeDivergenceBlock(creativeVoice, style, industry, platform, crSeed);
+    const creativeBlockCompact = buildCreativeDivergenceCompact(
+      creativeVoice,
+      style,
+      industry,
+      platform,
+      crSeed
+    );
+    const workOrder =
+      creativeVoice === "dramatic"
+        ? WORK_ORDER_VARIANTS.dramatic
+        : creativeVoice === "wild_card"
+          ? WORK_ORDER_VARIANTS.wild_card
+          : buildWorkOrderLayer();
+    const roleLineFull =
+      creativeVoice === "dramatic"
+        ? `[ROLE] ${ROLE_VARIANTS.dramatic} spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`
+        : creativeVoice === "wild_card"
+          ? `[ROLE] ${ROLE_VARIANTS.wild_card} spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`
+          : `[ROLE] Senior FE — implement UI per layers L0–L8; spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`;
+
     const contentLayer = buildContentLayer(industry, sectionLine, notesShort);
     const layoutLayer = buildLayoutLayer(style, platform, l4Short, l4Doc);
     const heroShell = buildHeroShellLayer(style);
@@ -1146,14 +1291,139 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
         ? "[NOTE] Spec-first English implementation (§3.2); UI literals may use Simplified Chinese where listing copy.\n"
         : "";
 
+    const langPreambleCompact =
+      outputLang === "zh" ? "Note: spec English; UI copy may be zh-CN where needed.\n" : "";
+
     const uiLang =
       outputLang === "zh"
         ? "UI strings: Simplified Chinese where listing literals is required."
         : "UI strings: English.";
     const designMdBlock = includeDesignMd ? buildDesignMdClause() : "";
+    const designMdBlockCompact = includeDesignMd ? `${buildDesignMdClauseCompact()}\n` : "";
     const bindLine = `${platform.labelEn || platform.label}|${industry.label}|#${style.libraryNumber} ${style.name}`;
-    const baseThroughColor = `${langPreamble}${workOrder}
-[ROLE] Senior FE — implement UI per layers L0–L8; spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.
+
+    const indFit = cat.industryMotionFit?.[industry.id];
+    const industryMotionLine = indFit?.hint
+      ? `[INDUSTRY_MOTION] ${industry.label}: ${indFit.hint.replace(/\s+/g, " ").trim().slice(0, 220)}`
+      : "";
+
+    let baseThroughColor;
+    let motionPack;
+    let restAfterMotion;
+
+    if (compactPrompt) {
+      const fvLabel = fontVibe.pickerLabel || fontVibe.labelZh || fontVibe.label || fontVibe.id;
+      const cvLabel = colorVibe.label || colorVibe.labelZh || colorVibe.id;
+      const titleLine = `TITLE: <HEADLINE> — ${style.name} · ${industry.label}`;
+      const subLine = `SUB: ${platform.labelEn || platform.label} · style #${style.libraryNumber} · ${fvLabel} · ${cvLabel}`;
+      const blurb = (style.userBlurb || style.libraryMood || "").replace(/\s+/g, " ").trim().slice(0, 200);
+      const noteLine =
+        notesShort && notesShort !== "—" ? `NOTES: ${notesShort.slice(0, 140)}` : "";
+      const workShort =
+        creativeVoice === "wild_card"
+          ? "Ship: hero intent comment → tokens → sections → motion → DESIGN.md — then second pass if hero is cliché."
+          : creativeVoice === "dramatic"
+            ? "Ship: tree → tokens → App+Section → motion → DESIGN.md — revise once if hero reads template-default."
+            : "Ship: section tree comments → tailwind semantic tokens → App+Section*.tsx → motion (prefers-reduced-motion) → optional DESIGN.md.";
+      const roleShort =
+        creativeVoice === "wild_card"
+          ? "ROLE: Set-designer FE — scene not template demo; CREATIVE line wins on silhouette (WCAG fixed). <BRAND><HEADLINE><SUBHEAD>."
+          : creativeVoice === "dramatic"
+            ? "ROLE: FE+art direction — thumbnail-unique; kill generic marketing chrome. <BRAND><HEADLINE><SUBHEAD>."
+            : "ROLE: Senior FE — one shipped UI; placeholders <BRAND> <HEADLINE> <SUBHEAD> <PRIMARY_HSL>; implement, don't pad with meta-plan prose.";
+      const stackShort = `STACK: React 18 + TS + Vite + Tailwind 3 + lucide-react ./src/**/*.{ts,tsx}. ${stackExtra}`.trim();
+      const namingOne = buildNamingBlock(style, industry).replace(/^\[NAMING\]\s*/, "Naming: ");
+      const fit = (cat.industryStyleFit && cat.industryStyleFit[industry.id]) || [];
+      const fitHead = fit.slice(0, 6).join(" · ") || "—";
+      const industryShort = `Vertical: ${industry.label}. Catalog primaries: ${fitHead}. Chosen: ${style.name}.`;
+      const contentShort = `Content: concrete headlines; no innovation clichés; CTAs Start|Book|Pricing. Flow: ${sectionLine.slice(0, 360)}`;
+      const docShort = (l4Doc || "").replace(/\s+/g, " ").trim().slice(0, 120);
+      const layoutShort = `Layout: ${style.layoutArchetype} · ${(l4Short || "").slice(0, 100)} · ${heroPlacementHint(style.layoutArchetype)} · ${docShort} · max-w-7xl unless spec.`;
+      const shellShort = `Hero: min-h-[100svh]; media absolute inset-0 object-cover behind; content z-20; CTA ${style.id === "neo-brutalism" ? "hard border/shadow" : "solid+ring or glass+lift"}.`;
+      const spaceShort = "Spacing: px-4 md:px-12 · section py-16→28 · gap-6–8 · cards p-6–8 · touch ≥44px.";
+      const tags = (style.skillTags || []).filter(Boolean).join(", ");
+      let surfShort = tags ? `Surface: ${tags}.` : "Surface: one radius family.";
+      if (style.skillTags?.includes("glass-nav")) surfShort += " Nav: blur+thin border.";
+      if (style.skillTags?.includes("video-bg")) surfShort += " Video: scrim under type.";
+      const moodPlain = moodExec.replace(/^\[L4_MOOD→EXEC\]\s*/, "Mood→CSS: ");
+      const sl = cat.styleLibrary;
+      let refsShort = "";
+      if (sl?.present) {
+        const l4 = style.layoutArchetype;
+        const lay = sl.layoutByL4[l4] || sl.layoutByL4.L4_DEFAULT || sl.layoutByL4["L4.3"];
+        const raw = lay?.rawUrl || "";
+        refsShort = `Designer refs: ${(sl.treeUrl || "").slice(0, 80)}… · ${(sl.aestheticExcerpt || "").replace(/\s+/g, " ").trim().slice(0, 160)}`;
+        if (raw) refsShort += ` · layout MD: ${raw}`;
+      } else {
+        refsShort = `Designer refs: sync in-repo layout MD for ${style.layoutArchetype}.`;
+      }
+      const colorHint = [colorVibe.cssHint, colorVibe.styleLibraryAlign].filter(Boolean).join(" — ").slice(0, 100);
+      const typoColorShort = `Type+color: import ${fontVibe.display} + ${fontVibe.body}; scale eyebrow→H1→body; vibe ${moodFont}. Lib type: ${(style.fontPairingHint || "").slice(0, 70)}. Color tool ${cvLabel}: ${colorHint}. Lib color: ${(style.colorSystemHint || "").slice(0, 70)}. AA contrast; accent rare.`;
+
+      baseThroughColor = `${langPreambleCompact}${titleLine}
+${subLine}
+${blurb ? `${blurb}\n` : ""}${noteLine ? `${noteLine}\n` : ""}${creativeBlockCompact ? `${creativeBlockCompact}\n` : ""}
+${workShort}
+${roleShort}
+${stackShort}
+BIND: ${bindLine}
+${namingOne}
+${industryShort}
+${contentShort}
+${layoutShort}
+${shellShort}
+${spaceShort}
+${surfShort}
+${moodPlain}
+${refsShort}
+${typoColorShort}`;
+
+      const indMotPlain = indFit?.hint
+        ? `Industry motion (${industry.label}): ${indFit.hint.replace(/\s+/g, " ").trim().slice(0, 140)}`
+        : "";
+      motionPack = [
+        indMotPlain,
+        buildStyleMotionUxBlock(style, motionEl, motionBg)
+          .replace(/^\[STYLE_MOTION_UX\]\s*/, "Interaction: ")
+          .slice(0, 320),
+        buildDualMotionLayer(motionEl, motionBg, style)
+          .replace(/^\[L7_MOTION_SPEC\]\s*/, "Motion layers: ")
+          .slice(0, 420),
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const dmRefPlain = buildDesignMdRefBlock(style, industry).replace(/^\[DESIGN_MD_REFS\]\s*/, "").slice(0, 220);
+      const govPlain = buildAgencyGuardBlock(style, industry).replace(/^\[L8_GOVERNANCE\]\s*/, "").slice(0, 180);
+      const mediaPlain = mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "").slice(0, 200);
+      const recShort = rec
+        ? `Catalog bias: fonts ${rec.fontVibeIds.slice(0, 4).join("/")} · colors ${rec.colorVibeIds.slice(0, 4).join("/")} · motion ${rec.motionIds.slice(0, 5).join("/")}`
+        : "";
+      const glassShort =
+        style.skillTags && style.skillTags.includes("glass-nav")
+          ? "Glass: liquid-glass on nav/CTAs — blur + inset ring + rgba tint (see style lib §7.1)."
+          : "";
+      restAfterMotion = [
+        glassShort || glassLine,
+        blendLine,
+        blindRollLine,
+        `Design.md refs: ${dmRefPlain}`,
+        `Quality bar: ${govPlain}`,
+        designMdBlockCompact.trimEnd(),
+        `Media: ${mediaPlain}`,
+        `Guard: ${forbidden.join("; ") || "no tokenless sludge"}`,
+        "QA: responsive · CLS · focus-visible · sane bundles",
+        recShort,
+        uiLang,
+      ]
+        .filter(Boolean)
+        .join("\n");
+    } else {
+      const motionPackFull = `${industryMotionLine ? `${industryMotionLine}\n` : ""}${buildStyleMotionUxBlock(style, motionEl, motionBg)}\n${buildDualMotionLayer(motionEl, motionBg, style)}`;
+      motionPack = motionPackFull;
+      const projectBanner = `PROJECT: <HEADLINE> — ${style.name} · ${industry.label} · ${platform.labelEn || platform.label}\n`;
+      baseThroughColor = `${langPreamble}${projectBanner}${creativeBlockFull}${workOrder}
+${roleLineFull}
 [STACK] React18+TS+Vite+Tailwind3+lucide-react ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
 [BIND] ${bindLine}
 ${namingBlock}
@@ -1170,9 +1440,9 @@ ${typoLayer}|vibe:${moodFont}|${(fontVibe.notes || "").slice(0, 140)}
 ${fontVarBlock}
 ${colorLayer}|tool:${colorVibe.label || colorVibe.labelZh}`;
 
-    const restAfterMotion = `${glassLine ? `${glassLine}\n` : ""}${blendLine ? `${blendLine}\n` : ""}${
-      blindRollLine ? `${blindRollLine}\n` : ""
-    }${designMdRefBlock}
+      restAfterMotion = `${glassLine ? `${glassLine}\n` : ""}${blendLine ? `${blendLine}\n` : ""}${
+        blindRollLine ? `${blindRollLine}\n` : ""
+      }${designMdRefBlock}
 ${agencyGuardBlock}
 ${designMdBlock}
 [L9_ASSETS] ${mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "")}
@@ -1180,18 +1450,27 @@ ${designMdBlock}
 [QA] responsive sm/md/lg;video;CLS;focus-visible
 ${recLine}
 ${uiLang}`;
+    }
 
     let body;
     if (splitPromptParts) {
+      const defer = compactPrompt
+        ? "Motion is in Part B — finish layout and tokens first.\n"
+        : `[DEFER_MOTION] Part B (below) adds UI+BG motion—implement after layout, type, and color roles are stable.\n`;
       const partA = `${baseThroughColor}
-[DEFER_MOTION] Part B (below) adds UI+BG motion—implement after layout, type, and color roles are stable.
-${restAfterMotion}`;
+${defer}${restAfterMotion}`;
       const motionRec = rec?.motionIds?.length ? `motionCandidates=${rec.motionIds.join("|")}` : "";
-      const partB = `[PART_B_MOTION] Same [BIND] ${bindLine}. Add motion on top of existing layers (do not redesign layout here).
-${motionPack}
-[GUARD_MOTION] Prefer gentle energy; playful/bold only where style energy fits. One primary scroll driver (UI xor BG). prefers-reduced-motion.
+      const partBHead = compactPrompt
+        ? `Part B — Motion\nBIND ${bindLine}`
+        : `[PART_B_MOTION] Same [BIND] ${bindLine}. Add motion on top of existing layers (do not redesign layout here).`;
+      const partBTail = compactPrompt
+        ? `Motion guard: one primary scroll driver (UI xor BG); prefers-reduced-motion; match style energy.\n${motionRec ? `Catalog motion ids: ${motionRec}` : ""}`
+        : `[GUARD_MOTION] Prefer gentle energy; playful/bold only where style energy fits. One primary scroll driver (UI xor BG). prefers-reduced-motion.
 [QA_MOTION] No duplicate scrub drivers; CLS; focus-visible during transitions.
 ${motionRec ? `CATALOG_REC: ${motionRec}` : ""}`;
+      const partB = `${partBHead}
+${motionPack}
+${partBTail}`;
       body = `${partA.trim()}\n\n──────── PART B — MOTION (after layout) ────────\n\n${partB.trim()}`;
     } else {
       body = `${baseThroughColor}
@@ -1266,6 +1545,8 @@ ${restAfterMotion}`;
       (p) => p.id,
       (p) => p.label
     );
+    fillSelect("creativeVoice", CREATIVE_VOICE_OPTIONS, (o) => o.id, (o) => o.label);
+    if (el("creativeVoice")) el("creativeVoice").value = "spec_first";
     fillSelect(
       "fontVibe",
       cat.fontVibes,
@@ -1377,6 +1658,8 @@ ${restAfterMotion}`;
         blindRollLine,
         includeDesignMd: Boolean(el("includeDesignMd")?.checked),
         splitPromptParts: Boolean(el("splitPromptParts")?.checked),
+        compactPrompt: Boolean(el("compactPrompt")?.checked),
+        creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
       });
       el("output").value = text;
       el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;
