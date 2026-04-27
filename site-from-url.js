@@ -132,6 +132,7 @@
   function buildClonePrompt(analysis, sourceUrl, finalUrl) {
     const canonical = finalUrl || sourceUrl;
     const lines = [
+      "[L0_EXEC_ORDER] (1)Section tree comments (2)tailwind.config+semantic CSS vars (3)App+Section*.tsx (4)motion+prefers-reduced-motion (5)DESIGN.md tokens. Implement;avoid meta-only narration.",
       "[ROLE] Senior FE — reverse-engineer a **new** site **inspired by** the reference layout/typography/motion grammar. Do not copy proprietary assets, logos, or licensed copy; recreate structure with original content and royalty-free media placeholders.",
       "[NAMING] Invent a fresh fictitious <BRAND> tied to the vertical implied by headings/copy — avoid lazy luxury defaults: do NOT use \"Maison …\", \"L'Atelier …\", \"House of …\" unless the reference is explicitly that niche.",
       `[SOURCE_URL] ${canonical}`,
@@ -159,15 +160,19 @@
       analysis.inlineStyles
         ? `[INLINE_STYLE_SNIPPET]\n${analysis.inlineStyles.slice(0, 1600)}`
         : "",
-      "[L4_INFER] Pick closest MotionSites L4 archetype (§4): L4.1 full-bleed hero, L4.3 multi-section landing, L4.4 SaaS split/bento, L4.6 card wall, etc. State hero placement (center | bottom | split) and max-w token.",
-      "[MOTION_INFER] From class tokens + scripts: default M-fade-rise + M-button-lift; add M-scroll-text-reveal or GSAP ScrollTrigger only if evidence of scrub/parallax; respect prefers-reduced-motion.",
-      "[MOTION_LIBS] anime.js (animejs.com): stagger hero headline tokens, timeline section entrances where editorial density fits. reactbits.dev: cite 1–2 React Bits modules (e.g. Aurora/Silk for hero bg, AnimatedList for features) under src/components/reactbits/ when decorative layer matches reference energy.",
-      "[HERO_CONTRACT] min-h-screen overflow-hidden pattern; media absolute inset-0 object-cover with explicit z-index vs content; nav glass or transparent max-w-7xl.",
+      "[L1_CONTENT] Headlines:4–8w concrete;body≤28w/para;CTAs:Start|Book|Pricing;ban hollow lorem marketing voice.",
+      "[L2_LAYOUT] Infer MotionSites L4 (L4.1 hero L4.3 sections L4.4 split+bento L4.6 card-wall…). State ONE hero anchor:center|bottom|split + max-w token (e.g. max-w-7xl). 12-col alignment desktop.",
+      "[L3_SPACE] px-4 sm:px-6 md:px-12 lg:px-16 | section py-16 md:py-24 | gap-6 md:gap-8 | min touch 44px.",
+      "[L4_SURFACE] Match reference radius/shadow family consistently (one radius system sitewide). Video hero→scrim gradient under text for WCAG.",
+      "[L5_TYPOGRAPHY] From FONT_CDNS+headings: define eyebrow|H1|lead|body|caption sizes in Tailwind rem; import weights used;tabular nums if metrics.",
+      "[L6_COLOR_ROLES] Map HEX_SAMPLES to semantic roles bg|surface|border|text|muted|accent;accent rare;body contrast≥4.5:1.",
+      "[L7_MOTION_SPEC] From scripts/classes: default M-fade-rise+M-button-lift;add scroll-scrub/GSAP only if evidence.Durations:nav150–200ms|section450–600ms|stagger50ms.anime.js stagger+timeline;reactbits.dev 1–2 modules→src/components/reactbits/*.prefers-reduced-motion→opacity200ms only.",
+      "[HERO_CONTRACT] min-h-[100svh] overflow-hidden; media absolute inset-0 object-cover -z-10; content z-20; nav glass or transparent max-w-7xl.",
       "[SECTIONS] Propose 3–6 section story matching heading ladder and media density observed.",
       "[MEDIA_ASSETS] Mix sources: Pexels (≥1 hero video + ≥2 stills + card thumbs from distinct searches), lummi.ai (1–2 generative stills for contrast), lucide-react (≥12 named icons). Placeholders <HERO_VIDEO> <SECTION_STILL_*> <LUMMI_*>; muted loop playsInline object-cover; scrim % stops for WCAG on video; no duplicate same remote asset id across hero and cards.",
       "[DESIGN_MD] After implementation, add ./DESIGN.md per https://github.com/Ictraeh/design.md + Stitch format https://stitch.withgoogle.com/docs/design-md/format/ — YAML tokens + ## sections (Overview…Don'ts). Align with [DESIGN_MD_REFS] below.",
       "[DESIGN_MD_REFS] From https://github.com/VoltAgent/awesome-design-md pick 2 getdesign.md/<slug>/design-md hubs closest to the reference site's vertical (e.g. Linear+Vercel+Stripe for devtools; Framer+Webflow+Clay for creative). Patterns/tokens only—no trademark assets or copy.",
-      "[AGENCY_BAR] Bold+clean+contemporary studio execution: strict grid, confident type scale, one accent system, credible headlines. Vary section compositions vs generic hero+3 identical cards unless reference is explicitly that. [QUALITY_GUARDS] Ban low-contrast grey mush, lorem marketing, untokenized gradients, stock clichés (handshake rows), decorative-only blobs, duplicate card chrome; enforce WCAG AA on media overlays.",
+      "[L8_GOVERNANCE] Bold/clean/contemporary;vary split|bento|editorial vs hero+3 cards unless reference demands.[QUALITY_GUARDS] Ban grey-mush,lorem voice,untokenized gradients,handshake stock,blobs w/o job;WCAG AA on media.",
       "[GUARD] No trademark theft; replace brand names with <BRAND>; no hotlinking competitor assets in production.",
       "[QA] responsive sm/md/lg; CLS reserve; focus-visible; Lighthouse-sane bundle.",
     ];

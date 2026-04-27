@@ -211,13 +211,107 @@
   }
 
   function buildAgencyGuardBlock(style, industry) {
-    return `[AGENCY_BAR] Bold+clean+contemporary studio bar: decisive type ramp, strict grid + airy whitespace, one disciplined accent, photography with clear focal depth. Layout diversity is mandatory—${style.layoutArchetype} sets the spine; vary section compositions (split, bento, editorial band, asymmetric grid, logo rail, FAQ) vs generic "hero + 3 same cards" unless L4.6 card-wall. Copy must sound specific to ${industry.label}. [QUALITY_GUARDS] Ban: grey-mush contrast, hollow lorem-as-marketing, untokenized rainbow gradients, handshake/cityscape stock clichés, duplicate identical card chrome >2×, decorative blobs with no narrative job, type-scale chaos. Enforce: WCAG AA on media (scrim), tokens in DESIGN.md, motion only per MOTION blocks.`;
+    return `[L8_GOVERNANCE] Agency bar: bold/clean/contemporary; ${style.layoutArchetype} is the layout spine—vary split|bento|editorial|asymmetric|logo-rail|FAQ vs generic hero+3 cards unless L4.6. Copy specific to ${industry.label}. BAN grey-mush contrast, lorem marketing, untokenized gradients, handshake stock, duplicate card chrome>2, purposeless blobs, type chaos. ENFORCE WCAG AA on media, DESIGN.md tokens, motion only where L7 specifies.`;
   }
 
   function hashMod(str, mod) {
     let h = 0;
     for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
     return mod ? Math.abs(h) % mod : Math.abs(h);
+  }
+
+  /** Map vague library mood / hints → concrete Tailwind/CSS execution (LLM must apply, not paraphrase). */
+  const MOOD_LEXICON = [
+    { re: /formal|timeless|authority|museum|heritage|ceremonial/i, out: "TYPE:tight tracking on H1(-0.03em–-0.05em);weight500–600;neutral ramp 950/700/400/100;one accent≤10% area." },
+    { re: /ornate|theatrical|drama|baroque|linework/i, out: "SURFACE:#0a0a0a base;hairline borders white/10;accent gold/amber sparse;shadow inner subtle not neon glow." },
+    { re: /iridescent|fluid|gradient|mesh|holographic/i, out: "BG:3-stop mesh OR conic behind hero only opacity≤0.55;mid-page return solid surfaces;no full-viewport rainbow without tokens." },
+    { re: /soft|weightless|airy|ethereal|hierarchy/i, out: "SPACE:py-24 md:py-36;cards p-8;rounded-2xl/3xl;dividers border-white/5 not /20;body leading-relaxed." },
+    { re: /minimal|precise|clinical|technical|engineer/i, out: "GRID:12-col rhythm;4px baseline snap;eyebrow text-[11px] uppercase tracking-[0.18em] text-muted-foreground." },
+    { re: /bold|poster|brutal|neo|chromatic/i, out: "TYPE:H1 may uppercase;border-2 border-foreground;shadow-[4px_4px_0_0];avoid blur/glass unless tag demands." },
+    { re: /playful|bouncy|friendly|kinetic/i, out: "MOTION:springy cubic-bezier(.34,1.56,.64,1) on CTAs≤260ms;sections fade400ms linear;no overshoot on scroll." },
+    { re: /luxury|premium|editorial|magazine/i, out: "IMG:full-bleed photo+thin serif quotes;body max-w-prose;text-sm/md:text-base tracking-normal." },
+    { re: /dark|cinematic|noir|night/i, out: "COLOR:bg #030303–#0c0c0f;text zinc-100/zinc-400;accent single hue;scrim under all video text." },
+    { re: /light|airy|scandi|paper/i, out: "COLOR:bg #fafafa–#f4f4f5;text zinc-900;border zinc-200;accent one saturated spot only." },
+  ];
+
+  function buildMoodExecutionSheet(style) {
+    const hay = [
+      style.libraryMood,
+      style.libraryLayout,
+      style.name,
+      style.fontPairingHint,
+      style.colorSystemHint,
+      ...(style.triggerKeywords || []),
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const hits = [];
+    for (const row of MOOD_LEXICON) {
+      if (row.re.test(hay)) hits.push(row.out);
+    }
+    const uniq = [...new Set(hits)];
+    const lines = uniq.slice(0, 4);
+    if (!lines.length) {
+      lines.push(
+        "DEFAULT:Pick ONE dominant composition(asymmetric-split|dense-bento|editorial-long|card-mosaic)+ONE surface motif(glass rail|hard grid|soft elevated cards)."
+      );
+    }
+    return `[L4_MOOD→EXEC] Mood:"${(style.libraryMood || "").slice(0, 120)}" Layout hint:"${(style.libraryLayout || "").slice(0, 100)}" → ${lines.join(" | ")}`;
+  }
+
+  function heroPlacementHint(l4) {
+    if (l4 === "L4.4") return "split-hero+bento mid mandatory";
+    if (l4 === "L4.6") return "card-wall grid first;small type";
+    if (l4 === "L4.1" || l4 === "L4.8") return "full-bleed media hero";
+    if (l4 === "L4.2") return "email-card shell 640px";
+    if (l4 === "L4.7") return "deck slides opacity+z-index";
+    return "pick ONE hero anchor:center|bottom|split and keep consistent";
+  }
+
+  function buildWorkOrderLayer() {
+    return `[L0_EXEC_ORDER] (1)Comment section tree (2)tailwind.config+index.css semantic colors (3)components:App+Section*.tsx (4)motion+prefers-reduced-motion (5)DESIGN.md mirrors tokens. Implement;do not meta-narrate plan in code output.`;
+  }
+
+  function buildContentLayer(industry, sectionLine, notesShort) {
+    return `[L1_CONTENT] <BRAND>.Vertical:${industry.label}.Headlines:4–8w concrete nouns;ban "innovative/world-class/leverage".Body≤28w/para.CTAs:Start|Book|Compare|Pricing.User:${notesShort}.Flow→${sectionLine}`;
+  }
+
+  function buildLayoutLayer(style, platform, l4Short, l4Doc) {
+    const doc = (l4Doc || "").replace(/\s+/g, " ").trim().slice(0, 260);
+    const plat = platform.labelEn || platform.label;
+    return `[L2_LAYOUT+GRID] ${style.layoutArchetype}|${plat}|${l4Short}.DOC:${doc} Rule:${heroPlacementHint(style.layoutArchetype)}.Marketing max-w-7xl mx-auto unless spec wider.12-col mental alignment for desktop.`;
+  }
+
+  function buildHeroShellLayer(style) {
+    return `[L2B_HERO_SHELL] min-h-[100svh] overflow-hidden;media:absolute inset-0 -z-10 object-cover;content:z-20;CTA:${style.id === "neo-brutalism" ? "hard shadow/border" : "solid+ring/outline OR glass+lift"}.`;
+  }
+
+  function buildSpaceLayer() {
+    return `[L3_SPACE] x:px-4 sm:px-6 md:px-12 lg:px-16 | y:py-16 md:py-24 lg:py-28 | stacks:gap-6 md:gap-8 | cards:p-6 md:p-8 | nav:h-14–16 | min touch 44px.`;
+  }
+
+  function buildSurfaceLayer(style) {
+    const tags = (style.skillTags || []).join(",");
+    let s = `[L4_SURFACE+RADIUS] tags:${tags}. `;
+    if (tags.includes("glass-nav")) s += "Nav:backdrop-blur-md bg-white/5 border-white/10. ";
+    if (tags.includes("video-bg")) s += "Video:scrim bg-gradient-to-b from-black/70 via-black/35 to-transparent under text. ";
+    s += "Radius:pick ONE family sitewide(xl cards OR none brutal).Shadows:max2 tiers(card+popover).";
+    return s;
+  }
+
+  function buildTypoLayer(fontVibe, style, pairingRef) {
+    const mono = fontVibe.mono ? `code/KPI:${fontVibe.mono}.` : "";
+    return `[L5_TYPOGRAPHY] Import:'${fontVibe.display}'+'${fontVibe.body}'.Ramp:eyebrow text-[11px] tracking-[0.2em] uppercase muted|H1 text-4xl sm:text-5xl lg:text-6xl/7xl|lead text-xl sm:text-2xl max-w-2xl|body text-base sm:text-lg leading-relaxed|fine print text-sm opacity-80.${mono}${pairingRef}|lib:${(style.fontPairingHint || "").slice(0, 120)}`;
+  }
+
+  function buildColorLayer(colorVibe, style) {
+    const hint = [colorVibe.cssHint, colorVibe.styleLibraryAlign].filter(Boolean).join("|").slice(0, 160);
+    return `[L6_COLOR_ROLES] Roles:bg|surface|border|text|muted|accent|cta+ctaGhost.Huemint:${colorVibe.huemintRef || "derive"}.CSS:${hint}.Lib:${(style.colorSystemHint || "").slice(0, 120)}.Rule:body≥4.5:1 vs bg;accent≤12% pixels above fold.`;
+  }
+
+  function buildMotionLayer(motion, motionLib, style) {
+    const ch = style.skillTags.includes("char-motion") ? "H1 char-stagger total≤900ms." : "";
+    return `[L7_MOTION_SPEC] id:${motion.id}|${motion.detail.slice(0, 130)}|${motionLib} ReactBits:2 modules→src/components/reactbits/*.anime.js:import from 'animejs' stagger+timeline section y12–20px+opacity.GSAP only if scroll-scrub.Durations:nav150–200ms out|section450–600ms out|stagger50ms|hover lift180ms.${ch}prefers-reduced-motion:opacity200ms only.`;
   }
 
   const NAMING_STRATEGIES = [
@@ -250,11 +344,6 @@
     const axis = FONT_VARIATION_AXES[hashMod(`${style.id}|fv`, FONT_VARIATION_AXES.length)];
     const alts = rec?.fontVibeIds?.filter((id) => id !== fontVibe.id).slice(0, 4).join("|") || "browse_catalog_fontVibes";
     return `[FONT_VARIATION] ${axis}. If display+body would repeat generic "one serif + Inter" across builds, pivot using CATALOG_REC alternates: ${alts}. Keep §5.1_recipe when pairingRecipeId is set, but still vary secondary/mono/caption role fonts.`;
-  }
-
-  function buildMotionSnippetsBlock(style, motion, motionLib) {
-    const mood = (style.libraryMood || "").slice(0, 140);
-    return `[MOTION_SNIPPETS] Map intensity to mood: "${mood}". React Bits (reactbits.dev): name 2+ modules to import (e.g. Aurora/Silk/Galaxy for hero atmosphere; TextType/DecryptedText/AnimatedList for kinetic copy or lists) and file them under src/components/reactbits/*. anime.js (animejs.com): import from 'animejs' — stagger letters in hero H1, timeline section reveals (opacity+translateY), optional scroll observers for editorial blocks. ${motionLib} Hero: headline stagger + subtle bg drift; sections: card/list stagger + 1 icon micro-motion; nav: short blur/height transition only; respect prefers-reduced-motion.`;
   }
 
   function buildRichMediaSlots(style) {
@@ -360,7 +449,22 @@
       ? "GLASS: reusable .liquid-glass per §7.1 (luminosity blend, blur(4px), inset highlight, ::before 1.4px gradient mask ring); apply <GLASS_TINT> rgba to nav/CTAs/cards."
       : "";
 
-    const motionSnippetsBlock = buildMotionSnippetsBlock(style, motion, motionLib);
+    const pairingRef =
+      fontVibe.pairingRecipeId != null
+        ? `§5.1_recipe_${fontVibe.pairingRecipeId}`
+        : "§5.1_custom";
+    const moodFont = (fontVibe.moodTags || []).join("/");
+
+    const motionLayer = buildMotionLayer(motion, motionLib, style);
+    const workOrder = buildWorkOrderLayer();
+    const contentLayer = buildContentLayer(industry, sectionLine, notesShort);
+    const layoutLayer = buildLayoutLayer(style, platform, l4Short, l4Doc);
+    const heroShell = buildHeroShellLayer(style);
+    const spaceLayer = buildSpaceLayer();
+    const surfaceLayer = buildSurfaceLayer(style);
+    const moodExec = buildMoodExecutionSheet(style);
+    const typoLayer = buildTypoLayer(fontVibe, style, pairingRef);
+    const colorLayer = buildColorLayer(colorVibe, style);
 
     const langPreamble =
       outputLang === "zh"
@@ -371,45 +475,30 @@
       outputLang === "zh"
         ? "UI strings: Simplified Chinese where listing literals is required."
         : "UI strings: English.";
-
-    const pairingRef =
-      fontVibe.pairingRecipeId != null
-        ? `§5.1_recipe_${fontVibe.pairingRecipeId}`
-        : "§5.1_custom";
-
-    const colorAlign = colorVibe.styleLibraryAlign ? `align:${colorVibe.styleLibraryAlign}` : "";
-    const colorIntent = [colorVibe.styleLibraryAlign, colorVibe.cssHint]
-      .filter(Boolean)
-      .join(" | ")
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 200);
-    const hueRef = colorVibe.huemintRef || "palette";
-
-    const moodFont = (fontVibe.moodTags || []).join("/");
     const designMdBlock = includeDesignMd ? buildDesignMdClause() : "";
-    const body = `${langPreamble}[ROLE] Senior FE — compact spec ≤${MAX_PROMPT_CHARS}ch. Name files when critical: index.html, src/index.css, tailwind.config.ts. Exact Tailwind for nav/hero; placeholders <BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.
-[STACK] React18+TS+Vite+Tailwind3+lucide-react content ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
-[BIND] ${platform.labelEn}|${industry.label}|style#${style.libraryNumber} ${style.name}|notes:${notesShort}
+    const body = `${langPreamble}${workOrder}
+[ROLE] Senior FE — implement UI per layers L0–L8; spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.
+[STACK] React18+TS+Vite+Tailwind3+lucide-react ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
+[BIND] ${platform.labelEn || platform.label}|${industry.label}|#${style.libraryNumber} ${style.name}
 ${namingBlock}
-${designMdRefBlock}
-${agencyGuardBlock}
-${blindRollLine ? `${blindRollLine}\n` : ""}[LIB_MOOD] ${style.libraryMood} | [LIB_LAYOUT] ${style.libraryLayout}
-${blendLine}
-[L4] ${style.layoutArchetype}: ${l4Short} | DOC: ${(l4Doc || "").slice(0, 360)}
-[TAGS] ${style.skillTags.join(",")}
-[SPACING] §6 ladder px-4 sm:px-6 md:px-12 lg:px-16; sections py-16 md:py-28; nav gap-6–8; grids gap-6–8
-${glassLine}
-[FONTS] tool:${fontVibe.pickerLabel || fontVibe.labelZh || fontVibe.label}|${pairingRef}|roles display=${fontVibe.display} body=${fontVibe.body}${fontVibe.mono ? " mono=" + fontVibe.mono : ""}|moodTags:${moodFont}|${fontVibe.notes}|libraryPair:${style.fontPairingHint}
+${contentLayer}
+${layoutLayer}
+${heroShell}
+${spaceLayer}
+${surfaceLayer}
+${moodExec}
+${typoLayer}|vibe:${moodFont}|${(fontVibe.notes || "").slice(0, 140)}
 ${fontVarBlock}
-[COLOR] tool:${colorVibe.label || colorVibe.labelZh}|huemint:${hueRef}|${colorAlign}|cohesion:${colorIntent}|css:${colorVibe.cssHint}|libraryPalette:${style.colorSystemHint}
-[MOTION_KIT] ${motion.id}: ${motion.detail} | ${motionLib}
-${motionSnippetsBlock}
-${designMdBlock}[HERO] infer ${style.skillTags.join(",")} → center|bottom|split; CTA:${style.id === "neo-brutalism" ? "neo-brutal shadow/border" : "solid+outline/glass+lift"}
-[SECTIONS] ${sectionLine}
-${mediaSlots}
+${colorLayer}|tool:${colorVibe.label || colorVibe.labelZh}
+${motionLayer}
+${glassLine}
+${blendLine}
+${blindRollLine ? `${blindRollLine}\n` : ""}${designMdRefBlock}
+${agencyGuardBlock}
+${designMdBlock}
+[L9_ASSETS] ${mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "")}
 [GUARD] ${forbidden.join(" | ") || "no AI-slop blobs unless style demands"}
-[QA] responsive sm/md/lg; video policy; CLS reserve; focus-visible
+[QA] responsive sm/md/lg;video;CLS;focus-visible
 ${recLine}
 ${uiLang}`;
 
