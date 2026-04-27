@@ -375,6 +375,84 @@
     return plane === "element" ? motionEl : motionBg;
   }
 
+  function colorVibeSwatchStrip(hexes) {
+    const row = document.createElement("div");
+    row.className = "color-vibe-swatches";
+    const list = (hexes || []).filter(Boolean).slice(0, 5);
+    if (!list.length) {
+      for (let i = 0; i < 4; i += 1) {
+        const d = document.createElement("div");
+        d.className = "color-vibe-swatch";
+        d.style.background = "#e2e8f0";
+        row.appendChild(d);
+      }
+      return row;
+    }
+    for (const h of list) {
+      const d = document.createElement("div");
+      d.className = "color-vibe-swatch";
+      d.style.background = h;
+      row.appendChild(d);
+    }
+    return row;
+  }
+
+  function syncColorVibePickerHighlight() {
+    const sel = el("colorVibe");
+    const picker = el("colorVibePicker");
+    if (!sel || !picker) return;
+    const v = sel.value;
+    let activeId = "";
+    picker.querySelectorAll(".color-vibe-option").forEach((btn) => {
+      const on = btn.getAttribute("data-color-id") === v;
+      btn.classList.toggle("is-selected", on);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+      if (on) activeId = btn.id;
+    });
+    if (activeId) picker.setAttribute("aria-activedescendant", activeId);
+    else picker.removeAttribute("aria-activedescendant");
+  }
+
+  function renderColorVibePicker() {
+    const picker = el("colorVibePicker");
+    const sel = el("colorVibe");
+    if (!picker || !sel || !cat.colorVibes) return;
+    picker.innerHTML = "";
+    const mkOption = (id, label, hexes) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "color-vibe-option";
+      btn.id = `color-vibe-opt-${id.replace(/[^a-z0-9_-]/gi, "_")}`;
+      btn.setAttribute("role", "option");
+      btn.dataset.colorId = id;
+      btn.appendChild(colorVibeSwatchStrip(hexes));
+      const lab = document.createElement("span");
+      lab.className = "color-vibe-option-label";
+      lab.textContent = label;
+      btn.appendChild(lab);
+      btn.addEventListener("click", () => {
+        sel.value = id;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      picker.appendChild(btn);
+    };
+    mkOption(DEFAULT_VAL, "Default (random color vibe)", []);
+    const groups = cat.colorVibeGroups || [{ id: "default", label: "Color vibes" }];
+    for (const g of groups) {
+      const items = cat.colorVibes.filter((c) => (c.group || "classic_vibes") === g.id);
+      if (!items.length) continue;
+      const gl = document.createElement("div");
+      gl.className = "color-vibe-group-label";
+      gl.textContent = g.label;
+      picker.appendChild(gl);
+      for (const c of items) {
+        const hexes = Array.isArray(c.swatchHexes) ? c.swatchHexes : [];
+        mkOption(c.id, c.label || c.labelZh || c.id, hexes);
+      }
+    }
+    syncColorVibePickerHighlight();
+  }
+
   function fillColorSelect() {
     const s = el("colorVibe");
     if (!s || !cat.colorVibes) return;
@@ -392,16 +470,14 @@
       for (const c of items) {
         const o = document.createElement("option");
         o.value = c.id;
-        const sw = (Array.isArray(c.swatchHexes) && c.swatchHexes.filter(Boolean).slice(0, 4)) || [];
-        const swLabel = sw.length ? `${sw.join(" ")} · ` : "";
-        o.textContent = `${swLabel}${c.label || c.labelZh}`;
-        const ex = [c.styleLibraryAlign, c.cssHint].filter(Boolean).join(" — ").trim();
-        const titleBits = [sw.length ? `Example hex: ${sw.join(", ")}` : "", ex].filter(Boolean);
-        if (titleBits.length) o.title = titleBits.join(" — ").slice(0, 280);
+        o.textContent = c.label || c.labelZh || c.id;
+        const ex = [c.styleLibraryAlign].filter(Boolean).join(" — ").trim();
+        if (ex) o.title = ex.slice(0, 280);
         og.appendChild(o);
       }
       s.appendChild(og);
     }
+    renderColorVibePicker();
   }
 
   function syncColorVibeExplainer() {
@@ -414,9 +490,23 @@
       return;
     }
     const c = cat.colorVibes.find((x) => x.id === sel.value);
-    const sw = (c?.swatchHexes || []).filter(Boolean).slice(0, 4);
-    const swLine = sw.length ? ` Example colors: ${sw.join(" ")}.` : "";
-    p.textContent = `${[c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || ""}${swLine}`.trim();
+    p.textContent = [c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || "";
+  }
+
+  function syncPromptOutputVisibility() {
+    const splitOn = Boolean(el("splitPromptParts")?.checked);
+    const singleWrap = el("singlePromptOutput");
+    const splitPanel = el("splitPromptPanel");
+    const copyBtn = el("copy");
+    if (splitOn) {
+      singleWrap?.classList.add("is-hidden");
+      splitPanel?.classList.remove("is-hidden");
+      if (copyBtn) copyBtn.textContent = "Copy full prompt (A + B)";
+    } else {
+      singleWrap?.classList.remove("is-hidden");
+      splitPanel?.classList.add("is-hidden");
+      if (copyBtn) copyBtn.textContent = "Copy prompt";
+    }
   }
 
   /** https://github.com/Ictraeh/design.md + Stitch DESIGN.md — compact (4999 cap). */
@@ -1037,6 +1127,7 @@ ${restAfterMotion}`;
       if (fv && fv.value !== DEFAULT_VAL) pick(fv, r.fontVibeIds && r.fontVibeIds[0]);
       if (cv && cv.value !== DEFAULT_VAL) pick(cv, r.colorVibeIds && r.colorVibeIds[0]);
     }
+    syncColorVibePickerHighlight();
     let elPick;
     let bgPick;
     const merged = mergedMotionCandidates(style, ind);
@@ -1088,6 +1179,7 @@ ${restAfterMotion}`;
 
     fillColorSelect();
     if (cat.colorVibes[0]) el("colorVibe").value = cat.colorVibes[0].id;
+    syncColorVibePickerHighlight();
 
     refillMotionSelectsForIndustry();
     {
@@ -1101,8 +1193,16 @@ ${restAfterMotion}`;
       if (st) applyStyleRecommendations(st);
     });
     const cvEl = el("colorVibe");
-    if (cvEl) cvEl.addEventListener("change", syncColorVibeExplainer);
+    if (cvEl) {
+      cvEl.addEventListener("change", () => {
+        syncColorVibeExplainer();
+        syncColorVibePickerHighlight();
+      });
+    }
     syncColorVibeExplainer();
+
+    el("splitPromptParts")?.addEventListener("change", syncPromptOutputVisibility);
+    syncPromptOutputVisibility();
 
     el("generate").addEventListener("click", () => {
       const platform = cat.platforms.find((p) => p.id === el("platform").value);
@@ -1171,8 +1271,6 @@ ${restAfterMotion}`;
         compactPrompt: Boolean(el("compactPrompt")?.checked),
         creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
       });
-      const singleWrap = el("singlePromptOutput");
-      const splitPanel = el("splitPromptPanel");
       const outA = el("outputPartA");
       const outB = el("outputPartB");
       if (splitOn && outA && outB) {
@@ -1185,21 +1283,16 @@ ${restAfterMotion}`;
           outB.value = "";
         }
         el("output").value = "";
-        if (singleWrap) singleWrap.classList.add("is-hidden");
-        splitPanel?.classList.remove("is-hidden");
       } else {
         el("output").value = text;
         if (outA) outA.value = "";
         if (outB) outB.value = "";
-        if (singleWrap) singleWrap.classList.remove("is-hidden");
-        splitPanel?.classList.add("is-hidden");
       }
       el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;
     });
 
     el("copy").addEventListener("click", async () => {
-      const splitPanel = el("splitPromptPanel");
-      const useSplit = splitPanel && !splitPanel.classList.contains("is-hidden");
+      const useSplit = Boolean(el("splitPromptParts")?.checked);
       const t = useSplit
         ? `${el("outputPartA")?.value || ""}${SPLIT_PROMPT_DELIM}${el("outputPartB")?.value || ""}`.trim()
         : el("output").value;

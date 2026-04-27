@@ -259,6 +259,89 @@
         min-height: 160px;
         background: #fafafa;
       }
+      .color-vibe-field-label {
+        display: block;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+      }
+      .color-vibe-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .color-vibe-picker-wrap {
+        position: relative;
+      }
+      .color-vibe-picker {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.3rem;
+        background: var(--panel);
+      }
+      .color-vibe-group-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        padding: 0.35rem 0.4rem 0.2rem;
+        margin-top: 0.15rem;
+      }
+      .color-vibe-group-label:first-child {
+        margin-top: 0;
+      }
+      .color-vibe-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        text-align: left;
+        border: none;
+        background: transparent;
+        padding: 0.38rem 0.45rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--text);
+        font-family: inherit;
+      }
+      .color-vibe-option:hover {
+        background: #f8fafc;
+      }
+      .color-vibe-option.is-selected {
+        background: var(--accent-dim);
+        box-shadow: inset 0 0 0 1px var(--accent);
+      }
+      .color-vibe-swatches {
+        display: flex;
+        gap: 2px;
+        flex-shrink: 0;
+      }
+      .color-vibe-swatch {
+        width: 13px;
+        height: 13px;
+        border-radius: 2px;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        flex-shrink: 0;
+      }
+      .color-vibe-option-label {
+        flex: 1;
+        min-width: 0;
+        line-height: 1.3;
+      }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -314,9 +397,16 @@
             <label for="fontVibe">Font vibe</label>
             <select id="fontVibe"></select>
           </div>
-          <div>
-            <label for="colorVibe">Color vibe</label>
-            <select id="colorVibe"></select>
+          <div class="color-vibe-picker-wrap">
+            <span id="colorVibeLabel" class="color-vibe-field-label">Color vibe</span>
+            <div
+              id="colorVibePicker"
+              class="color-vibe-picker"
+              role="listbox"
+              aria-labelledby="colorVibeLabel"
+              aria-activedescendant=""
+            ></div>
+            <select id="colorVibe" class="color-vibe-sr-only" tabindex="-1" aria-hidden="true"></select>
             <p id="colorVibeExplainer" class="field-hint"></p>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
@@ -364,35 +454,37 @@
         </div>
       </div>
 
-      <div class="out-wrap panel" id="singlePromptOutput">
-        <h2>Prompt</h2>
-        <label for="output">Output</label>
-        <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
+      <div class="out-wrap panel" id="promptOutputShell">
+        <div id="singlePromptOutput">
+          <h2>Prompt</h2>
+          <label for="output">Output</label>
+          <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
+        </div>
+
+        <div id="splitPromptPanel" class="is-hidden">
+          <h2>Split prompt</h2>
+          <p class="field-hint">
+            <strong>Part A</strong> first (layout and content), then <strong>Part B</strong> in a follow-up message for
+            motion only.
+          </p>
+          <label for="outputPartA">Part A — layout &amp; content</label>
+          <textarea id="outputPartA" readonly placeholder='Check "Split prompt" above, then generate…'></textarea>
+          <div class="actions">
+            <button type="button" id="copyPartA">Copy Part A</button>
+          </div>
+          <label for="outputPartB" class="label-mt">Part B — motion</label>
+          <textarea id="outputPartB" readonly placeholder="Motion block appears after generate…"></textarea>
+          <div class="actions">
+            <button type="button" id="copyPartB">Copy Part B</button>
+          </div>
+        </div>
+
         <div class="actions">
           <button type="button" id="copy">Copy prompt</button>
           <span id="copyStatus"></span>
         </div>
         <p id="blindBoxNote" class="field-hint"></p>
         <p id="pexelsNote"></p>
-      </div>
-
-      <div id="splitPromptPanel" class="out-wrap panel is-hidden">
-        <h2>Split prompt</h2>
-        <p class="field-hint">
-          Two pastes for long workflows: use <strong>Part A</strong> first to lock structure and content, then
-          <strong>Part B</strong> in a follow-up message to add motion without redoing layout.
-        </p>
-        <label for="outputPartA">Part A — layout &amp; content (tokens, sections, governance)</label>
-        <textarea id="outputPartA" readonly placeholder="Generate with “Split prompt” checked…"></textarea>
-        <div class="actions">
-          <button type="button" id="copyPartA">Copy Part A</button>
-        </div>
-        <label for="outputPartB" class="label-mt">Part B — motion (after Part A is stable)</label>
-        <textarea id="outputPartB" readonly placeholder="Motion pack appears here…"></textarea>
-        <div class="actions">
-          <button type="button" id="copyPartB">Copy Part B</button>
-        </div>
-        <p class="field-hint">Main “Copy prompt” still copies Part A and Part B together in one block.</p>
       </div>
 
       <div class="out-wrap panel" id="reactbitsPanel">
@@ -828,6 +920,84 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
     return plane === "element" ? motionEl : motionBg;
   }
 
+  function colorVibeSwatchStrip(hexes) {
+    const row = document.createElement("div");
+    row.className = "color-vibe-swatches";
+    const list = (hexes || []).filter(Boolean).slice(0, 5);
+    if (!list.length) {
+      for (let i = 0; i < 4; i += 1) {
+        const d = document.createElement("div");
+        d.className = "color-vibe-swatch";
+        d.style.background = "#e2e8f0";
+        row.appendChild(d);
+      }
+      return row;
+    }
+    for (const h of list) {
+      const d = document.createElement("div");
+      d.className = "color-vibe-swatch";
+      d.style.background = h;
+      row.appendChild(d);
+    }
+    return row;
+  }
+
+  function syncColorVibePickerHighlight() {
+    const sel = el("colorVibe");
+    const picker = el("colorVibePicker");
+    if (!sel || !picker) return;
+    const v = sel.value;
+    let activeId = "";
+    picker.querySelectorAll(".color-vibe-option").forEach((btn) => {
+      const on = btn.getAttribute("data-color-id") === v;
+      btn.classList.toggle("is-selected", on);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+      if (on) activeId = btn.id;
+    });
+    if (activeId) picker.setAttribute("aria-activedescendant", activeId);
+    else picker.removeAttribute("aria-activedescendant");
+  }
+
+  function renderColorVibePicker() {
+    const picker = el("colorVibePicker");
+    const sel = el("colorVibe");
+    if (!picker || !sel || !cat.colorVibes) return;
+    picker.innerHTML = "";
+    const mkOption = (id, label, hexes) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "color-vibe-option";
+      btn.id = `color-vibe-opt-${id.replace(/[^a-z0-9_-]/gi, "_")}`;
+      btn.setAttribute("role", "option");
+      btn.dataset.colorId = id;
+      btn.appendChild(colorVibeSwatchStrip(hexes));
+      const lab = document.createElement("span");
+      lab.className = "color-vibe-option-label";
+      lab.textContent = label;
+      btn.appendChild(lab);
+      btn.addEventListener("click", () => {
+        sel.value = id;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      picker.appendChild(btn);
+    };
+    mkOption(DEFAULT_VAL, "Default (random color vibe)", []);
+    const groups = cat.colorVibeGroups || [{ id: "default", label: "Color vibes" }];
+    for (const g of groups) {
+      const items = cat.colorVibes.filter((c) => (c.group || "classic_vibes") === g.id);
+      if (!items.length) continue;
+      const gl = document.createElement("div");
+      gl.className = "color-vibe-group-label";
+      gl.textContent = g.label;
+      picker.appendChild(gl);
+      for (const c of items) {
+        const hexes = Array.isArray(c.swatchHexes) ? c.swatchHexes : [];
+        mkOption(c.id, c.label || c.labelZh || c.id, hexes);
+      }
+    }
+    syncColorVibePickerHighlight();
+  }
+
   function fillColorSelect() {
     const s = el("colorVibe");
     if (!s || !cat.colorVibes) return;
@@ -845,16 +1015,14 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
       for (const c of items) {
         const o = document.createElement("option");
         o.value = c.id;
-        const sw = (Array.isArray(c.swatchHexes) && c.swatchHexes.filter(Boolean).slice(0, 4)) || [];
-        const swLabel = sw.length ? `${sw.join(" ")} · ` : "";
-        o.textContent = `${swLabel}${c.label || c.labelZh}`;
-        const ex = [c.styleLibraryAlign, c.cssHint].filter(Boolean).join(" — ").trim();
-        const titleBits = [sw.length ? `Example hex: ${sw.join(", ")}` : "", ex].filter(Boolean);
-        if (titleBits.length) o.title = titleBits.join(" — ").slice(0, 280);
+        o.textContent = c.label || c.labelZh || c.id;
+        const ex = [c.styleLibraryAlign].filter(Boolean).join(" — ").trim();
+        if (ex) o.title = ex.slice(0, 280);
         og.appendChild(o);
       }
       s.appendChild(og);
     }
+    renderColorVibePicker();
   }
 
   function syncColorVibeExplainer() {
@@ -867,9 +1035,23 @@ window.__VIBE_CATALOG__ = JSON.parse(document.getElementById("__vibe_cat_data").
       return;
     }
     const c = cat.colorVibes.find((x) => x.id === sel.value);
-    const sw = (c?.swatchHexes || []).filter(Boolean).slice(0, 4);
-    const swLine = sw.length ? ` Example colors: ${sw.join(" ")}.` : "";
-    p.textContent = `${[c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || ""}${swLine}`.trim();
+    p.textContent = [c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || "";
+  }
+
+  function syncPromptOutputVisibility() {
+    const splitOn = Boolean(el("splitPromptParts")?.checked);
+    const singleWrap = el("singlePromptOutput");
+    const splitPanel = el("splitPromptPanel");
+    const copyBtn = el("copy");
+    if (splitOn) {
+      singleWrap?.classList.add("is-hidden");
+      splitPanel?.classList.remove("is-hidden");
+      if (copyBtn) copyBtn.textContent = "Copy full prompt (A + B)";
+    } else {
+      singleWrap?.classList.remove("is-hidden");
+      splitPanel?.classList.add("is-hidden");
+      if (copyBtn) copyBtn.textContent = "Copy prompt";
+    }
   }
 
   /** https://github.com/Ictraeh/design.md + Stitch DESIGN.md — compact (4999 cap). */
@@ -1490,6 +1672,7 @@ ${restAfterMotion}`;
       if (fv && fv.value !== DEFAULT_VAL) pick(fv, r.fontVibeIds && r.fontVibeIds[0]);
       if (cv && cv.value !== DEFAULT_VAL) pick(cv, r.colorVibeIds && r.colorVibeIds[0]);
     }
+    syncColorVibePickerHighlight();
     let elPick;
     let bgPick;
     const merged = mergedMotionCandidates(style, ind);
@@ -1541,6 +1724,7 @@ ${restAfterMotion}`;
 
     fillColorSelect();
     if (cat.colorVibes[0]) el("colorVibe").value = cat.colorVibes[0].id;
+    syncColorVibePickerHighlight();
 
     refillMotionSelectsForIndustry();
     {
@@ -1554,8 +1738,16 @@ ${restAfterMotion}`;
       if (st) applyStyleRecommendations(st);
     });
     const cvEl = el("colorVibe");
-    if (cvEl) cvEl.addEventListener("change", syncColorVibeExplainer);
+    if (cvEl) {
+      cvEl.addEventListener("change", () => {
+        syncColorVibeExplainer();
+        syncColorVibePickerHighlight();
+      });
+    }
     syncColorVibeExplainer();
+
+    el("splitPromptParts")?.addEventListener("change", syncPromptOutputVisibility);
+    syncPromptOutputVisibility();
 
     el("generate").addEventListener("click", () => {
       const platform = cat.platforms.find((p) => p.id === el("platform").value);
@@ -1624,8 +1816,6 @@ ${restAfterMotion}`;
         compactPrompt: Boolean(el("compactPrompt")?.checked),
         creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
       });
-      const singleWrap = el("singlePromptOutput");
-      const splitPanel = el("splitPromptPanel");
       const outA = el("outputPartA");
       const outB = el("outputPartB");
       if (splitOn && outA && outB) {
@@ -1638,21 +1828,16 @@ ${restAfterMotion}`;
           outB.value = "";
         }
         el("output").value = "";
-        if (singleWrap) singleWrap.classList.add("is-hidden");
-        splitPanel?.classList.remove("is-hidden");
       } else {
         el("output").value = text;
         if (outA) outA.value = "";
         if (outB) outB.value = "";
-        if (singleWrap) singleWrap.classList.remove("is-hidden");
-        splitPanel?.classList.add("is-hidden");
       }
       el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;
     });
 
     el("copy").addEventListener("click", async () => {
-      const splitPanel = el("splitPromptPanel");
-      const useSplit = splitPanel && !splitPanel.classList.contains("is-hidden");
+      const useSplit = Boolean(el("splitPromptParts")?.checked);
       const t = useSplit
         ? `${el("outputPartA")?.value || ""}${SPLIT_PROMPT_DELIM}${el("outputPartB")?.value || ""}`.trim()
         : el("output").value;

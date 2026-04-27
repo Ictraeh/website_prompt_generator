@@ -259,6 +259,89 @@
         min-height: 160px;
         background: #fafafa;
       }
+      .color-vibe-field-label {
+        display: block;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+      }
+      .color-vibe-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .color-vibe-picker-wrap {
+        position: relative;
+      }
+      .color-vibe-picker {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.3rem;
+        background: var(--panel);
+      }
+      .color-vibe-group-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        padding: 0.35rem 0.4rem 0.2rem;
+        margin-top: 0.15rem;
+      }
+      .color-vibe-group-label:first-child {
+        margin-top: 0;
+      }
+      .color-vibe-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        text-align: left;
+        border: none;
+        background: transparent;
+        padding: 0.38rem 0.45rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--text);
+        font-family: inherit;
+      }
+      .color-vibe-option:hover {
+        background: #f8fafc;
+      }
+      .color-vibe-option.is-selected {
+        background: var(--accent-dim);
+        box-shadow: inset 0 0 0 1px var(--accent);
+      }
+      .color-vibe-swatches {
+        display: flex;
+        gap: 2px;
+        flex-shrink: 0;
+      }
+      .color-vibe-swatch {
+        width: 13px;
+        height: 13px;
+        border-radius: 2px;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        flex-shrink: 0;
+      }
+      .color-vibe-option-label {
+        flex: 1;
+        min-width: 0;
+        line-height: 1.3;
+      }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -314,9 +397,16 @@
             <label for="fontVibe">Font vibe</label>
             <select id="fontVibe"></select>
           </div>
-          <div>
-            <label for="colorVibe">Color vibe</label>
-            <select id="colorVibe"></select>
+          <div class="color-vibe-picker-wrap">
+            <span id="colorVibeLabel" class="color-vibe-field-label">Color vibe</span>
+            <div
+              id="colorVibePicker"
+              class="color-vibe-picker"
+              role="listbox"
+              aria-labelledby="colorVibeLabel"
+              aria-activedescendant=""
+            ></div>
+            <select id="colorVibe" class="color-vibe-sr-only" tabindex="-1" aria-hidden="true"></select>
             <p id="colorVibeExplainer" class="field-hint"></p>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
@@ -364,35 +454,37 @@
         </div>
       </div>
 
-      <div class="out-wrap panel" id="singlePromptOutput">
-        <h2>Prompt</h2>
-        <label for="output">Output</label>
-        <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
+      <div class="out-wrap panel" id="promptOutputShell">
+        <div id="singlePromptOutput">
+          <h2>Prompt</h2>
+          <label for="output">Output</label>
+          <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
+        </div>
+
+        <div id="splitPromptPanel" class="is-hidden">
+          <h2>Split prompt</h2>
+          <p class="field-hint">
+            <strong>Part A</strong> first (layout and content), then <strong>Part B</strong> in a follow-up message for
+            motion only.
+          </p>
+          <label for="outputPartA">Part A — layout &amp; content</label>
+          <textarea id="outputPartA" readonly placeholder='Check "Split prompt" above, then generate…'></textarea>
+          <div class="actions">
+            <button type="button" id="copyPartA">Copy Part A</button>
+          </div>
+          <label for="outputPartB" class="label-mt">Part B — motion</label>
+          <textarea id="outputPartB" readonly placeholder="Motion block appears after generate…"></textarea>
+          <div class="actions">
+            <button type="button" id="copyPartB">Copy Part B</button>
+          </div>
+        </div>
+
         <div class="actions">
           <button type="button" id="copy">Copy prompt</button>
           <span id="copyStatus"></span>
         </div>
         <p id="blindBoxNote" class="field-hint"></p>
         <p id="pexelsNote"></p>
-      </div>
-
-      <div id="splitPromptPanel" class="out-wrap panel is-hidden">
-        <h2>Split prompt</h2>
-        <p class="field-hint">
-          Two pastes for long workflows: use <strong>Part A</strong> first to lock structure and content, then
-          <strong>Part B</strong> in a follow-up message to add motion without redoing layout.
-        </p>
-        <label for="outputPartA">Part A — layout &amp; content (tokens, sections, governance)</label>
-        <textarea id="outputPartA" readonly placeholder="Generate with “Split prompt” checked…"></textarea>
-        <div class="actions">
-          <button type="button" id="copyPartA">Copy Part A</button>
-        </div>
-        <label for="outputPartB" class="label-mt">Part B — motion (after Part A is stable)</label>
-        <textarea id="outputPartB" readonly placeholder="Motion pack appears here…"></textarea>
-        <div class="actions">
-          <button type="button" id="copyPartB">Copy Part B</button>
-        </div>
-        <p class="field-hint">Main “Copy prompt” still copies Part A and Part B together in one block.</p>
       </div>
 
       <div class="out-wrap panel" id="reactbitsPanel">
