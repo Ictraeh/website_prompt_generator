@@ -195,8 +195,8 @@
     const ind = cat.industries.find((i) => i.id === industryId);
     const top = ordered.slice(0, Math.min(4, recommendedCount || 0)).map((s) => s.name).join(", ");
     p.textContent = recommendedCount
-      ? `★ = strongest fit for ${ind?.label || "this industry"} (${recommendedCount} curated). Then A–Z by style name—override anytime. Suggested first: ${top}.`
-      : `Styles A–Z by name for ${ind?.label || "this industry"}.`;
+      ? `★${recommendedCount} picks for ${ind?.label || "this industry"}; then A–Z. Examples: ${top}.`
+      : `Styles A–Z for ${ind?.label || "this industry"}.`;
   }
 
   function refillStyleSelect() {
@@ -278,10 +278,10 @@
     const ind = cat.industries.find((i) => i.id === industryId);
     const fit = cat.industryMotionFit?.[industryId];
     const hint = (fit?.hint || "").replace(/\s+/g, " ").trim();
-    const hintSpan = hint
-      ? ` <span style="opacity:0.9">${hint.length > 210 ? `${hint.slice(0, 210)}…` : hint}</span>`
-      : "";
-    p.innerHTML = `For <strong>${ind?.label || "this vertical"}</strong>, ★ marks top industry picks inside each energy group (list order is biased). <strong>Auto</strong> merges style catalog + industry + deliverable; you can still pick any kit.${hintSpan}`;
+    const tail = hint ? (hint.length > 100 ? `${hint.slice(0, 98)}…` : hint) : "";
+    p.textContent = tail
+      ? `${ind?.label || "Industry"}: ★ = top picks for this vertical; Auto uses style + industry + deliverable. ${tail}`
+      : `${ind?.label || "Industry"}: ★ = top picks for this vertical; Auto uses style + industry + deliverable.`;
   }
 
   function refillMotionSelectsForIndustry() {
