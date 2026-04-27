@@ -1,8 +1,8 @@
 {
-  "version": "1.3.1",
+  "version": "1.4.0",
   "sourceDocs": [
     "MotionSites-Prompt-Guide-Skill-Base.md",
-    "Design Style Layout Markdown Library/Style Library/style-library-aesthetic-vibe-coding.md",
+    "Designer Style Layout Markdown (in-repo): https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md",
     "Huemint palette patterns — https://huemint.com/brand-intersection/ · https://huemint.com/website-magazine/ · https://huemint.com/website-monochrome/",
     "VoltAgent awesome-design-md — https://github.com/VoltAgent/awesome-design-md (DESIGN.md references for agency-grade UI discipline)"
   ],
@@ -759,6 +759,65 @@
       ]
     }
   ],
+  "styleLibrary": {
+    "present": true,
+    "treeUrl": "https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md",
+    "rawBase": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md",
+    "aestheticExcerpt": "# Style Library for Non-Generic AI Vibe Coding ## Purpose This file is a prompt-ready style vocabulary for website generation. Goal: reduce generic AI design output and increase clear, distinctive art direction while keeping creative flexibility. ## Global Rules - Pick one primary style and optionally one secondary style. - Keep body typography readable even when display typography is expressive. - Keep layout behavior intentional: clear hierarchy, varied rhythm, and section purpose. - Use style keywords in prompts exactly as written in each style entry. --- ## 1. Neoclassical **Description:** Revival of Greco-Roman order, symmetry, and refined authority in modern digital form. **Mood:** Formal, timeless, noble, authoritative. **Image/photo/illustration style:** Architectural photography, marble sculpture references, balanced symmetrical framing, soft natural light. **Typography and font pairing:** Display serif (`Cinzel`, `Cormorant SC`) + readable classic serif (`EB Garamond`, `Libre Baskerville`) or restrained sans (`Inter`). **Color palette and color system options:** Alabaster, slate, olive gray, antique gold; optional monochrome variant with gold accents only. **Website layout styles:** Centered symmetry, strict columns, generous margins, ceremonial section pacing. **Occasion and AI trigger keywords:** luxury heritage, museum, legal, academia, institution, classical brand",
+    "fontPairingExcerpt": "# Font Pairing Library (Full Fontpair Extraction) ## Overview - Source: [Fontpair All](https://www.fontpair.co/all) - Extraction date: 2026-04-03 - Total pairings collected from load-more dataset: **637** - Total fonts referenced by those pairings: **282** - Organization: grouped by pairing category from Fontpair data. ## Complete Pairings (All Collected) ### Code | Pairing | Use Case | Notes | Why It Works | |---|---|---|---| | [Geist Mono + Geist Mono](https://www.fontpair.co/pairings/geist-mono-geist-mono) | Documentation, code samples | - | Monospaced consistency for technical content | ### Display + Sans Serif | Pairing | Use Case | Note",
+    "layoutByL4": {
+      "L4.1": {
+        "relPath": "Layout library/full-screen-image-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/full-screen-image-layout-style-guide.md",
+        "excerpt": "# Full-Screen Image Layout Style Guide ## Overview This guide defines a full-screen image/video presentation system for AI vibe coding website design tools. Use this layout when users need image-heavy or video-heavy storytelling with immersive transitions and strong visual focus. Core intent: - Experience-first presentation - Large visual storytelling - Minimal but high-impact text - Clear guided "
+      },
+      "L4.2": {
+        "relPath": "Layout library/single-column-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/single-column-layout-style-guide.md",
+        "excerpt": "# Single-Column Layout Style Guide ## Overview This guide defines a modern single-column layout system for AI vibe coding website design tools. The layout uses a clear top-to-bottom reading flow and minimizes distractions so users can focus on one narrative path. --- ## Core Characteristics ### Vertical Flow - Content is arranged logically from top to bottom - The user follows one natural reading "
+      },
+      "L4.3": {
+        "relPath": "Layout library/magazine-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/magazine-layout-style-guide.md",
+        "excerpt": "# Magazine Layout Style Guide for Website and Mobile UI ## Purpose This document defines a magazine-inspired layout system for digital interfaces. It is intended for future AI-assisted coding and design generation, so outputs stay consistent while still feeling creative and editorial. Focus: - Layout structure only - Spatial rhythm and hierarchy - Reusable patterns for web and mobile UI Out of sco"
+      },
+      "L4.4": {
+        "relPath": "Layout library/bento-grid-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/bento-grid-layout-style-guide.md",
+        "excerpt": "# Bento Grid Layout Style Guide ## Overview This document defines a Bento Grid layout system for AI vibe coding website design workflows. The target look and feel is upscale, bold, modern, contemporary, minimal, sharp, and clear, driven by layout quality rather than visual decoration. --- ## Design Specifications ### General Layout - **Style Direction**: Upscale, bold, modern, contemporary, minima"
+      },
+      "L4.5": {
+        "relPath": "Layout library/magazine-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/magazine-layout-style-guide.md",
+        "excerpt": "# Magazine Layout Style Guide for Website and Mobile UI ## Purpose This document defines a magazine-inspired layout system for digital interfaces. It is intended for future AI-assisted coding and design generation, so outputs stay consistent while still feeling creative and editorial. Focus: - Layout structure only - Spatial rhythm and hierarchy - Reusable patterns for web and mobile UI Out of sco"
+      },
+      "L4.6": {
+        "relPath": "Layout library/card-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/card-layout-style-guide.md",
+        "excerpt": "# Card Layout Style Guide (Material-Based) ## Overview This guide defines a card-based website layout system for AI vibe coding tools. It is optimized for image/video-heavy creative presentation with concise content and clean interaction patterns. The guidance follows Material card UI principles (M2 card component behavior and actions), adapted to your constraints: - no icon dependency - no fixed "
+      },
+      "L4.7": {
+        "relPath": "Layout library/mosaic-modular-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/mosaic-modular-layout-style-guide.md",
+        "excerpt": "# Mosaic Modular Layout Style Guide ## Overview This guide defines a Mosaic Modular layout system for AI vibe coding website design tools. It is intended for image/video-heavy creative websites that need bold visual variety, tight modular structure, and clean modern organization. Core concept: - Fill the canvas with diverse module sizes - Keep modules tightly packed like a mosaic - Preserve readab"
+      },
+      "L4.8": {
+        "relPath": "Layout library/full-screen-image-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/full-screen-image-layout-style-guide.md",
+        "excerpt": "# Full-Screen Image Layout Style Guide ## Overview This guide defines a full-screen image/video presentation system for AI vibe coding website design tools. Use this layout when users need image-heavy or video-heavy storytelling with immersive transitions and strong visual focus. Core intent: - Experience-first presentation - Large visual storytelling - Minimal but high-impact text - Clear guided "
+      },
+      "L4.11": {
+        "relPath": "Layout library/single-column-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/single-column-layout-style-guide.md",
+        "excerpt": "# Single-Column Layout Style Guide ## Overview This guide defines a modern single-column layout system for AI vibe coding website design tools. The layout uses a clear top-to-bottom reading flow and minimizes distractions so users can focus on one narrative path. --- ## Core Characteristics ### Vertical Flow - Content is arranged logically from top to bottom - The user follows one natural reading "
+      },
+      "L4_DEFAULT": {
+        "relPath": "Layout library/magazine-layout-style-guide.md",
+        "rawUrl": "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md/Layout%20library/magazine-layout-style-guide.md",
+        "excerpt": "# Magazine Layout Style Guide for Website and Mobile UI ## Purpose This document defines a magazine-inspired layout system for digital interfaces. It is intended for future AI-assisted coding and design generation, so outputs stay consistent while still feeling creative and editorial. Focus: - Layout structure only - Spatial rhythm and hierarchy - Reusable patterns for web and mobile UI Out of sco"
+      }
+    }
+  },
   "pexelsAttribution": "Placeholder media from https://www.pexels.com/ — replace with licensed assets for production.",
   "pexelsPool": {
     "heroVideos": [

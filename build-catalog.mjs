@@ -1060,11 +1060,76 @@ const motionKits = [
   },
 ];
 
+const GITHUB_REPO_STYLE_LIB_TREE =
+  "https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md";
+const GITHUB_REPO_STYLE_LIB_RAW =
+  "https://raw.githubusercontent.com/Ictraeh/website_prompt_generator/main/sources/design-style-layout-md";
+
+function styleLibRawUrl(relPosix) {
+  return `${GITHUB_REPO_STYLE_LIB_RAW}/${relPosix.split("/").map(encodeURIComponent).join("/")}`;
+}
+
+function readStyleLibExcerpt(absPath, maxChars) {
+  try {
+    if (!fs.existsSync(absPath)) return "";
+    return fs.readFileSync(absPath, "utf8").replace(/\s+/g, " ").trim().slice(0, maxChars);
+  } catch {
+    return "";
+  }
+}
+
+/** MotionSites L4 → Layout library markdown (in-repo designer docs). */
+const L4_TO_LAYOUT_STYLE_GUIDE = {
+  "L4.1": "Layout library/full-screen-image-layout-style-guide.md",
+  "L4.2": "Layout library/single-column-layout-style-guide.md",
+  "L4.3": "Layout library/magazine-layout-style-guide.md",
+  "L4.4": "Layout library/bento-grid-layout-style-guide.md",
+  "L4.5": "Layout library/magazine-layout-style-guide.md",
+  "L4.6": "Layout library/card-layout-style-guide.md",
+  "L4.7": "Layout library/mosaic-modular-layout-style-guide.md",
+  "L4.8": "Layout library/full-screen-image-layout-style-guide.md",
+  "L4.11": "Layout library/single-column-layout-style-guide.md",
+  L4_DEFAULT: "Layout library/magazine-layout-style-guide.md",
+};
+
+function buildStyleLibraryCatalog() {
+  const root = path.join(__dirname, "sources", "design-style-layout-md");
+  if (!fs.existsSync(root)) {
+    return {
+      present: false,
+      treeUrl: GITHUB_REPO_STYLE_LIB_TREE,
+      rawBase: GITHUB_REPO_STYLE_LIB_RAW,
+      note: "Clone/sync sources/design-style-layout-md then npm run build.",
+    };
+  }
+  const aestheticPath = path.join(root, "Style Library", "style-library-aesthetic-vibe-coding.md");
+  const fontPath = path.join(root, "Font pairings", "font-pairing-library.md");
+  const layoutByL4 = {};
+  for (const [l4, rel] of Object.entries(L4_TO_LAYOUT_STYLE_GUIDE)) {
+    const abs = path.join(root, ...rel.split("/"));
+    layoutByL4[l4] = {
+      relPath: rel,
+      rawUrl: styleLibRawUrl(rel),
+      excerpt: readStyleLibExcerpt(abs, 400),
+    };
+  }
+  return {
+    present: true,
+    treeUrl: GITHUB_REPO_STYLE_LIB_TREE,
+    rawBase: GITHUB_REPO_STYLE_LIB_RAW,
+    aestheticExcerpt: readStyleLibExcerpt(aestheticPath, 1400),
+    fontPairingExcerpt: readStyleLibExcerpt(fontPath, 650),
+    layoutByL4,
+  };
+}
+
+const styleLibrary = buildStyleLibraryCatalog();
+
 const out = {
-  version: "1.3.1",
+  version: "1.4.0",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
-    "Design Style Layout Markdown Library/Style Library/style-library-aesthetic-vibe-coding.md",
+    `Designer Style Layout Markdown (in-repo): ${GITHUB_REPO_STYLE_LIB_TREE}`,
     "Huemint palette patterns — https://huemint.com/brand-intersection/ · https://huemint.com/website-magazine/ · https://huemint.com/website-monochrome/",
     `VoltAgent awesome-design-md — ${DESIGN_MD_INDEX} (DESIGN.md references for agency-grade UI discipline)`,
   ],
@@ -1074,6 +1139,7 @@ const out = {
     getdesignPattern: "https://getdesign.md/<slug>/design-md",
   },
   designMdReferences,
+  styleLibrary,
   pexelsAttribution: "Placeholder media from https://www.pexels.com/ — replace with licensed assets for production.",
   pexelsPool,
   platforms,

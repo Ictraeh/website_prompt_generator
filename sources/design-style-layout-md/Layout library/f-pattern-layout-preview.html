@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F-Pattern Layout Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --line: 1px solid;
+      --page-pad: clamp(0.75rem, 3vw, 2.5rem);
+      --copy-max: 70ch;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.5; }
+    h1, h2, h3, p, figure { margin: 0; }
+    ul { margin: 0; padding: 0; list-style: none; }
+    a { color: inherit; text-underline-offset: 0.2rem; text-decoration-thickness: 1px; }
+
+    .page {
+      width: 100%;
+      padding: var(--space-4) var(--page-pad) var(--space-5);
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    .masthead {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .masthead-top {
+      display: grid;
+      grid-template-columns: 2fr 6fr;
+      gap: var(--space-2);
+      align-items: end;
+    }
+
+    .nav {
+      display: flex;
+      gap: var(--space-2);
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .top-band {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-2);
+      align-items: start;
+    }
+
+    .headline {
+      grid-column: 1 / span 8;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .headline h1 {
+      font-size: clamp(2rem, 5.2vw, 5.2rem);
+      line-height: 0.95;
+      max-width: 12ch;
+    }
+
+    .headline p {
+      max-width: var(--copy-max);
+      font-size: clamp(1rem, 1.3vw, 1.2rem);
+    }
+
+    .top-cta {
+      grid-column: 10 / span 3;
+      justify-self: end;
+      align-self: end;
+    }
+
+    .button {
+      display: inline-block;
+      border: var(--line);
+      padding: 0.65rem 1rem;
+      text-decoration: none;
+    }
+
+    /* F-pattern body */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-3);
+      align-items: start;
+    }
+
+    .left-spine {
+      grid-column: 1 / span 3;
+      display: grid;
+      gap: var(--space-3);
+      position: sticky;
+      top: var(--space-2);
+      align-self: start;
+    }
+
+    .spine-block {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+    }
+
+    .spine-block h2 {
+      font-size: clamp(1.05rem, 1.9vw, 1.7rem);
+      line-height: 1.05;
+      max-width: 14ch;
+    }
+
+    .main-column {
+      grid-column: 4 / span 9;
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .article-block {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .article-block h3 {
+      font-size: clamp(1.3rem, 2.5vw, 2.6rem);
+      line-height: 1.03;
+      max-width: 15ch;
+    }
+
+    .article-block p {
+      max-width: var(--copy-max);
+    }
+
+    .bullets {
+      display: grid;
+      gap: var(--space-1);
+      padding-left: var(--space-2);
+      list-style: disc;
+    }
+
+    .media-slot {
+      border: var(--line);
+      width: 100%;
+      min-height: 18rem;
+      display: grid;
+      place-items: center;
+      padding: var(--space-2);
+    }
+
+    .media-slot span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .second-band {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-2);
+      align-items: end;
+    }
+
+    .second-band-copy {
+      grid-column: 1 / span 7;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .second-band-cta {
+      grid-column: 10 / span 3;
+      justify-self: end;
+    }
+
+    .footer-note {
+      display: grid;
+      gap: var(--space-2);
+      max-width: var(--copy-max);
+    }
+
+    @media (max-width: 64rem) {
+      .masthead-top {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .top-band,
+      .content-grid,
+      .second-band {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .headline,
+      .top-cta,
+      .left-spine,
+      .main-column,
+      .second-band-copy,
+      .second-band-cta {
+        grid-column: 1 / -1;
+      }
+
+      .top-cta,
+      .second-band-cta {
+        justify-self: start;
+      }
+
+      .left-spine {
+        position: static;
+      }
+    }
+
+    @media (max-width: 42.5rem) {
+      .page {
+        padding-inline: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="masthead-top">
+        <p>Logo Area</p>
+        <nav aria-label="Primary navigation">
+          <ul class="nav">
+            <li><a href="#">Latest</a></li>
+            <li><a href="#">Topics</a></li>
+            <li><a href="#">Guides</a></li>
+            <li><a href="#">About</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="top-band">
+        <div class="headline">
+          <p class="kicker">Top Horizontal Scan</p>
+          <h1>F-Pattern layout for fast content scanning</h1>
+          <p>Designed for text-heavy pages with clear hierarchy, concise messaging, and strategic media breaks to keep readers engaged.</p>
+        </div>
+        <div class="top-cta">
+          <a class="button" href="#">Primary Action</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="content-grid" aria-label="F-pattern content body">
+      <aside class="left-spine" aria-label="Left scanning spine">
+        <div class="spine-block">
+          <p class="kicker">Left Spine</p>
+          <h2>Section Anchors</h2>
+          <p>Quick scan points for headings and context.</p>
+        </div>
+        <div class="spine-block">
+          <p class="kicker">Metadata</p>
+          <h2>Date, Tag, Topic</h2>
+          <p>Place high-value labels on the left edge.</p>
+        </div>
+        <div class="spine-block">
+          <p class="kicker">Reading Cues</p>
+          <h2>Bullets and Leads</h2>
+          <p>Start lines with meaningful words.</p>
+        </div>
+      </aside>
+
+      <div class="main-column">
+        <article class="article-block">
+          <p class="kicker">Section 01</p>
+          <h3>First two paragraphs carry the heaviest message load</h3>
+          <p>Users decide quickly whether to continue reading. Keep opening lines clear, useful, and specific to reduce drop-off in text-heavy interfaces.</p>
+          <p>Structure supports scanning first, then deep reading. Clear hierarchy and spacing allow readers to choose where to focus without confusion.</p>
+          <figure class="media-slot">
+            <span>Large Image / Video Slot</span>
+          </figure>
+        </article>
+
+        <article class="article-block">
+          <p class="kicker">Section 02</p>
+          <h3>Design for scanners before readers</h3>
+          <p>Use short sections, meaningful subheadings, and visible anchors along the left edge to maintain orientation throughout long content pages.</p>
+          <ul class="bullets">
+            <li>Start paragraphs with high-value keywords</li>
+            <li>Keep one key idea per paragraph</li>
+            <li>Use bullets to reduce scan effort</li>
+          </ul>
+          <figure class="media-slot">
+            <span>Large Image / Video Slot</span>
+          </figure>
+        </article>
+
+        <article class="article-block">
+          <p class="kicker">Section 03</p>
+          <h3>Break monotony with visual rhythm</h3>
+          <p>Alternating text density and media blocks keeps reading energy high while preserving the expected F scan behavior.</p>
+          <p>Use visuals as strategic pauses, not distractions. Every image block should support comprehension and flow.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="second-band" aria-label="Second horizontal scan band">
+      <div class="second-band-copy">
+        <p class="kicker">Second Horizontal Scan</p>
+        <h2>Key takeaway and final context before action</h2>
+        <p class="copy">Place this band where users naturally pause after scanning down the left edge and across the content area.</p>
+      </div>
+      <div class="second-band-cta">
+        <a class="button" href="#">Secondary Action</a>
+      </div>
+    </section>
+
+    <footer class="footer-note">
+      <p class="kicker">Footer Context</p>
+      <p>This example demonstrates an F-pattern layout for content-heavy pages: strong top scan line, clear left vertical anchors, structured text hierarchy, and large media slots to sustain engagement.</p>
+    </footer>
+  </main>
+</body>
+</html>

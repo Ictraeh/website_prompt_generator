@@ -164,6 +164,7 @@
       "[L2_LAYOUT] Infer MotionSites L4 (L4.1 hero L4.3 sections L4.4 split+bento L4.6 card-wall…). State ONE hero anchor:center|bottom|split + max-w token (e.g. max-w-7xl). 12-col alignment desktop.",
       "[L3_SPACE] px-4 sm:px-6 md:px-12 lg:px-16 | section py-16 md:py-24 | gap-6 md:gap-8 | min touch 44px.",
       "[L4_SURFACE] Match reference radius/shadow family consistently (one radius system sitewide). Video hero→scrim gradient under text for WCAG.",
+      "[STYLE_LIB] Read in-repo designer markdown https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md — pick Layout library/*-style-guide.md closest to inferred L4; apply structure rules + Style Library global vocabulary to <BRAND> (patterns only).",
       "[L5_TYPOGRAPHY] From FONT_CDNS+headings: define eyebrow|H1|lead|body|caption sizes in Tailwind rem; import weights used;tabular nums if metrics.",
       "[L6_COLOR_ROLES] Map HEX_SAMPLES to semantic roles bg|surface|border|text|muted|accent;accent rare;body contrast≥4.5:1.",
       "[L7_MOTION_SPEC] From scripts/classes: default M-fade-rise+M-button-lift;add scroll-scrub/GSAP only if evidence.Durations:nav150–200ms|section450–600ms|stagger50ms.anime.js stagger+timeline;reactbits.dev 1–2 modules→src/components/reactbits/*.prefers-reduced-motion→opacity200ms only.",

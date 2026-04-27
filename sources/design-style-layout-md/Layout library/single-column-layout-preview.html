@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Single-Column Card Stack Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --space-6: 6rem;
+      --line: 1px solid;
+      --content-max: 100%;
+      --section-a: #f6f6f6;
+      --section-b: #ffffff;
+      --stack-gap: 10rem;
+      --stack-top: 1rem;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.5; }
+    h1, h2, p, figure { margin: 0; }
+    a { color: inherit; text-underline-offset: 0.2rem; text-decoration-thickness: 1px; }
+
+    .site-header,
+    .site-footer {
+      width: 100%;
+      display: grid;
+      justify-items: center;
+      padding-inline: clamp(0.2rem, 1vw, 0.6rem);
+    }
+
+    .site-header {
+      padding-top: var(--space-4);
+      padding-bottom: var(--space-4);
+    }
+
+    .header-inner {
+      width: min(100%, var(--content-max));
+      display: grid;
+      gap: var(--space-3);
+      text-align: center;
+      justify-items: center;
+    }
+
+    .hero-title {
+      font-size: clamp(2rem, 6vw, 5.2rem);
+      line-height: 0.94;
+      max-width: none;
+      width: 100%;
+    }
+
+    .hero-subtitle {
+      max-width: 90ch;
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+    }
+
+    .button {
+      border: var(--line);
+      padding: 0.65rem 1rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* Card stack */
+    .stack {
+      width: 100%;
+      padding-inline: clamp(0.2rem, 1vw, 0.6rem);
+      padding-bottom: var(--space-6);
+    }
+
+    .stack-section {
+      position: sticky;
+      top: var(--stack-top);
+      min-height: calc(100svh - 2rem);
+      display: grid;
+      justify-items: center;
+      align-items: stretch;
+      margin-top: calc(var(--stack-gap) * -1);
+      padding-top: var(--stack-gap);
+    }
+
+    .stack-section:first-child {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .stack-section:nth-child(1) { z-index: 1; }
+    .stack-section:nth-child(2) { z-index: 2; }
+    .stack-section:nth-child(3) { z-index: 3; }
+    .stack-section:nth-child(4) { z-index: 4; }
+
+    .card {
+      width: 100%;
+      min-height: calc(100svh - 2rem);
+      background: var(--section-b);
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) clamp(0.75rem, 2vw, 1.75rem);
+      text-align: center;
+      border: var(--line);
+    }
+
+    .stack-section.alt .card {
+      background: var(--section-a);
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+
+    .card h2 {
+      font-size: clamp(1.6rem, 3.8vw, 3.8rem);
+      line-height: 0.96;
+      max-width: none;
+      width: 100%;
+    }
+
+    .card p {
+      max-width: 88ch;
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+    }
+
+    .media-slot {
+      border: var(--line);
+      width: 100%;
+      min-height: 18rem;
+      display: grid;
+      place-items: center;
+      padding: var(--space-2);
+    }
+
+    .media-slot span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .site-footer {
+      padding-top: var(--space-4);
+      padding-bottom: var(--space-4);
+    }
+
+    .footer-inner {
+      width: min(100%, var(--content-max));
+      display: grid;
+      gap: var(--space-2);
+      text-align: center;
+      justify-items: center;
+    }
+
+    @supports (height: 100dvh) {
+      .stack-section,
+      .card {
+        min-height: calc(100dvh - 2rem);
+      }
+    }
+
+    @media (max-width: 42.5rem) {
+      .stack {
+        padding-inline: 0.25rem;
+      }
+
+      .card {
+        min-height: calc(100svh - 1.5rem);
+        padding: var(--space-3) 0.9rem;
+      }
+
+      .stack-section {
+        top: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <p>Single Column / Card Stack</p>
+      <h1 class="hero-title">Centered story flow with slide-up stacked sections</h1>
+      <p class="hero-subtitle">Each section rises and overlays the previous one while keeping a single-column reading path and strong visual focus.</p>
+      <a class="button" href="#">Start Reading</a>
+    </div>
+  </header>
+
+  <main class="stack">
+    <section class="stack-section">
+      <article class="card">
+        <p class="kicker">Section 01</p>
+        <h2>Start with a bold visual anchor</h2>
+        <figure class="media-slot">
+          <span>Large Image / Video Slot</span>
+        </figure>
+        <p>Lead with one key idea and a strong visual to establish direction before users continue scrolling.</p>
+      </article>
+    </section>
+
+    <section class="stack-section alt">
+      <article class="card">
+        <p class="kicker">Section 02</p>
+        <h2>Slide up and layer for guided focus</h2>
+        <figure class="media-slot">
+          <span>Large Image / Video Slot</span>
+        </figure>
+        <p>The section overlays the previous card to create progression while preserving readability and alignment.</p>
+      </article>
+    </section>
+
+    <section class="stack-section">
+      <article class="card">
+        <p class="kicker">Section 03</p>
+        <h2>Keep centered text concise and clear</h2>
+        <figure class="media-slot">
+          <span>Large Image / Video Slot</span>
+        </figure>
+        <p>A single-column stack works best when each section communicates one message with minimal distraction.</p>
+      </article>
+    </section>
+
+    <section class="stack-section alt">
+      <article class="card">
+        <p class="kicker">Section 04</p>
+        <h2>Close with one direct action</h2>
+        <figure class="media-slot">
+          <span>Large Image / Video Slot</span>
+        </figure>
+        <p>Final section summarizes the story and provides one clean action for completion.</p>
+        <a class="button" href="#">Get Started</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Footer Area</p>
+      <p>Contact • Privacy • Terms</p>
+    </div>
+  </footer>
+</body>
+</html>

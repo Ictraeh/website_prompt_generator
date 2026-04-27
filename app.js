@@ -259,6 +259,23 @@
     return `[L4_MOOD→EXEC] Mood:"${(style.libraryMood || "").slice(0, 120)}" Layout hint:"${(style.libraryLayout || "").slice(0, 100)}" → ${lines.join(" | ")}`;
   }
 
+  /** In-repo designer markdown (sources/design-style-layout-md) — excerpts + L4 layout doc URL. */
+  function buildStyleLibraryBlock(style) {
+    const sl = cat.styleLibrary;
+    const l4 = style.layoutArchetype;
+    const tree = (sl && sl.treeUrl) || "https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md";
+    if (!sl || !sl.present) {
+      return `[STYLE_LIB] Read designer MD from ${tree}; map ${l4} + "${style.name}" to layout+type+palette rules (sync sources/design-style-layout-md in repo, then rebuild catalog).`;
+    }
+    const layout = sl.layoutByL4[l4] || sl.layoutByL4.L4_DEFAULT || sl.layoutByL4["L4.3"];
+    const ae = (sl.aestheticExcerpt || "").slice(0, 680);
+    const fe = (sl.fontPairingExcerpt || "").slice(0, 380);
+    const le = (layout && layout.excerpt) || "";
+    const lex = le.slice(0, 280);
+    const raw = layout && layout.rawUrl ? layout.rawUrl : "";
+    return `[STYLE_LIB] tree:${tree} | AESTHETIC_DIGEST:${ae} | FONT_RULES:${fe} | L4(${l4})_LAYOUT_EXCERPT:${lex} | L4_LAYOUT_FULL:${raw}`;
+  }
+
   function heroPlacementHint(l4) {
     if (l4 === "L4.4") return "split-hero+bento mid mandatory";
     if (l4 === "L4.6") return "card-wall grid first;small type";
@@ -487,6 +504,7 @@ ${heroShell}
 ${spaceLayer}
 ${surfaceLayer}
 ${moodExec}
+${buildStyleLibraryBlock(style)}
 ${typoLayer}|vibe:${moodFont}|${(fontVibe.notes || "").slice(0, 140)}
 ${fontVarBlock}
 ${colorLayer}|tool:${colorVibe.label || colorVibe.labelZh}

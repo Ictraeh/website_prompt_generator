@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Split Screen Layout Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --line: 1px solid;
+      --pad: 0;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.45; }
+    h1, h2, h3, p, figure { margin: 0; }
+    a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.15rem; }
+
+    .page {
+      width: 100%;
+      display: grid;
+      gap: var(--space-5);
+      padding-bottom: var(--space-5);
+    }
+
+    .hero {
+      padding: var(--space-4) 0 0;
+      display: grid;
+      gap: var(--space-2);
+      max-width: none;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 7vw, 7rem);
+      line-height: 0.9;
+      max-width: 20ch;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+      max-width: 64ch;
+    }
+
+    .split-section {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      border-top: var(--line);
+      border-bottom: var(--line);
+    }
+
+    .panel {
+      position: relative;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 100%;
+      border-right: var(--line);
+      padding: 2rem;
+      gap: var(--space-2);
+    }
+
+    .panel:last-child {
+      border-right: 0;
+    }
+
+    .media-slot {
+      width: 100%;
+      min-height: 100%;
+      border-bottom: var(--line);
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .media-slot span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .panel-copy {
+      padding: 0;
+      display: grid;
+      gap: var(--space-2);
+      align-content: end;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+
+    .panel-copy h2 {
+      font-size: clamp(1.8rem, 4.5vw, 4.8rem);
+      line-height: 0.92;
+      max-width: 24ch;
+    }
+
+    .panel-copy p {
+      max-width: 44ch;
+      font-size: clamp(0.98rem, 1.05vw, 1.1rem);
+    }
+
+    .button {
+      border: var(--line);
+      padding: 0.65rem 1rem;
+      text-decoration: none;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .section-title {
+      padding-inline: 0;
+      margin-bottom: calc(var(--space-4) * -1);
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .section-title h3 {
+      font-size: clamp(1.2rem, 2.4vw, 2.2rem);
+      line-height: 1.03;
+    }
+
+    @media (max-width: 64rem) {
+      .split-section {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .panel {
+        border-right: 0;
+        border-bottom: var(--line);
+        min-height: 85vh;
+      }
+
+      .panel:last-child {
+        border-bottom: 0;
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p>Split Screen Layout</p>
+      <h1>One screen, two focused message paths</h1>
+      <p>Each side carries its own visual story, concise text, and clear action while preserving balanced importance and clean responsive behavior.</p>
+    </header>
+
+    <section>
+      <header class="section-title">
+        <h3>Split Section A: Dual Hero Choice</h3>
+      </header>
+      <div class="split-section">
+        <article class="panel">
+          <figure class="media-slot">
+            <span>Large Image / Video Slot A1</span>
+          </figure>
+          <div class="panel-copy">
+            <p class="kicker">Left Path</p>
+            <h2>Creative direction one</h2>
+            <p>Short support copy that explains this path in one clear sentence.</p>
+            <a class="button" href="#">Explore Left</a>
+          </div>
+        </article>
+
+        <article class="panel">
+          <figure class="media-slot">
+            <span>Large Image / Video Slot A2</span>
+          </figure>
+          <div class="panel-copy">
+            <p class="kicker">Right Path</p>
+            <h2>Creative direction two</h2>
+            <p>Parallel message with equal emphasis, allowing quick user comparison.</p>
+            <a class="button" href="#">Explore Right</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <header class="section-title">
+        <h3>Split Section B: Balanced Feature Pair</h3>
+      </header>
+      <div class="split-section">
+        <article class="panel">
+          <figure class="media-slot">
+            <span>Large Image / Video Slot B1</span>
+          </figure>
+          <div class="panel-copy">
+            <p class="kicker">Feature Left</p>
+            <h2>Independent card-style panel</h2>
+            <p>Each side behaves like its own full message container with one action.</p>
+            <a class="button" href="#">Open Left Feature</a>
+          </div>
+        </article>
+
+        <article class="panel">
+          <figure class="media-slot">
+            <span>Large Image / Video Slot B2</span>
+          </figure>
+          <div class="panel-copy">
+            <p class="kicker">Feature Right</p>
+            <h2>Symmetrical but not repetitive</h2>
+            <p>Keep both sides aligned and equal in structure while allowing content contrast.</p>
+            <a class="button" href="#">Open Right Feature</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <header class="section-title">
+        <h3>Split Section C: Final Decision Stage</h3>
+      </header>
+      <div class="split-section">
+        <article class="panel">
+          <figure class="media-slot">
+            <span>Large Image / Video Slot C1</span>
+          </figure>
+          <div class="panel-copy">
+            <p class="kicker">Option One</p>
+            <h2>Fast route to action</h2>
+            <p>Use concise language to reduce decision friction at the final stage.</p>
+            <a class="button" href="#">Select Option One</a>
+          </div>
+        </article>
+
+        <article class="panel">
+          <figure class="media-slot">
+            <span>Large Image / Video Slot C2</span>
+          </figure>
+          <div class="panel-copy">
+            <p class="kicker">Option Two</p>
+            <h2>Alternative route with equal weight</h2>
+            <p>Keep visual and textual priority balanced across both split choices.</p>
+            <a class="button" href="#">Select Option Two</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

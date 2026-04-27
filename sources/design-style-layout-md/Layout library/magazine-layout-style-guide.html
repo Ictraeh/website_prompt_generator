@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fluid Fashion Magazine Layout Guidelines</title>
+  <style>
+    :root {
+      --line: 1px solid;
+      --s1: 0.5rem;
+      --s2: 1rem;
+      --s3: 1.75rem;
+      --s4: 3rem;
+      --s5: 5rem;
+      --s6: 7rem;
+      --gutter: clamp(1rem, 2vw, 2.25rem);
+      --measure: 72ch;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    h1, h2, h3, p, figure {
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    main {
+      width: 100%;
+      padding-inline: clamp(0.75rem, 4vw, 3rem);
+      padding-block: var(--s5) var(--s6);
+    }
+
+    .page-title {
+      border-top: var(--line);
+      padding-top: var(--s4);
+      margin-bottom: var(--s5);
+    }
+
+    .page-title h1 {
+      font-size: clamp(2.3rem, 6vw, 6rem);
+      max-width: 14ch;
+      line-height: 0.98;
+      margin-bottom: var(--s3);
+    }
+
+    .page-title p {
+      font-size: clamp(1.06rem, 1.7vw, 1.45rem);
+      max-width: var(--measure);
+      margin-top: var(--s2);
+    }
+
+    .guide-meta {
+      margin-top: var(--s3);
+      border-top: var(--line);
+      padding-top: var(--s3);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--gutter);
+      font-size: 1rem;
+    }
+
+    .option {
+      border-top: var(--line);
+      padding-top: var(--s4);
+      margin-top: var(--s5);
+    }
+
+    .option h2 {
+      font-size: clamp(1.7rem, 3vw, 3rem);
+      line-height: 1.02;
+      margin-bottom: var(--s2);
+    }
+
+    .option > p {
+      font-size: clamp(1.04rem, 1.35vw, 1.2rem);
+      margin-bottom: var(--s4);
+      max-width: var(--measure);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--gutter);
+    }
+
+    .module {
+      border-top: var(--line);
+      padding-top: var(--s3);
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s3);
+      align-items: flex-start;
+    }
+
+    .module h3 {
+      font-size: clamp(1.35rem, 2.7vw, 3rem);
+      line-height: 1.02;
+      max-width: 14ch;
+    }
+
+    .module p {
+      font-size: clamp(1rem, 1.2vw, 1.14rem);
+      max-width: 44ch;
+    }
+
+    .kicker {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      margin-bottom: var(--s2);
+    }
+
+    .image-slot {
+      border-top: var(--line);
+      border-bottom: var(--line);
+      padding-block: var(--s1);
+      display: grid;
+      place-items: center;
+      width: 100%;
+      box-shadow: 0 0 0 1px currentColor inset, 0 8px 20px -14px currentColor;
+    }
+
+    .image-slot span {
+      display: inline-block;
+      padding-block: var(--s3);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .r-45 { aspect-ratio: 4 / 5; }
+    .r-43 { aspect-ratio: 4 / 3; }
+    .r-32 { aspect-ratio: 3 / 2; }
+
+    /* Option A */
+    .a-main { grid-column: 1 / span 8; }
+    .a-side { grid-column: 9 / span 4; display: grid; gap: var(--gutter); align-content: start; }
+    .a-f1, .a-f2 { grid-column: span 6; }
+    .a-f3, .a-f4, .a-f5 { grid-column: span 4; }
+
+    /* Option B */
+    .b-hero { grid-column: 1 / span 9; }
+    .b-rail { grid-column: 10 / span 3; }
+    .b-s1, .b-s2, .b-s3 { grid-column: span 4; }
+
+    /* Option C */
+    .c-l1 { grid-column: 1 / span 7; }
+    .c-l2 { grid-column: 8 / span 5; }
+    .c-m1 { grid-column: span 3; }
+    .c-m2 { grid-column: span 6; }
+    .c-m3 { grid-column: span 3; }
+    .c-m4 { grid-column: span 5; }
+    .c-m5 { grid-column: span 7; }
+
+    @media (max-width: 1024px) {
+      main {
+        padding-inline: clamp(0.75rem, 3vw, 1.5rem);
+        padding-block: var(--s4) var(--s5);
+      }
+
+      .guide-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .a-main, .a-side, .b-hero, .b-rail, .c-l1, .c-l2 {
+        grid-column: 1 / -1;
+      }
+
+      .a-f1, .a-f2, .a-f3, .a-f4, .a-f5,
+      .b-s1, .b-s2, .b-s3,
+      .c-m1, .c-m2, .c-m3, .c-m4, .c-m5 {
+        grid-column: span 4;
+      }
+    }
+
+    @media (max-width: 680px) {
+      main {
+        padding-inline: 0.75rem;
+        padding-block: var(--s3) var(--s4);
+      }
+
+      .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--s2);
+      }
+
+      .module {
+        gap: var(--s2);
+      }
+
+      .a-f1, .a-f2, .a-f3, .a-f4, .a-f5,
+      .b-s1, .b-s2, .b-s3,
+      .c-m1, .c-m2, .c-m3, .c-m4, .c-m5 {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="page-title">
+      <h1>Fluid fashion-magazine layout guidelines with bold contemporary proportion</h1>
+      <p>Sections are rhythm-aligned with larger spacing between headlines, image slots, paragraphs, and links.</p>
+      <p>Layout Technical Approaches: Fluid/Liquid layout using full-width canvas, fr-based columns, ratio-driven media slots, and breakpoint reflow.</p>
+      <div class="guide-meta">
+        <p><strong>Grid:</strong> 12-column fluid desktop, 8-column tablet, 4-column mobile.</p>
+        <p><strong>Rhythm:</strong> Shared spacing cadence across all modules and options.</p>
+        <p><strong>Media:</strong> Contemporary editorial ratios, image-heavy but no actual image content.</p>
+      </div>
+    </header>
+
+    <section class="option" aria-labelledby="option-a">
+      <h2 id="option-a">Option A: Editorial Split Front</h2>
+      <p>Lead narrative and support stack, then a structured feature field with strong fashion-style vertical crops.</p>
+      <div class="grid">
+        <article class="module a-main">
+          <p class="kicker">Lead</p>
+          <h3>Primary headline with oversized editorial confidence</h3>
+          <figure class="image-slot r-45"><span>Image slot 4:5</span></figure>
+          <p>Intro summary line for the core story and landing statement.</p>
+          <p><a href="#">View story</a></p>
+        </article>
+
+        <aside class="a-side">
+          <article class="module">
+            <p class="kicker">Support</p>
+            <h3>Supporting story one</h3>
+            <figure class="image-slot r-45"><span>Image slot 4:5</span></figure>
+            <p><a href="#">Open article</a></p>
+          </article>
+          <article class="module">
+            <p class="kicker">Support</p>
+            <h3>Supporting story two</h3>
+            <figure class="image-slot r-45"><span>Image slot 4:5</span></figure>
+            <p><a href="#">Open article</a></p>
+          </article>
+        </aside>
+
+        <article class="module a-f1"><p class="kicker">Feature</p><h3>Feature block A</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read feature</a></p></article>
+        <article class="module a-f2"><p class="kicker">Feature</p><h3>Feature block B</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read feature</a></p></article>
+        <article class="module a-f3"><p class="kicker">Stream</p><h3>Module C</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+        <article class="module a-f4"><p class="kicker">Stream</p><h3>Module D</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+        <article class="module a-f5"><p class="kicker">Stream</p><h3>Module E</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+      </div>
+    </section>
+
+    <section class="option" aria-labelledby="option-b">
+      <h2 id="option-b">Option B: Monument Lead + Rail</h2>
+      <p>A wide lead with fashion-editorial scale, supported by a tight right rail and strong continuation links.</p>
+      <div class="grid">
+        <article class="module b-hero">
+          <p class="kicker">Monument</p>
+          <h3>Large proportion heading with maximum breathing room</h3>
+          <figure class="image-slot r-45"><span>Image slot 4:5</span></figure>
+          <p>Wide lead text with paced line length for reading comfort.</p>
+          <p><a href="#">Enter article</a></p>
+        </article>
+
+        <aside class="module b-rail">
+          <p class="kicker">Rail</p>
+          <h3>Context, related paths, quick reads</h3>
+          <figure class="image-slot r-45"><span>Image slot 4:5</span></figure>
+          <figure class="image-slot r-45"><span>Image slot 4:5</span></figure>
+          <p><a href="#">Explore rail</a></p>
+        </aside>
+
+        <article class="module b-s1"><p class="kicker">Latest</p><h3>Stream one</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read now</a></p></article>
+        <article class="module b-s2"><p class="kicker">Latest</p><h3>Stream two</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read now</a></p></article>
+        <article class="module b-s3"><p class="kicker">Latest</p><h3>Stream three</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read now</a></p></article>
+      </div>
+    </section>
+
+    <section class="option" aria-labelledby="option-c">
+      <h2 id="option-c">Option C: Spatial Asymmetric Mosaic</h2>
+      <p>Bold asymmetry with frequent media placement and broad section spacing for contemporary fashion pacing.</p>
+      <div class="grid">
+        <article class="module c-l1"><p class="kicker">Lead</p><h3>Asymmetric lead anchor</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">View editorial</a></p></article>
+        <article class="module c-l2"><p class="kicker">Companion</p><h3>Parallel narrative slot</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">View narrative</a></p></article>
+        <article class="module c-m1"><p class="kicker">M1</p><h3>Short block</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+        <article class="module c-m1"><p class="kicker">M2</p><h3>Short block</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+        <article class="module c-m1"><p class="kicker">M3</p><h3>Short block</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+        <article class="module c-m1"><p class="kicker">M4</p><h3>Short block</h3><figure class="image-slot r-43"><span>Image slot 4:3</span></figure><p><a href="#">Open</a></p></article>
+        <article class="module c-m2"><p class="kicker">Wide</p><h3>Wide narrative bridge</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read bridge</a></p></article>
+        <article class="module c-m3"><p class="kicker">Brief</p><h3>Counterpoint module</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Read brief</a></p></article>
+        <article class="module c-m4"><p class="kicker">Next</p><h3>Continuation one</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Continue</a></p></article>
+        <article class="module c-m5"><p class="kicker">Next</p><h3>Continuation two</h3><figure class="image-slot r-45"><span>Image slot 4:5</span></figure><p><a href="#">Continue</a></p></article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

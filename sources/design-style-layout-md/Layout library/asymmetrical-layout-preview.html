@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asymmetrical Layout Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --space-6: 6rem;
+      --line: 1px solid;
+      --copy-max: 56ch;
+      --accent-a: #ffe66d;
+      --accent-b: #9be7ff;
+      --accent-c: #ff9bb8;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.45; }
+    h1, h2, h3, p, figure { margin: 0; }
+    ul { margin: 0; padding: 0; list-style: none; }
+    a { color: inherit; text-underline-offset: 0.2rem; text-decoration-thickness: 1px; }
+
+    .page {
+      width: 100%;
+      padding: 0;
+      position: relative;
+      overflow: visible;
+    }
+
+    .accent {
+      position: absolute;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .accent.stripe {
+      width: min(14vw, 7rem);
+      height: 36rem;
+      left: -1.25rem;
+      top: 2rem;
+      background: var(--accent-a);
+    }
+
+    .accent.dot {
+      width: min(16vw, 8rem);
+      aspect-ratio: 1 / 1;
+      border-radius: 999px;
+      right: -2.5rem;
+      top: 34rem;
+      background: var(--accent-b);
+    }
+
+    .accent.blob {
+      width: min(18vw, 10rem);
+      height: min(10vw, 6rem);
+      border-radius: 999px;
+      left: -3rem;
+      bottom: 8rem;
+      background: var(--accent-c);
+    }
+
+    .deco-text {
+      position: absolute;
+      z-index: 1;
+      right: -6rem;
+      top: 52rem;
+      font-size: clamp(3rem, 12vw, 12rem);
+      line-height: 0.85;
+      opacity: 0.22;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 2fr 6fr;
+      gap: var(--space-2);
+      align-items: end;
+      padding: var(--space-2) clamp(0.75rem, 3vw, 2.5rem);
+      margin-bottom: var(--space-3);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      justify-content: flex-end;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+      padding: var(--space-2) clamp(0.75rem, 3vw, 2.5rem);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-copy {
+      grid-column: 1 / span 5;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      max-width: 10ch;
+    }
+
+    .hero-copy p {
+      max-width: var(--copy-max);
+      font-size: clamp(1rem, 1.4vw, 1.2rem);
+    }
+
+    .hero-media-main {
+      grid-column: 5 / span 7;
+      border: var(--line);
+      min-height: 30rem;
+      display: grid;
+      place-items: center;
+      padding: var(--space-2);
+      position: relative;
+    }
+
+    .hero-media-main span,
+    .media span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .hero-media-overlap {
+      position: absolute;
+      left: -15%;
+      bottom: -2rem;
+      width: 44%;
+      min-height: 12rem;
+      border: var(--line);
+      display: grid;
+      place-items: center;
+      background: #fff;
+      padding: var(--space-1);
+    }
+
+    .section {
+      position: relative;
+      z-index: 2;
+      margin-bottom: var(--space-6);
+      padding-inline: clamp(0.75rem, 3vw, 2.5rem);
+    }
+
+    .section-head {
+      margin-bottom: var(--space-3);
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.5rem, 3vw, 3rem);
+      line-height: 1.02;
+    }
+
+    .section-head p {
+      max-width: var(--copy-max);
+    }
+
+    .asym-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .card {
+      border: var(--line);
+      padding: var(--space-2);
+      display: grid;
+      gap: var(--space-2);
+      align-content: start;
+      min-height: 9rem;
+      background: #fff;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .card h3 {
+      font-size: clamp(1.05rem, 1.8vw, 1.9rem);
+      line-height: 1.06;
+      max-width: 14ch;
+    }
+
+    .card p {
+      max-width: 38ch;
+    }
+
+    .media {
+      border: var(--line);
+      width: 100%;
+      min-height: 10rem;
+      display: grid;
+      place-items: center;
+      padding: var(--space-1);
+    }
+
+    .ratio-45 { aspect-ratio: 4 / 5; }
+    .ratio-43 { aspect-ratio: 4 / 3; }
+    .ratio-169 { aspect-ratio: 16 / 9; }
+    .ratio-11 { aspect-ratio: 1 / 1; }
+
+    .c3 { grid-column: span 3; }
+    .c4 { grid-column: span 4; }
+    .c5 { grid-column: span 5; }
+    .c6 { grid-column: span 6; }
+    .c7 { grid-column: span 7; }
+    .c8 { grid-column: span 8; }
+
+    .stack {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .layer-wrap {
+      position: relative;
+      min-height: 28rem;
+    }
+
+    .layer-a,
+    .layer-b,
+    .layer-c {
+      position: absolute;
+      border: var(--line);
+      background: #fff;
+      padding: var(--space-2);
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .layer-a {
+      width: min(60%, 40rem);
+      top: 0;
+      left: 0;
+    }
+
+    .layer-b {
+      width: min(40%, 22rem);
+      right: 8%;
+      top: 3rem;
+    }
+
+    .layer-c {
+      width: min(36%, 20rem);
+      left: 30%;
+      bottom: 0;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: var(--space-2);
+      margin-top: var(--space-5);
+      padding: 0 clamp(0.75rem, 3vw, 2.5rem) var(--space-4);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    @media (max-width: 64rem) {
+      .hero {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .hero-copy,
+      .hero-media-main {
+        grid-column: 1 / -1;
+      }
+
+      .hero-media-overlap {
+        left: 1rem;
+        width: min(40%, 16rem);
+      }
+
+      .asym-grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .c8, .c7, .c6, .c5, .c4 { grid-column: span 4; }
+      .c3 { grid-column: span 4; }
+
+      .layer-wrap {
+        min-height: auto;
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .layer-a, .layer-b, .layer-c {
+        position: static;
+        width: 100%;
+      }
+
+      .deco-text {
+        right: -3rem;
+        top: 46rem;
+      }
+    }
+
+    @media (max-width: 42.5rem) {
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .asym-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .c8, .c7, .c6, .c5, .c4, .c3 {
+        grid-column: span 4;
+      }
+
+      .hero-media-overlap {
+        position: static;
+        width: 100%;
+        min-height: 9rem;
+      }
+
+      .deco-text {
+        right: -2rem;
+        top: 42rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="accent stripe" aria-hidden="true"></div>
+    <div class="accent dot" aria-hidden="true"></div>
+    <div class="accent blob" aria-hidden="true"></div>
+    <div class="deco-text" aria-hidden="true">ASYM</div>
+
+    <header class="topbar">
+      <p>Logo Area</p>
+      <nav aria-label="Primary navigation">
+        <ul class="nav">
+          <li><a href="#">Work</a></li>
+          <li><a href="#">Stories</a></li>
+          <li><a href="#">Studio</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker">Asymmetrical Hero</p>
+        <h1 id="hero-title">Creative imbalance with clear focus</h1>
+        <p>Freeform modern layout with visual weight control, concise copy, and image-first narrative pacing.</p>
+      </div>
+      <figure class="hero-media-main">
+        <span>Large Media Placeholder</span>
+        <figure class="hero-media-overlap">
+          <span>Layered Media Placeholder</span>
+        </figure>
+      </figure>
+    </section>
+
+    <section class="section" aria-labelledby="sec-a-title">
+      <header class="section-head">
+        <h2 id="sec-a-title">Asymmetrical Narrative Grid</h2>
+        <p>Uneven module sizes and placements create movement while preserving alignment and readability.</p>
+      </header>
+      <div class="asym-grid">
+        <article class="card c7">
+          <p class="kicker">Primary Visual</p>
+          <h3>Dominant image block drives the section</h3>
+          <figure class="media ratio-169"><span>Image / Video 16:9</span></figure>
+        </article>
+
+        <aside class="stack c5">
+          <article class="card">
+            <p class="kicker">Text Focus</p>
+            <h3>Short strategic message</h3>
+            <p>Concise copy reinforces narrative direction.</p>
+          </article>
+          <article class="card">
+            <p class="kicker">Support Visual</p>
+            <figure class="media ratio-43"><span>Image 4:3</span></figure>
+          </article>
+        </aside>
+
+        <article class="card c4">
+          <p class="kicker">Module A</p>
+          <h3>Compact block</h3>
+          <figure class="media ratio-11"><span>Image 1:1</span></figure>
+        </article>
+        <article class="card c3">
+          <p class="kicker">Module B</p>
+          <h3>Micro narrative</h3>
+          <p>Small supporting copy.</p>
+        </article>
+        <article class="card c5">
+          <p class="kicker">Module C</p>
+          <h3>Wide text-media transition</h3>
+          <figure class="media ratio-43"><span>Image 4:3</span></figure>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sec-b-title">
+      <header class="section-head">
+        <h2 id="sec-b-title">Layered Freeform Composition</h2>
+        <p>Elements can overlap when hierarchy remains clear and user focus is preserved.</p>
+      </header>
+      <div class="layer-wrap">
+        <article class="layer-a">
+          <p class="kicker">Layer A</p>
+          <h3>Main foreground story block</h3>
+          <figure class="media ratio-45"><span>Image / Video 4:5</span></figure>
+        </article>
+        <article class="layer-b">
+          <p class="kicker">Layer B</p>
+          <h3>Offset highlight card</h3>
+          <p>Secondary narrative line.</p>
+        </article>
+        <article class="layer-c">
+          <p class="kicker">Layer C</p>
+          <h3>Floating utility block</h3>
+          <figure class="media ratio-11"><span>Image 1:1</span></figure>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Contact Information</p>
+      <ul class="footer-links" aria-label="Footer links">
+        <li>Instagram</li>
+        <li>LinkedIn</li>
+        <li>Email</li>
+      </ul>
+    </footer>
+  </main>
+</body>
+</html>

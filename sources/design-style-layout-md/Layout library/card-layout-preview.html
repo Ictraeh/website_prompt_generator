@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Card Layout Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --line: 1px solid;
+      --pad: clamp(0.5rem, 2vw, 1.25rem);
+      --content-max: 120rem;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.45; }
+    h1, h2, h3, p, figure { margin: 0; }
+    a { color: inherit; text-underline-offset: 0.15rem; text-decoration-thickness: 1px; }
+
+    .page {
+      width: 100%;
+      padding: var(--space-3) var(--pad) var(--space-5);
+      display: grid;
+      gap: var(--space-5);
+      max-width: var(--content-max);
+      margin-inline: auto;
+    }
+
+    .hero {
+      display: grid;
+      gap: var(--space-2);
+      max-width: 120ch;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 4.8rem);
+      line-height: 0.95;
+      max-width: 22ch;
+      width: 100%;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+      max-width: 62ch;
+    }
+
+    .section {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .section h2 {
+      font-size: clamp(1.4rem, 2.7vw, 2.8rem);
+      line-height: 1.03;
+      max-width: 22ch;
+      width: 100%;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+      gap: var(--space-2);
+      align-items: stretch;
+    }
+
+    .cards.feature {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .card {
+      border: var(--line);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      min-height: 20rem;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .card-media {
+      border-bottom: var(--line);
+      min-height: 12rem;
+      display: grid;
+      place-items: center;
+      padding: var(--space-1);
+    }
+
+    .card-media span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .ratio-169 { aspect-ratio: 16 / 9; }
+    .ratio-43 { aspect-ratio: 4 / 3; }
+    .ratio-45 { aspect-ratio: 4 / 5; }
+    .ratio-11 { aspect-ratio: 1 / 1; }
+
+    .card-overline {
+      padding: var(--space-2) var(--space-2) 0;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .card-title {
+      padding: var(--space-1) var(--space-2) 0;
+      font-size: clamp(1.1rem, 1.7vw, 1.9rem);
+      line-height: 1.05;
+      max-width: 16ch;
+    }
+
+    .card-support {
+      padding: var(--space-1) var(--space-2) var(--space-2);
+      max-width: 48ch;
+      font-size: 0.98rem;
+    }
+
+    .card-actions {
+      border-top: var(--line);
+      padding: var(--space-2);
+      display: flex;
+      gap: var(--space-1);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      border: var(--line);
+      padding: 0.5rem 0.8rem;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 0.9rem;
+    }
+
+    .feature-left { grid-column: 1 / span 7; min-height: 30rem; }
+    .feature-right { grid-column: 8 / span 5; min-height: 30rem; }
+
+    .feature-left .card-media,
+    .feature-right .card-media {
+      min-height: 17rem;
+    }
+
+    .feature-left .card-title,
+    .feature-right .card-title {
+      font-size: clamp(1.4rem, 2.4vw, 2.6rem);
+      max-width: 20ch;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: var(--space-2);
+    }
+
+    .gallery-card {
+      border: var(--line);
+      min-height: 12rem;
+      display: grid;
+      align-content: start;
+      grid-template-rows: auto auto;
+    }
+
+    .gallery-card .card-media {
+      min-height: 10rem;
+    }
+
+    .rail {
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: var(--space-1);
+    }
+
+    .rail-track {
+      display: flex;
+      gap: var(--space-2);
+      align-items: stretch;
+      min-width: max-content;
+    }
+
+    .rail-card {
+      flex: 0 0 auto;
+    }
+
+    .size-xs { width: 14rem; min-height: 16rem; }
+    .size-sm { width: 18rem; min-height: 18rem; }
+    .size-md { width: 24rem; min-height: 21rem; }
+    .size-lg { width: 30rem; min-height: 24rem; }
+    .size-xl { width: 38rem; min-height: 28rem; }
+
+    @media (max-width: 64rem) {
+      .cards.feature {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-left,
+      .feature-right {
+        grid-column: 1 / -1;
+      }
+
+      .size-xl { width: 30rem; }
+      .size-lg { width: 24rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p>Card Layout / Material-style Anatomy</p>
+      <h1>Modular cards with strong media and clear actions</h1>
+      <p>Each card follows a clear structure: media, title, support text, and actions row. This preview shows featured cards, supporting cards, and compact gallery cards in a fluid responsive system.</p>
+    </header>
+
+    <section class="section">
+      <h2>Featured Card Pair</h2>
+      <div class="cards feature">
+        <article class="card feature-left">
+          <figure class="card-media ratio-169"><span>Featured Media Slot 16:9</span></figure>
+          <p class="card-overline">Feature Story</p>
+          <h3 class="card-title">Primary campaign card with dominant visual hierarchy</h3>
+          <p class="card-support">Use this card type for top-priority stories, launches, or portfolio highlights that need strong media emphasis and direct action.</p>
+          <div class="card-actions">
+            <a class="btn" href="#">View Project</a>
+            <a class="btn" href="#">Read Details</a>
+          </div>
+        </article>
+
+        <article class="card feature-right">
+          <figure class="card-media ratio-45"><span>Featured Media Slot 4:5</span></figure>
+          <p class="card-overline">Secondary Feature</p>
+          <h3 class="card-title">Parallel feature card with balanced message and action</h3>
+          <p class="card-support">Use concise support text to keep the card scannable while preserving context and conversion intent.</p>
+          <div class="card-actions">
+            <a class="btn" href="#">Explore</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Scrollable Mixed Card Rail</h2>
+      <div class="rail">
+        <div class="rail-track">
+        <article class="card rail-card size-sm">
+          <figure class="card-media ratio-43"><span>Media Slot 4:3</span></figure>
+          <p class="card-overline">Category</p>
+          <h3 class="card-title">Supporting card one</h3>
+          <p class="card-support">Short description to explain value quickly.</p>
+          <div class="card-actions"><a class="btn" href="#">Open</a></div>
+        </article>
+
+        <article class="card rail-card size-xs">
+          <figure class="card-media ratio-11"><span>Media Slot 1:1</span></figure>
+          <p class="card-overline">Category</p>
+          <h3 class="card-title">Micro card two</h3>
+          <p class="card-support">Keep one clear idea per card.</p>
+          <div class="card-actions"><a class="btn" href="#">Open</a></div>
+        </article>
+
+        <article class="card rail-card size-md">
+          <figure class="card-media ratio-43"><span>Media Slot 4:3</span></figure>
+          <p class="card-overline">Category</p>
+          <h3 class="card-title">Supporting card three</h3>
+          <p class="card-support">Actions stay in the dedicated actions row.</p>
+          <div class="card-actions">
+            <a class="btn" href="#">Open</a>
+            <a class="btn" href="#">Save</a>
+          </div>
+        </article>
+
+        <article class="card rail-card size-lg">
+          <figure class="card-media ratio-169"><span>Media Slot 16:9</span></figure>
+          <p class="card-overline">Large Card</p>
+          <h3 class="card-title">Large narrative card for stronger visual impact</h3>
+          <p class="card-support">Wider format gives more room for headline and support text while preserving card anatomy.</p>
+          <div class="card-actions"><a class="btn" href="#">Read</a></div>
+        </article>
+
+        <article class="card rail-card size-sm">
+          <figure class="card-media ratio-11"><span>Media Slot 1:1</span></figure>
+          <p class="card-overline">Category</p>
+          <h3 class="card-title">Small card</h3>
+          <p class="card-support">Compact module.</p>
+          <div class="card-actions"><a class="btn" href="#">Open</a></div>
+        </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Small-to-Large Card Spectrum</h2>
+      <div class="rail">
+        <div class="rail-track">
+        <article class="gallery-card rail-card size-xs">
+          <figure class="card-media ratio-11"><span>Gallery Slot 1</span></figure>
+          <div class="card-actions"><a class="btn" href="#">View</a></div>
+        </article>
+        <article class="gallery-card rail-card size-sm">
+          <figure class="card-media ratio-11"><span>Gallery Slot 2</span></figure>
+          <div class="card-actions"><a class="btn" href="#">View</a></div>
+        </article>
+        <article class="gallery-card rail-card size-md">
+          <figure class="card-media ratio-11"><span>Gallery Slot 3</span></figure>
+          <div class="card-actions"><a class="btn" href="#">View</a></div>
+        </article>
+        <article class="gallery-card rail-card size-lg">
+          <figure class="card-media ratio-11"><span>Gallery Slot 4</span></figure>
+          <div class="card-actions"><a class="btn" href="#">View</a></div>
+        </article>
+        <article class="gallery-card rail-card size-xl">
+          <figure class="card-media ratio-169"><span>Gallery Slot 5</span></figure>
+          <div class="card-actions"><a class="btn" href="#">View</a></div>
+        </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

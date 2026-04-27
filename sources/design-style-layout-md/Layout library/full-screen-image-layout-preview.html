@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Full-Screen Image Layout Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --space-6: 6rem;
+      --line: 1px solid;
+      --max-copy: 52ch;
+      --viewport-h: 100vh;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      line-height: 1.45;
+    }
+
+    h1, h2, p, figure {
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+      text-underline-offset: 0.2rem;
+      text-decoration-thickness: 1px;
+    }
+
+    .chapter {
+      min-height: var(--viewport-h);
+      width: 100%;
+      display: block;
+      position: relative;
+      border-top: var(--line);
+    }
+
+    .media {
+      width: 100%;
+      min-height: var(--viewport-h);
+      display: grid;
+      place-items: center;
+      padding: var(--space-2);
+    }
+
+    .media > span {
+      display: inline-block;
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      font-size: 0.9rem;
+    }
+
+    .overlay {
+      width: min(100%, calc(100% - clamp(1.5rem, 8vw, 6rem)));
+      position: absolute;
+      left: clamp(0.75rem, 4vw, 3rem);
+      bottom: clamp(0.75rem, 4vw, 3rem);
+      padding: var(--space-4) clamp(0.75rem, 4vw, 3rem);
+      display: grid;
+      gap: var(--space-3);
+      align-content: end;
+      border: var(--line);
+      background: #fff;
+    }
+
+    .title {
+      font-size: clamp(2rem, 7vw, 6.5rem);
+      line-height: 0.96;
+      max-width: 12ch;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 1.5vw, 1.3rem);
+      max-width: var(--max-copy);
+    }
+
+    .actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .button {
+      border: var(--line);
+      padding: 0.65rem 1rem;
+      text-decoration: none;
+    }
+
+    /* Slideshow chapter (CSS-only) */
+    .slideshow-wrap {
+      min-height: var(--viewport-h);
+      border-top: var(--line);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+    }
+
+    .slideshow-head,
+    .slideshow-controls {
+      padding: var(--space-3) clamp(0.75rem, 4vw, 3rem);
+      border-bottom: var(--line);
+    }
+
+    .slideshow-head p {
+      max-width: var(--max-copy);
+      margin-top: var(--space-1);
+    }
+
+    .slides {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      flex: 0 0 100%;
+      min-height: var(--viewport-h);
+      scroll-snap-align: start;
+      border-right: var(--line);
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+
+    .slide-media {
+      min-height: calc(var(--viewport-h) * 0.7);
+      display: grid;
+      place-items: center;
+      padding: var(--space-2);
+    }
+
+    .slide-media span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .slide-copy {
+      padding: var(--space-4) clamp(0.75rem, 4vw, 3rem);
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .slide-copy h2 {
+      font-size: clamp(1.6rem, 4vw, 3.4rem);
+      line-height: 1;
+      max-width: 14ch;
+    }
+
+    .slide-copy p {
+      max-width: var(--max-copy);
+    }
+
+    .slideshow-controls {
+      border-top: var(--line);
+      border-bottom: 0;
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 48rem) {
+      .overlay {
+        width: calc(100% - 1.5rem);
+        left: 0.75rem;
+        bottom: 0.75rem;
+        padding: var(--space-3) 0.75rem;
+      }
+
+    }
+
+    @supports (height: 100svh) {
+      :root { --viewport-h: 100svh; }
+    }
+
+    @supports (height: 100dvh) {
+      :root { --viewport-h: 100dvh; }
+    }
+  </style>
+</head>
+<body>
+  <section id="scene-1" class="chapter">
+    <figure class="media">
+      <span>Full Screen Image / Video Placeholder</span>
+    </figure>
+    <div class="overlay">
+      <h1 class="title">Immersive visual story starts here</h1>
+      <p class="subtitle">Large media-first chapter with concise context and clear direction to continue the experience.</p>
+      <div class="actions">
+        <a class="button" href="#scene-2">Next Screen</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="scene-2" class="chapter">
+    <figure class="media">
+      <span>Full Screen Image / Video Placeholder</span>
+    </figure>
+    <div class="overlay">
+      <h1 class="title">Visual chapter with minimal copy</h1>
+      <p class="subtitle">Keep text short, preserve strong media priority, and guide the viewer with one or two clear actions.</p>
+      <div class="actions">
+        <a class="button" href="#scene-3">Next Screen</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="scene-3" class="chapter">
+    <figure class="media">
+      <span>Full Screen Image / Video Placeholder</span>
+    </figure>
+    <div class="overlay">
+      <h1 class="title">Experience-focused progression</h1>
+      <p class="subtitle">Every screen is a complete stage: one dominant visual, one strong title, one short subtitle, direct CTA.</p>
+      <div class="actions">
+        <a class="button" href="#slideshow">View Image-to-Image Slides</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="slideshow" class="slideshow-wrap" aria-label="Image-to-image slideshow">
+    <header class="slideshow-head">
+      <h2>Click/Tap Slideshow Mode</h2>
+      <p>CSS-only horizontal slideshow demo with one visual focus per frame and minimal storytelling text.</p>
+    </header>
+
+    <div class="slides">
+      <article id="slide-1" class="slide">
+        <figure class="slide-media"><span>Slide Image Placeholder 01</span></figure>
+        <div class="slide-copy">
+          <h2>Frame one with clear visual hierarchy</h2>
+          <p>Short supporting subtitle for context.</p>
+        </div>
+      </article>
+      <article id="slide-2" class="slide">
+        <figure class="slide-media"><span>Slide Image Placeholder 02</span></figure>
+        <div class="slide-copy">
+          <h2>Frame two continues the narrative</h2>
+          <p>Keep text minimal and actionable.</p>
+        </div>
+      </article>
+      <article id="slide-3" class="slide">
+        <figure class="slide-media"><span>Slide Image Placeholder 03</span></figure>
+        <div class="slide-copy">
+          <h2>Frame three closes with direction</h2>
+          <p>Guide users to the next stage of exploration.</p>
+        </div>
+      </article>
+    </div>
+
+    <nav class="slideshow-controls" aria-label="Slideshow controls">
+      <a class="button" href="#slide-1">Start Slides</a>
+      <a class="button" href="#end">Continue</a>
+    </nav>
+  </section>
+
+  <section id="end" class="chapter">
+    <figure class="media">
+      <span>Closing Full Screen Placeholder</span>
+    </figure>
+    <div class="overlay">
+      <h1 class="title">Closing chapter and next action</h1>
+      <p class="subtitle">End screen summarizes the experience and presents clear next-step paths.</p>
+      <div class="actions">
+        <a class="button" href="#scene-1">Restart Story</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Z-Pattern Storytelling Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.75rem;
+      --space-4: 3rem;
+      --space-5: 5rem;
+      --space-6: 7rem;
+      --line: 1px solid;
+      --page-pad: clamp(0.75rem, 3.5vw, 3rem);
+      --copy-max: 58ch;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.45; }
+    h1, h2, h3, p, figure { margin: 0; }
+    a { color: inherit; text-underline-offset: 0.2rem; text-decoration-thickness: 1px; }
+
+    .page {
+      width: 100%;
+      padding: 0;
+      display: grid;
+      gap: var(--space-6);
+      padding-bottom: var(--space-6);
+    }
+
+    .section {
+      width: 100%;
+      padding-inline: var(--page-pad);
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .z-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-3);
+      align-items: start;
+    }
+
+    .point {
+      display: grid;
+      gap: var(--space-2);
+      align-content: start;
+      min-height: 6rem;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+
+    .title-xl {
+      font-size: clamp(2.1rem, 6vw, 6rem);
+      line-height: 0.95;
+      max-width: 11ch;
+    }
+
+    .title-lg {
+      font-size: clamp(1.5rem, 3vw, 3rem);
+      line-height: 1.02;
+      max-width: 14ch;
+    }
+
+    .copy {
+      max-width: var(--copy-max);
+      font-size: clamp(1rem, 1.15vw, 1.18rem);
+    }
+
+    .actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .button {
+      padding: 0.7rem 1rem;
+      text-decoration: none;
+    }
+
+    /* Z points */
+    .p1 { grid-column: 1 / span 4; }
+    .p2 { grid-column: 9 / span 4; justify-items: end; text-align: right; }
+    .diag { grid-column: 3 / span 8; position: relative; min-height: 32rem; display: grid; gap: var(--space-2); }
+    .p3 { grid-column: 1 / span 5; }
+    .p4 { grid-column: 8 / span 5; justify-items: end; text-align: right; align-content: end; }
+
+    /* only image slots have outlines */
+    .media-slot {
+      border: var(--line);
+      width: 100%;
+      min-height: 18rem;
+      display: grid;
+      place-items: center;
+      padding: var(--space-2);
+    }
+
+    .media-slot span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .diag-note {
+      position: absolute;
+      right: -6%;
+      bottom: -2.5rem;
+      max-width: 22rem;
+      padding: var(--space-2);
+      background: #fff;
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    /* Story rows (zig-zag extension) */
+    .story-row {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-3);
+      align-items: center;
+    }
+
+    .story-copy-left { grid-column: 1 / span 4; display: grid; gap: var(--space-2); }
+    .story-media-right { grid-column: 5 / span 8; position: relative; }
+    .story-media-left { grid-column: 1 / span 8; position: relative; }
+    .story-copy-right { grid-column: 9 / span 4; display: grid; gap: var(--space-2); }
+
+    .overlay-chip {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1rem;
+      padding: var(--space-2);
+      background: #fff;
+      max-width: 16rem;
+    }
+
+    .overlay-chip.left {
+      right: auto;
+      left: -1rem;
+    }
+
+    .ratio-169 { aspect-ratio: 16 / 9; }
+    .ratio-43 { aspect-ratio: 4 / 3; }
+    .ratio-45 { aspect-ratio: 4 / 5; }
+
+    .final-cta {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+      padding-top: var(--space-3);
+    }
+
+    .final-copy { grid-column: 1 / span 7; display: grid; gap: var(--space-2); }
+    .final-action { grid-column: 9 / span 4; justify-self: end; }
+
+    @media (max-width: 64rem) {
+      .z-grid, .story-row, .final-cta {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .p1, .p2, .diag, .p3, .p4,
+      .story-copy-left, .story-copy-right, .story-media-left, .story-media-right,
+      .final-copy, .final-action {
+        grid-column: 1 / -1;
+      }
+
+      .p2, .p4 {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .final-action {
+        justify-self: start;
+      }
+
+      .diag-note, .overlay-chip, .overlay-chip.left {
+        position: static;
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 42.5rem) {
+      .page {
+        gap: var(--space-5);
+      }
+
+      .section {
+        gap: var(--space-3);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="section" aria-labelledby="hero-title">
+      <div class="z-grid">
+        <header class="point p1">
+          <p class="kicker">Point 1 / Start</p>
+          <h2 class="title-lg">Brand and first message</h2>
+          <p class="copy">Top-left begins the scan. Keep this direct and memorable.</p>
+        </header>
+
+        <aside class="point p2">
+          <p class="kicker">Point 2 / Early Action</p>
+          <h2 class="title-lg">Quick utility for ready users</h2>
+          <a class="button" href="#">Secondary CTA</a>
+        </aside>
+
+        <article class="point diag">
+          <p class="kicker">Diagonal Story Zone</p>
+          <h1 id="hero-title" class="title-xl">Lead with a large visual chapter</h1>
+          <figure class="media-slot ratio-169">
+            <span>Large Image / Video Placeholder</span>
+          </figure>
+          <div class="diag-note">
+            <p class="kicker">In-Section Overlay</p>
+            <p>Short narrative cue that keeps momentum toward the lower-right action.</p>
+          </div>
+        </article>
+
+        <article class="point p3">
+          <p class="kicker">Point 3 / Context</p>
+          <h2 class="title-lg">Why this matters now</h2>
+          <p class="copy">Bottom-left provides supporting proof, value, and confidence before conversion.</p>
+        </article>
+
+        <article class="point p4">
+          <p class="kicker">Point 4 / Finish</p>
+          <h2 class="title-lg">Primary action endpoint</h2>
+          <a class="button" href="#">Primary CTA</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="story-a">
+      <header class="point">
+        <p class="kicker">Zig-Zag Story 01</p>
+        <h2 id="story-a" class="title-lg">Extend the Z pattern with alternating chapters</h2>
+      </header>
+
+      <div class="story-row">
+        <div class="story-copy-left">
+          <p class="kicker">Chapter A</p>
+          <h3 class="title-lg">Large visual then concise explanation</h3>
+          <p class="copy">Keep text short. Let the media carry the emotion and context.</p>
+          <a class="button" href="#">Learn More</a>
+        </div>
+        <figure class="story-media-right">
+          <div class="media-slot ratio-43"><span>Story Media 01</span></div>
+          <figcaption class="overlay-chip">
+            <p class="kicker">Overlay Cue</p>
+            <p>Support note inside this section only.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="story-b">
+      <div class="story-row">
+        <figure class="story-media-left">
+          <div class="media-slot ratio-45"><span>Story Media 02</span></div>
+          <figcaption class="overlay-chip left">
+            <p class="kicker">Overlay Cue</p>
+            <p>Shift focal weight while preserving alignment.</p>
+          </figcaption>
+        </figure>
+        <div class="story-copy-right">
+          <p class="kicker">Chapter B</p>
+          <h3 id="story-b" class="title-lg">Switch side placement to continue scan flow</h3>
+          <p class="copy">Alternating composition keeps storytelling dynamic and directional.</p>
+          <a class="button" href="#">Explore</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="story-c">
+      <div class="story-row">
+        <div class="story-copy-left">
+          <p class="kicker">Chapter C</p>
+          <h3 id="story-c" class="title-lg">Final supporting narrative before close</h3>
+          <p class="copy">Use this stage to resolve objections and increase confidence.</p>
+        </div>
+        <figure class="story-media-right">
+          <div class="media-slot ratio-169"><span>Story Media 03</span></div>
+        </figure>
+      </div>
+
+      <div class="final-cta">
+        <div class="final-copy">
+          <p class="kicker">Final Z Endpoint</p>
+          <h2 class="title-lg">Complete the journey with one clear action</h2>
+          <p class="copy">Primary CTA remains visually distinct and easy to choose.</p>
+        </div>
+        <div class="final-action">
+          <a class="button" href="#">Get Started</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

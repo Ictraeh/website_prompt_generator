@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mosaic Modular Layout Preview</title>
+  <style>
+    :root {
+      --space-1: 0.5rem;
+      --space-2: 1rem;
+      --space-3: 1.5rem;
+      --space-4: 2.5rem;
+      --space-5: 4rem;
+      --line: 1px solid;
+      --page-pad: clamp(0.5rem, 2vw, 1rem);
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.45; }
+    h1, h2, h3, p, figure { margin: 0; }
+    a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.15rem; }
+
+    .page {
+      width: 100%;
+      padding: var(--space-3) var(--page-pad) var(--space-5);
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    .head {
+      display: grid;
+      gap: var(--space-2);
+      max-width: 72ch;
+    }
+
+    .head h1 {
+      font-size: clamp(2rem, 5vw, 4.8rem);
+      line-height: 0.95;
+      max-width: 18ch;
+      width: 100%;
+    }
+
+    .head p {
+      font-size: clamp(1rem, 1.2vw, 1.2rem);
+      max-width: 62ch;
+    }
+
+    .section {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .section h2 {
+      font-size: clamp(1.4rem, 2.8vw, 2.8rem);
+      line-height: 1;
+    }
+
+    .mosaic {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 0;
+      width: 100%;
+      grid-auto-flow: dense;
+    }
+
+    .tile {
+      border: var(--line);
+      min-height: 8rem;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: var(--space-1);
+      align-content: start;
+      padding: var(--space-2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+    }
+
+    .tile h3 {
+      font-size: clamp(1.05rem, 1.8vw, 1.8rem);
+      line-height: 1.04;
+      max-width: 18ch;
+    }
+
+    .tile p {
+      max-width: 34ch;
+      font-size: 0.95rem;
+    }
+
+    .media-slot {
+      width: 100%;
+      height: 100%;
+      border: var(--line);
+      display: grid;
+      place-items: center;
+      min-height: 8rem;
+      padding: var(--space-1);
+    }
+
+    .media-slot span {
+      border: var(--line);
+      padding: var(--space-2) var(--space-3);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .ratio-45 { aspect-ratio: 4 / 5; }
+    .ratio-43 { aspect-ratio: 4 / 3; }
+    .ratio-169 { aspect-ratio: 16 / 9; }
+    .ratio-11 { aspect-ratio: 1 / 1; }
+
+    .c2 { grid-column: span 2; }
+    .c1 { grid-column: span 1; }
+    .c3 { grid-column: span 3; }
+    .c4 { grid-column: span 4; }
+    .c5 { grid-column: span 5; }
+    .c6 { grid-column: span 6; }
+    .c7 { grid-column: span 7; }
+    .c8 { grid-column: span 8; }
+
+    .r1 { grid-row: span 1; }
+    .mini-mosaic {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      border: var(--line);
+    }
+
+    .mini-cell {
+      min-height: 4.5rem;
+      border: var(--line);
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .r2 { grid-row: span 2; }
+    .r3 { grid-row: span 3; }
+
+    .overlay-note {
+      position: absolute;
+      right: var(--space-1);
+      bottom: var(--space-1);
+      border: var(--line);
+      padding: var(--space-1);
+      font-size: 0.78rem;
+      max-width: 12rem;
+      background: #fff;
+    }
+
+    .cta {
+      margin-top: var(--space-1);
+    }
+
+    .mosaic-b .tile:nth-child(2) .overlay-note {
+      left: var(--space-1);
+      right: auto;
+    }
+
+    @media (max-width: 64rem) {
+      .mosaic {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      .c8, .c7, .c6, .c5, .c4, .c3, .c2, .c1 {
+        grid-column: span 4;
+      }
+    }
+
+    @media (max-width: 42.5rem) {
+      .page {
+        padding-inline: 0.25rem;
+      }
+
+      .mosaic {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .c8, .c7, .c6, .c5, .c4, .c3, .c2, .c1 {
+        grid-column: span 4;
+      }
+
+      .r2, .r3 {
+        grid-row: span 1;
+      }
+
+      .overlay-note {
+        position: static;
+        margin-top: var(--space-1);
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="head">
+      <p>Mosaic Modular Layout</p>
+      <h1>Full-filled mosaic with diverse module sizing</h1>
+      <p>Image/video-first storytelling layout using tightly packed CSS Grid modules with mixed spans, minimal gaps, and clean responsive reflow.</p>
+    </header>
+
+    <section class="section">
+      <h2>Mosaic A: Anchor + Support Grid</h2>
+      <div class="mosaic mosaic-a">
+        <article class="tile c8 r3">
+          <p class="kicker">Anchor Tile</p>
+          <h3>Primary visual chapter</h3>
+          <figure class="media-slot ratio-169"><span>Image / Video Slot 16:9</span></figure>
+          <p class="cta"><a href="#">View Story</a></p>
+          <div class="overlay-note">Layered note allowed in-section</div>
+        </article>
+        <article class="tile c4 r2">
+          <p class="kicker">Feature</p>
+          <h3>Secondary feature</h3>
+          <figure class="media-slot ratio-45"><span>Image Slot 4:5</span></figure>
+        </article>
+        <article class="tile c4 r1">
+          <p class="kicker">Text Tile</p>
+          <h3>Compact message block</h3>
+          <p>Short supporting copy.</p>
+        </article>
+        <article class="tile c4 r1">
+          <p class="kicker">Media Tile</p>
+          <figure class="media-slot ratio-11"><span>Image Slot 1:1</span></figure>
+        </article>
+        <article class="tile c2 r1">
+          <p class="kicker">Micro 01</p>
+          <h3>Small</h3>
+        </article>
+        <article class="tile c2 r1">
+          <p class="kicker">Micro 02</p>
+          <h3>Small</h3>
+        </article>
+        <article class="tile c2 r1">
+          <p class="kicker">Micro 03</p>
+          <h3>Small</h3>
+        </article>
+        <article class="tile c2 r1">
+          <p class="kicker">Micro 04</p>
+          <h3>Small</h3>
+        </article>
+        <article class="tile c4 r1">
+          <p class="kicker">Bridge Tile</p>
+          <h3>Balanced row completion</h3>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Mosaic B: Split Narrative Mosaic</h2>
+      <div class="mosaic mosaic-b">
+        <article class="tile c6 r2">
+          <p class="kicker">Lead Left</p>
+          <h3>Left narrative visual</h3>
+          <figure class="media-slot ratio-43"><span>Image Slot 4:3</span></figure>
+        </article>
+        <article class="tile c6 r3">
+          <p class="kicker">Lead Right</p>
+          <h3>Right dominant media</h3>
+          <figure class="media-slot ratio-45"><span>Image Slot 4:5</span></figure>
+          <div class="overlay-note">In-section overlay keeps focus</div>
+        </article>
+        <article class="tile c3 r1"><p class="kicker">B1</p><h3>Utility</h3><p>Short note.</p></article>
+        <article class="tile c3 r1"><p class="kicker">B2</p><h3>Utility</h3><p>Short note.</p></article>
+        <article class="tile c3 r1"><p class="kicker">B3</p><h3>Media</h3><figure class="media-slot ratio-11"><span>1:1</span></figure></article>
+        <article class="tile c3 r1"><p class="kicker">B4</p><h3>Action</h3><p class="cta"><a href="#">Explore</a></p></article>
+        <article class="tile c3 r1"><p class="kicker">B5</p><h3>Micro Story</h3><p>Short cue.</p></article>
+        <article class="tile c3 r1"><p class="kicker">B6</p><h3>Micro Story</h3><p>Short cue.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Mosaic C: Dense Modular Wall</h2>
+      <div class="mosaic mosaic-c">
+        <article class="tile c5 r3">
+          <p class="kicker">Primary</p>
+          <h3>Main campaign module</h3>
+          <figure class="media-slot ratio-45"><span>Image Slot 4:5</span></figure>
+        </article>
+        <article class="tile c3 r2"><p class="kicker">C1</p><h3>Feature</h3><figure class="media-slot ratio-11"><span>1:1</span></figure></article>
+        <article class="tile c4 r2"><p class="kicker">C2</p><h3>Feature</h3><figure class="media-slot ratio-43"><span>4:3</span></figure></article>
+        <article class="tile c2 r1"><p class="kicker">C3</p><h3>Micro</h3></article>
+        <article class="tile c2 r1"><p class="kicker">C4</p><h3>Micro</h3></article>
+        <article class="tile c3 r1"><p class="kicker">C5</p><h3>Text</h3><p>Compact support line.</p></article>
+        <article class="tile c4 r1"><p class="kicker">C6</p><h3>Action</h3><p class="cta"><a href="#">Open Gallery</a></p></article>
+        <article class="tile c3 r1"><p class="kicker">C7</p><h3>Media</h3><figure class="media-slot ratio-169"><span>16:9</span></figure></article>
+        <article class="tile c3 r1"><p class="kicker">C8</p><h3>Micro Cluster</h3><div class="mini-mosaic"><div class="mini-cell">a</div><div class="mini-cell">b</div><div class="mini-cell">c</div><div class="mini-cell">d</div></div></article>
+        <article class="tile c2 r1"><p class="kicker">C9</p><h3>Small</h3></article>
+        <article class="tile c3 r1"><p class="kicker">C10</p><h3>Small</h3></article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
