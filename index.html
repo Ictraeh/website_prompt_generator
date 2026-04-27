@@ -124,6 +124,8 @@
         background: var(--accent-hover);
       }
       #copy,
+      #copyPartA,
+      #copyPartB,
       #cloneFetch,
       #copyReactbits {
         background: var(--panel);
@@ -131,6 +133,8 @@
         border: 1px solid var(--border);
       }
       #copy:hover,
+      #copyPartA:hover,
+      #copyPartB:hover,
       #cloneFetch:hover,
       #copyReactbits:hover {
         background: #f8fafc;
@@ -148,12 +152,18 @@
       .out-wrap label {
         margin-bottom: 0.35rem;
       }
-      #output {
+      #output,
+      #outputPartA,
+      #outputPartB {
         min-height: 220px;
         font-family: "JetBrains Mono", ui-monospace, monospace;
         font-size: 0.75rem;
         line-height: 1.4;
         background: #fafafa;
+      }
+      #outputPartA,
+      #outputPartB {
+        min-height: 160px;
       }
       #pexelsNote {
         margin-top: 0.35rem;
@@ -290,15 +300,10 @@
           <div>
             <label for="style">Primary style</label>
             <select id="style"></select>
-            <p id="styleIndustryHint" class="field-hint"></p>
           </div>
           <div>
             <label for="secondaryBlend">Secondary blend (optional)</label>
             <select id="secondaryBlend"></select>
-          </div>
-          <div>
-            <label for="stackProfile">Stack add-ons (optional)</label>
-            <select id="stackProfile"></select>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
             <label for="creativeVoice">Creative voice</label>
@@ -332,20 +337,26 @@
             </label>
             <label class="chk-row" for="splitPromptParts">
               <input type="checkbox" id="splitPromptParts" />
-              <span>Split prompt: Part A (layout &amp; content) + Part B (motion) for ~5k paste limits</span>
+              <span
+                ><strong>Split prompt</strong> — Part A: layout, copy, tokens, and governance. Part B: UI + background
+                motion only. Helps ~5k paste limits: run Part A to generate the site shell, then continue with Part B so
+                motion does not consume the first message.</span>
             </label>
             <label class="chk-row" for="compactPrompt">
               <input type="checkbox" id="compactPrompt" />
               <span>Compact prompt — shorter plain wording, fewer layer tags</span>
             </label>
           </div>
-          <div>
-            <label for="outputLang">Output language</label>
-            <select id="outputLang"></select>
-          </div>
-          <div>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
             <label for="userNotes">Extra notes (optional)</label>
-            <textarea id="userNotes" placeholder="e.g. tighter motion, mobile-first…"></textarea>
+            <textarea
+              id="userNotes"
+              placeholder="Paste content to mirror: hero copy, section headings, CTA labels. Link reference images, moodboard URLs, or video assets (e.g. brand reel). Any must-keep facts, legal lines, or locale."
+            ></textarea>
+            <p class="field-hint">
+              Ground the generator: real copy snippets, image/video links, competitor references, or accessibility
+              constraints.
+            </p>
           </div>
         </div>
         <div class="actions">
@@ -353,7 +364,7 @@
         </div>
       </div>
 
-      <div class="out-wrap panel">
+      <div class="out-wrap panel" id="singlePromptOutput">
         <h2>Prompt</h2>
         <label for="output">Output</label>
         <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
@@ -365,12 +376,33 @@
         <p id="pexelsNote"></p>
       </div>
 
+      <div id="splitPromptPanel" class="out-wrap panel is-hidden">
+        <h2>Split prompt</h2>
+        <p class="field-hint">
+          Two pastes for long workflows: use <strong>Part A</strong> first to lock structure and content, then
+          <strong>Part B</strong> in a follow-up message to add motion without redoing layout.
+        </p>
+        <label for="outputPartA">Part A — layout &amp; content (tokens, sections, governance)</label>
+        <textarea id="outputPartA" readonly placeholder="Generate with “Split prompt” checked…"></textarea>
+        <div class="actions">
+          <button type="button" id="copyPartA">Copy Part A</button>
+        </div>
+        <label for="outputPartB" class="label-mt">Part B — motion (after Part A is stable)</label>
+        <textarea id="outputPartB" readonly placeholder="Motion pack appears here…"></textarea>
+        <div class="actions">
+          <button type="button" id="copyPartB">Copy Part B</button>
+        </div>
+        <p class="field-hint">Main “Copy prompt” still copies Part A and Part B together in one block.</p>
+      </div>
+
       <div class="out-wrap panel" id="reactbitsPanel">
         <h2>Motion snippets</h2>
         <p class="field-hint">
           <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener">React Bits</a>,
           <a href="https://gsap.com/docs/v3/Plugins/ScrollTrigger/" target="_blank" rel="noopener">GSAP</a>,
-          <a href="https://animejs.com/documentation/animation/" target="_blank" rel="noopener">Anime.js</a>. List filters when a motion pick is a React Bits category.
+          <a href="https://animejs.com/documentation/animation/" target="_blank" rel="noopener">Anime.js</a>. Modules are
+          grouped: element animation, components, then special effects and backgrounds. The list narrows when your UI
+          motion pick is a React Bits category.
         </p>
         <div class="grid" style="margin-bottom: 0.45rem">
           <div>

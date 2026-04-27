@@ -15,6 +15,9 @@
   /** Sentinel value for "random blind pick" on supported selects. */
   const DEFAULT_VAL = "__default__";
 
+  /** Part A / Part B split — must match `buildPrompt` when `splitPromptParts` is true. */
+  const SPLIT_PROMPT_DELIM = "\n\n──────── PART B — MOTION (after layout) ────────\n\n";
+
   const L4_HINTS = {
     "L4.1": "Full-bleed hero media + overlay UI; video absolute inset-0 object-cover; nav glass/transparent; z-index explicit.",
     "L4.2": "640px email card in dark shell; ring-1 ring-white/5; dividers.",
@@ -189,16 +192,6 @@
     return { ordered: [...picked, ...rest], recommendedCount: picked.length };
   }
 
-  function updateStyleIndustryHint(industryId, recommendedCount, ordered) {
-    const p = el("styleIndustryHint");
-    if (!p) return;
-    const ind = cat.industries.find((i) => i.id === industryId);
-    const top = ordered.slice(0, Math.min(4, recommendedCount || 0)).map((s) => s.name).join(", ");
-    p.textContent = recommendedCount
-      ? `★${recommendedCount} picks for ${ind?.label || "this industry"}; then A–Z. Examples: ${top}.`
-      : `Styles A–Z for ${ind?.label || "this industry"}.`;
-  }
-
   function refillStyleSelect() {
     const industryId = el("industry").value;
     const styleSel = el("style");
@@ -206,10 +199,6 @@
     const prev = styleSel.value;
     const { ordered, recommendedCount } = sortStylesForPicker(industryId, cat.styles);
     styleSel.innerHTML = "";
-    const def = document.createElement("option");
-    def.value = DEFAULT_VAL;
-    def.textContent = "Default (random primary style)";
-    styleSel.appendChild(def);
     ordered.forEach((s, i) => {
       const o = document.createElement("option");
       o.value = s.id;
@@ -220,10 +209,8 @@
     });
     if (ordered.some((s) => s.id === prev)) styleSel.value = prev;
     else if (ordered[0]) styleSel.value = ordered[0].id;
-    else styleSel.value = DEFAULT_VAL;
-    updateStyleIndustryHint(industryId, recommendedCount, ordered);
     const st = cat.styles.find((s) => s.id === styleSel.value);
-    if (st && styleSel.value !== DEFAULT_VAL) applyStyleRecommendations(st);
+    if (st) applyStyleRecommendations(st);
   }
 
   const MOTION_ENERGY_ORDER = ["gentle", "playful", "bold"];
@@ -405,9 +392,12 @@
       for (const c of items) {
         const o = document.createElement("option");
         o.value = c.id;
-        o.textContent = c.label || c.labelZh;
+        const sw = (Array.isArray(c.swatchHexes) && c.swatchHexes.filter(Boolean).slice(0, 4)) || [];
+        const swLabel = sw.length ? `${sw.join(" ")} · ` : "";
+        o.textContent = `${swLabel}${c.label || c.labelZh}`;
         const ex = [c.styleLibraryAlign, c.cssHint].filter(Boolean).join(" — ").trim();
-        if (ex) o.title = ex.slice(0, 280);
+        const titleBits = [sw.length ? `Example hex: ${sw.join(", ")}` : "", ex].filter(Boolean);
+        if (titleBits.length) o.title = titleBits.join(" — ").slice(0, 280);
         og.appendChild(o);
       }
       s.appendChild(og);
@@ -424,7 +414,9 @@
       return;
     }
     const c = cat.colorVibes.find((x) => x.id === sel.value);
-    p.textContent = [c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || "";
+    const sw = (c?.swatchHexes || []).filter(Boolean).slice(0, 4);
+    const swLine = sw.length ? ` Example colors: ${sw.join(" ")}.` : "";
+    p.textContent = `${[c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || ""}${swLine}`.trim();
   }
 
   /** https://github.com/Ictraeh/design.md + Stitch DESIGN.md — compact (4999 cap). */
@@ -764,7 +756,6 @@
       motionEl,
       motionBg,
       userNotes,
-      outputLang,
       blend,
       stackProfile,
       blindRollLine = "",
@@ -842,18 +833,9 @@
     const typoLayer = buildTypoLayer(fontVibe, style, pairingRef);
     const colorLayer = buildColorLayer(colorVibe, style);
 
-    const langPreamble =
-      outputLang === "zh"
-        ? "[NOTE] Spec-first English implementation (§3.2); UI literals may use Simplified Chinese where listing copy.\n"
-        : "";
-
-    const langPreambleCompact =
-      outputLang === "zh" ? "Note: spec English; UI copy may be zh-CN where needed.\n" : "";
-
-    const uiLang =
-      outputLang === "zh"
-        ? "UI strings: Simplified Chinese where listing literals is required."
-        : "UI strings: English.";
+    const langPreamble = "";
+    const langPreambleCompact = "";
+    const uiLang = "UI strings: English.";
     const designMdBlock = includeDesignMd ? buildDesignMdClause() : "";
     const designMdBlockCompact = includeDesignMd ? `${buildDesignMdClauseCompact()}\n` : "";
     const bindLine = `${platform.labelEn || platform.label}|${industry.label}|#${style.libraryNumber} ${style.name}`;
@@ -1027,7 +1009,7 @@ ${motionRec ? `CATALOG_REC: ${motionRec}` : ""}`;
       const partB = `${partBHead}
 ${motionPack}
 ${partBTail}`;
-      body = `${partA.trim()}\n\n──────── PART B — MOTION (after layout) ────────\n\n${partB.trim()}`;
+      body = `${partA.trim()}${SPLIT_PROMPT_DELIM}${partB.trim()}`;
     } else {
       body = `${baseThroughColor}
 ${motionPack}
@@ -1086,21 +1068,13 @@ ${restAfterMotion}`;
       refillStyleSelect();
       refillMotionSelectsForIndustry();
       const sid = el("style").value;
-      if (sid !== DEFAULT_VAL) {
-        const st = cat.styles.find((s) => s.id === sid);
-        if (st) applyStyleRecommendations(st);
-      }
+      const st = cat.styles.find((s) => s.id === sid);
+      if (st) applyStyleRecommendations(st);
     });
 
     fillSelect("secondaryBlend", cat.styleBlends || [{ id: "none", label: "None" }], (b) => b.id, (b) => b.label);
     prependDefaultOption("secondaryBlend", "Default (random secondary blend)");
     el("secondaryBlend").value = "none";
-    fillSelect(
-      "stackProfile",
-      cat.stackProfiles || [{ id: "vite_default", label: "Default: Vite + React 18 + TS + Tailwind" }],
-      (p) => p.id,
-      (p) => p.label
-    );
     fillSelect("creativeVoice", CREATIVE_VOICE_OPTIONS, (o) => o.id, (o) => o.label);
     if (el("creativeVoice")) el("creativeVoice").value = "spec_first";
     fillSelect(
@@ -1122,27 +1096,13 @@ ${restAfterMotion}`;
     }
 
     el("style").addEventListener("change", () => {
-      const sid = el("style").value;
       syncColorVibeExplainer();
-      if (sid === DEFAULT_VAL) return;
-      const st = cat.styles.find((s) => s.id === sid);
+      const st = cat.styles.find((s) => s.id === el("style").value);
       if (st) applyStyleRecommendations(st);
     });
     const cvEl = el("colorVibe");
     if (cvEl) cvEl.addEventListener("change", syncColorVibeExplainer);
     syncColorVibeExplainer();
-
-    const outLang = el("outputLang");
-    outLang.innerHTML = "";
-    [
-      ["en", "English prompt body (recommended)"],
-      ["zh", "English spec + CN UI literals where needed"],
-    ].forEach(([v, t]) => {
-      const o = document.createElement("option");
-      o.value = v;
-      o.textContent = t;
-      outLang.appendChild(o);
-    });
 
     el("generate").addEventListener("click", () => {
       const platform = cat.platforms.find((p) => p.id === el("platform").value);
@@ -1151,14 +1111,12 @@ ${restAfterMotion}`;
       const fontSel = el("fontVibe");
       const colorSel = el("colorVibe");
       const blendEl = el("secondaryBlend");
-      const stackEl = el("stackProfile");
 
-      const styleRoll = styleSel && styleSel.value === DEFAULT_VAL;
       const fontRoll = fontSel && fontSel.value === DEFAULT_VAL;
       const colorRoll = colorSel && colorSel.value === DEFAULT_VAL;
       const blendRoll = blendEl && blendEl.value === DEFAULT_VAL;
 
-      const style = styleRoll ? pickRandom(cat.styles) : cat.styles.find((s) => s.id === styleSel?.value);
+      const style = cat.styles.find((s) => s.id === styleSel?.value);
       const fontVibe = fontRoll ? pickRandom(cat.fontVibes) : cat.fontVibes.find((f) => f.id === fontSel?.value);
       const colorVibe = colorRoll ? pickRandom(cat.colorVibes) : cat.colorVibes.find((c) => c.id === colorSel?.value);
       const motionEl = resolveMotionKit("motionElement", "element", style, platform, industry);
@@ -1173,14 +1131,10 @@ ${restAfterMotion}`;
       }
 
       const stackProfile =
-        stackEl && cat.stackProfiles
-          ? cat.stackProfiles.find((p) => p.id === stackEl.value) || { optionalLines: [] }
-          : { optionalLines: [] };
+        (cat.stackProfiles && cat.stackProfiles.find((p) => p.id === "vite_default")) || { optionalLines: [] };
       const userNotes = el("userNotes").value;
-      const outputLang = el("outputLang").value;
 
       const blindBits = [];
-      if (styleRoll) blindBits.push(`style→${style?.name || "?"}`);
       if (fontRoll) blindBits.push(`font→${fontVibe?.pickerLabel || fontVibe?.labelZh || fontVibe?.label || "?"}`);
       if (colorRoll) blindBits.push(`color→${colorVibe?.label || colorVibe?.labelZh || "?"}`);
       if (blendRoll) blindBits.push(`blend→${blend?.label || blend?.id || "?"}`);
@@ -1199,6 +1153,7 @@ ${restAfterMotion}`;
       }
       el("copyStatus").textContent = "";
 
+      const splitOn = Boolean(el("splitPromptParts")?.checked);
       const text = buildPrompt({
         platform,
         industry,
@@ -1208,24 +1163,49 @@ ${restAfterMotion}`;
         motionEl,
         motionBg,
         userNotes,
-        outputLang,
         blend,
         stackProfile,
         blindRollLine,
         includeDesignMd: Boolean(el("includeDesignMd")?.checked),
-        splitPromptParts: Boolean(el("splitPromptParts")?.checked),
+        splitPromptParts: splitOn,
         compactPrompt: Boolean(el("compactPrompt")?.checked),
         creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
       });
-      el("output").value = text;
+      const singleWrap = el("singlePromptOutput");
+      const splitPanel = el("splitPromptPanel");
+      const outA = el("outputPartA");
+      const outB = el("outputPartB");
+      if (splitOn && outA && outB) {
+        const i = text.indexOf(SPLIT_PROMPT_DELIM);
+        if (i !== -1) {
+          outA.value = text.slice(0, i).trim();
+          outB.value = text.slice(i + SPLIT_PROMPT_DELIM.length).trim();
+        } else {
+          outA.value = text.trim();
+          outB.value = "";
+        }
+        el("output").value = "";
+        if (singleWrap) singleWrap.classList.add("is-hidden");
+        splitPanel?.classList.remove("is-hidden");
+      } else {
+        el("output").value = text;
+        if (outA) outA.value = "";
+        if (outB) outB.value = "";
+        if (singleWrap) singleWrap.classList.remove("is-hidden");
+        splitPanel?.classList.add("is-hidden");
+      }
       el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;
     });
 
     el("copy").addEventListener("click", async () => {
-      const t = el("output").value;
+      const splitPanel = el("splitPromptPanel");
+      const useSplit = splitPanel && !splitPanel.classList.contains("is-hidden");
+      const t = useSplit
+        ? `${el("outputPartA")?.value || ""}${SPLIT_PROMPT_DELIM}${el("outputPartB")?.value || ""}`.trim()
+        : el("output").value;
       try {
         await navigator.clipboard.writeText(t);
-        el("copyStatus").textContent = "Copied to clipboard";
+        el("copyStatus").textContent = useSplit ? "Copied full prompt (A + B)" : "Copied to clipboard";
         setTimeout(() => {
           el("copyStatus").textContent = "";
         }, 2000);
@@ -1234,6 +1214,20 @@ ${restAfterMotion}`;
       }
     });
 
+    async function copyField(val, msg) {
+      try {
+        await navigator.clipboard.writeText(val);
+        el("copyStatus").textContent = msg;
+        setTimeout(() => {
+          el("copyStatus").textContent = "";
+        }, 2000);
+      } catch {
+        el("copyStatus").textContent = "Copy failed — select the text manually";
+      }
+    }
+    el("copyPartA")?.addEventListener("click", () => copyField(el("outputPartA")?.value || "", "Copied Part A"));
+    el("copyPartB")?.addEventListener("click", () => copyField(el("outputPartB")?.value || "", "Copied Part B"));
+
     initReactBits();
   }
 
@@ -1241,17 +1235,32 @@ ${restAfterMotion}`;
 
   const RB_CAT_EN = {
     Animations: "Animations",
+    Animation: "Animation",
     Backgrounds: "Backgrounds",
     Components: "Components",
     TextAnimations: "Text",
   };
 
+  const SNIPPET_BUCKET_ORDER = [
+    { key: "elements", label: "Element animation (text, sections, GSAP / Anime.js)" },
+    { key: "components", label: "Components" },
+    { key: "backgrounds", label: "Special effects & backgrounds" },
+  ];
+
+  function snippetMotionBucket(s) {
+    if (s.library === "reactbits") {
+      if (s.category === "Components") return "components";
+      if (s.category === "Backgrounds") return "backgrounds";
+      return "elements";
+    }
+    return "elements";
+  }
+
   function motionKitRbCategory() {
     const styleSel = el("style");
     const plat = cat.platforms.find((p) => p.id === el("platform")?.value);
     const ind = cat.industries.find((i) => i.id === el("industry")?.value);
-    const style =
-      styleSel?.value && styleSel.value !== DEFAULT_VAL ? cat.styles.find((s) => s.id === styleSel.value) : null;
+    const style = styleSel?.value ? cat.styles.find((s) => s.id === styleSel.value) : null;
     const melV = el("motionElement")?.value;
     const mbgV = el("motionBackground")?.value;
     const kEl =
@@ -1325,17 +1334,32 @@ ${restAfterMotion}`;
       const prev = sel.value;
       const narrow = Boolean(motionKitRbCategory());
       sel.innerHTML = "";
-      list.forEach((s) => {
-        const o = document.createElement("option");
-        o.value = s.id;
+      const buckets = { elements: [], components: [], backgrounds: [] };
+      for (const s of list) {
+        buckets[snippetMotionBucket(s)].push(s);
+      }
+      const labelFor = (s) => {
         const catEn = RB_CAT_EN[s.category] || s.category;
         if (s.library === "reactbits") {
-          o.textContent = narrow ? s.name : `${catEn} · ${s.name}`;
-        } else {
-          o.textContent = s.label || s.name;
+          return narrow ? s.name : `${catEn} · ${s.name}`;
         }
-        sel.appendChild(o);
-      });
+        return s.label || s.name;
+      };
+      const sortFn = (a, b) =>
+        (a.label || a.name || "").localeCompare(b.label || b.name || "", "en", { sensitivity: "base" });
+      for (const { key, label } of SNIPPET_BUCKET_ORDER) {
+        const items = (buckets[key] || []).slice().sort(sortFn);
+        if (!items.length) continue;
+        const og = document.createElement("optgroup");
+        og.label = label;
+        for (const s of items) {
+          const o = document.createElement("option");
+          o.value = s.id;
+          o.textContent = labelFor(s);
+          og.appendChild(o);
+        }
+        sel.appendChild(og);
+      }
       if ([...sel.options].some((o) => o.value === prev)) sel.value = prev;
       else if (sel.options[0]) sel.value = sel.options[0].value;
       showSnippet(sel.value);

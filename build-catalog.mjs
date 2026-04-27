@@ -854,6 +854,50 @@ const fontVibes = [
     mono: "JetBrains Mono",
     notes: "§5.1 recipe 7; pair with optional Spline stackProfile + pointer-events layering",
   },
+  {
+    id: "megatype_syne_hero",
+    labelZh: "超大展示字 · 两词封面",
+    pickerLabel: "Megatype Syne — 1–2 word clamp hero + 1rem body",
+    moodTags: ["statement", "gallery", "poster"],
+    label: "Megatype Syne — giant 2-word hero + 1rem paragraphs",
+    display: "Syne",
+    body: "DM Sans",
+    notes:
+      "Google Fonts: Syne 700–800 + DM Sans 400–500. Hero ≤2 words: text-[clamp(3.5rem,14vw,11rem)] font-extrabold leading-[0.92] tracking-tighter; body text-base leading-relaxed (1rem). Reserve display weight for hero + one section title only.",
+  },
+  {
+    id: "artsy_display_shrikhand",
+    labelZh: "趣味艺术展示 · Shrikhand",
+    pickerLabel: "Artsy Shrikhand — playful display + Nunito body",
+    moodTags: ["playful", "boutique", "creative"],
+    label: "Artsy Shrikhand — bold display + rounded body",
+    display: "Shrikhand",
+    body: "Nunito",
+    notes:
+      "Google Fonts: Shrikhand + Nunito. Display on short wordmarks and kicker labels; body Nunito 1rem/1.65; never set long paragraphs in Shrikhand.",
+  },
+  {
+    id: "mega_bebas_literata",
+    labelZh: "全屏词碑 · Bebas + 衬线正文",
+    pickerLabel: "Mega Bebas — ALL CAPS stack + Literata reading",
+    moodTags: ["cinema", "poster", "bold"],
+    label: "Mega Bebas — XXL condensed lines + Literata 1rem",
+    display: "Bebas Neue",
+    body: "Literata",
+    notes:
+      "Google Fonts: Bebas Neue + Literata. Hero: text-[clamp(3rem,12vw,10rem)] uppercase tracking-tight, max 2–3 words per line; long copy Literata text-base.",
+  },
+  {
+    id: "fatface_abril_editorial",
+    labelZh: "浓墨展示 · Abril Fatface",
+    pickerLabel: "Abril Fatface — fat display + Source Serif 4",
+    moodTags: ["editorial", "luxury", "magazine"],
+    label: "Abril Fatface — dramatic serif display + Source Serif body",
+    display: "Abril Fatface",
+    body: "Source Serif 4",
+    notes:
+      "Google Fonts: Abril Fatface for very short hero (few words) on solid or dark bands; Source Serif 4 at 1rem for articles; tight display tracking.",
+  },
 ];
 
 /** 色彩下拉分组：Huemint 式结构 + 经典气质（https://huemint.com/ ） */
@@ -1200,6 +1244,43 @@ const colorVibes = [
   },
 ];
 
+/** Curated hex cues for the color picker (native <select> cannot render swatches). */
+const COLOR_SWATCH_HINTS = {
+  hb_warm_cold_pair: ["#ea580c", "#0369a1", "#f1f5f9", "#0f172a"],
+  hb_tri_guardrails: ["#ffffff", "#64748b", "#0d9488", "#020617"],
+  hb_soft_complement: ["#fef3c7", "#4338ca", "#1e293b", "#fafaf9"],
+  hb_analogous_ribbon: ["#e0f2fe", "#bae6fd", "#0ea5e9", "#0c4a6e"],
+  hb_earth_jewel_spark: ["#b45309", "#78716c", "#f5f5f4", "#0f766e"],
+  hb_split_energy: ["#2563eb", "#a855f7", "#facc15", "#020617"],
+  hm_mag_four_roles: ["#fafaf9", "#171717", "#525252", "#dc2626"],
+  hm_mag_masthead_band: ["#1d4ed8", "#ffffff", "#0f172a", "#e2e8f0"],
+  hm_mag_warm_cool_zones: ["#fefce8", "#e2e8f0", "#475569", "#2563eb"],
+  hm_mag_night_reader: ["#0f172a", "#e2e8f0", "#f59e0b", "#1e293b"],
+  hm_mag_muted_pop_quote: ["#f4f4f5", "#3f3f46", "#6366f1", "#18181b"],
+  hm_mag_dual_accent_rail: ["#f8fafc", "#8b5cf6", "#14b8a6", "#0f172a"],
+  hm_mono_paper_ink_stack: ["#ffffff", "#e4e4e7", "#a1a1aa", "#18181b"],
+  hm_mono_blue_gray_ramp: ["#f8fafc", "#cbd5e1", "#334155", "#0f172a"],
+  hm_mono_middle_bridge: ["#fafafa", "#d4d4d8", "#71717a", "#09090b"],
+  hm_mono_warm_coffee: ["#fefce8", "#d6d3d1", "#78716c", "#292524"],
+  hm_mono_cool_slate_data: ["#f1f5f9", "#94a3b8", "#334155", "#020617"],
+  hm_mono_metallic_outline: ["#fafaf9", "#d6d3d1", "#a8a29e", "#1c1917"],
+  hm_soft_hue_ribbon_bg: ["#eff6ff", "#dbeafe", "#3b82f6", "#1e3a8a"],
+  hm_dark_aurora_glow: ["#042f2e", "#134e4a", "#2dd4bf", "#67e8f9"],
+  hm_pastel_chrome_safe: ["#fdf2f8", "#fbcfe8", "#a3e635", "#171717"],
+  dark_cinematic: ["#020617", "#0f172a", "#e2e8f0", "#38bdf8"],
+  light_editorial: ["#fafaf9", "#d6d3d1", "#1c1917", "#78716c"],
+  neon_cyber: ["#030712", "#22d3ee", "#f472b6", "#a3e635"],
+  warm_earth: ["#fef3c7", "#d97706", "#78350f", "#15803d"],
+  cool_corporate: ["#f8fafc", "#64748b", "#2563eb", "#0f172a"],
+  pastel_soft: ["#fce7f3", "#ddd6fe", "#4b5563", "#fdf2f8"],
+  monochrome_luxury: ["#fafaf9", "#d4d4d8", "#171717", "#eab308"],
+  high_saturation_pop: ["#eab308", "#ec4899", "#06b6d4", "#020617"],
+};
+
+for (const c of colorVibes) {
+  c.swatchHexes = COLOR_SWATCH_HINTS[c.id] || [];
+}
+
 /** Motion kit groups: site-wide §8 M-kits + React Bits buckets (filters Motion code panel) */
 const motionKitGroups = [
   { id: "site", label: "Site / page-level (MotionSites §8)" },
@@ -1432,7 +1513,7 @@ function buildStyleLibraryCatalog() {
 const styleLibrary = buildStyleLibraryCatalog();
 
 const out = {
-  version: "1.4.3",
+  version: "1.4.4",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     `Designer Style Layout Markdown (in-repo): ${GITHUB_REPO_STYLE_LIB_TREE}`,
