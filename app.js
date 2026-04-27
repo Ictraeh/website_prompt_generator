@@ -15,6 +15,9 @@
   /** Sentinel value for "random blind pick" on supported selects. */
   const DEFAULT_VAL = "__default__";
 
+  /** Motion vibe "Auto" — must differ from DEFAULT_VAL so it never collides with font/color random. */
+  const MOTION_VIBE_AUTO_ID = "__motion_auto__";
+
   /** Part A / Part B split — must match `buildPrompt` when `splitPromptParts` is true. */
   const SPLIT_PROMPT_DELIM = "\n\n──────── PART B — MOTION (after layout) ────────\n\n";
 
@@ -211,14 +214,8 @@
     else if (ordered[0]) styleSel.value = ordered[0].id;
     const st = cat.styles.find((s) => s.id === styleSel.value);
     if (st) applyStyleRecommendations(st);
+    syncColorVibeSwatchPreview();
   }
-
-  const MOTION_ENERGY_ORDER = ["gentle", "playful", "bold"];
-  const MOTION_ENERGY_LABEL = {
-    gentle: "Gentle & nice (default bias)",
-    playful: "Fun & punch",
-    bold: "Bold / cinematic",
-  };
 
   function motionKitMatchesPlane(kit, plane) {
     if (!kit) return false;
@@ -242,85 +239,112 @@
     return out;
   }
 
-  function industryPlaneRank(kitId, industryId, plane) {
-    const fit = cat.industryMotionFit?.[industryId];
-    if (!fit) return 999;
-    const ord = plane === "element" ? fit.elementIds || [] : fit.backgroundIds || [];
-    const i = ord.indexOf(kitId);
-    if (i === -1) return 400 + ord.length;
-    return i;
+  function animationRefPresetPlaneMatch(preset, side) {
+    const pl = preset.planes || [];
+    if (side === "ui") return pl.includes("ui") || pl.includes("both");
+    return pl.includes("bg") || pl.includes("both");
   }
 
-  function industryStarred(kitId, industryId, plane) {
-    const fit = cat.industryMotionFit?.[industryId];
-    if (!fit) return false;
-    const ord = plane === "element" ? fit.elementIds || [] : fit.backgroundIds || [];
-    const i = ord.indexOf(kitId);
-    return i !== -1 && i < 3;
-  }
-
-  function updateMotionIndustryHint(industryId) {
-    const p = el("motionHint");
-    if (!p) return;
-    const ind = cat.industries.find((i) => i.id === industryId);
-    const fit = cat.industryMotionFit?.[industryId];
-    const hint = (fit?.hint || "").replace(/\s+/g, " ").trim();
-    const tail = hint ? (hint.length > 100 ? `${hint.slice(0, 98)}…` : hint) : "";
-    p.textContent = tail
-      ? `${ind?.label || "Industry"}: ★ = top picks for this vertical; Auto uses style + industry + deliverable. ${tail}`
-      : `${ind?.label || "Industry"}: ★ = top picks for this vertical; Auto uses style + industry + deliverable.`;
-  }
-
-  function refillMotionSelectsForIndustry() {
-    const indId = el("industry")?.value || "";
-    const preserveEl = el("motionElement")?.value;
-    const preserveBg = el("motionBackground")?.value;
-    fillPlaneMotionSelect("motionElement", "element", indId);
-    prependDefaultOption("motionElement", "Auto (style + industry + deliverable)");
-    if (preserveEl && [...el("motionElement").options].some((o) => o.value === preserveEl)) {
-      el("motionElement").value = preserveEl;
-    } else {
-      el("motionElement").value = DEFAULT_VAL;
-    }
-    fillPlaneMotionSelect("motionBackground", "background", indId);
-    prependDefaultOption("motionBackground", "Auto (style + industry + deliverable)");
-    if (preserveBg && [...el("motionBackground").options].some((o) => o.value === preserveBg)) {
-      el("motionBackground").value = preserveBg;
-    } else {
-      el("motionBackground").value = DEFAULT_VAL;
-    }
-    updateMotionIndustryHint(indId);
-    rebuildReactbitsSnippetList();
-  }
-
-  /** Fills one select: kits for UI (element) or ambient (background), grouped by energy; optional industry bias for sort + ★. */
-  function fillPlaneMotionSelect(selectId, plane, industryId) {
-    const s = el(selectId);
-    if (!s || !cat.motionKits) return;
-    const ind = industryId || el("industry")?.value || "";
-    s.innerHTML = "";
-    for (const energy of MOTION_ENERGY_ORDER) {
-      const items = cat.motionKits
-        .filter((k) => motionKitMatchesPlane(k, plane) && (k.energy || "gentle") === energy)
-        .sort((a, b) => {
-          const ra = industryPlaneRank(a.id, ind, plane);
-          const rb = industryPlaneRank(b.id, ind, plane);
-          if (ra !== rb) return ra - rb;
-          return (a.label || "").localeCompare(b.label || "", "en", { sensitivity: "base" });
-        });
-      if (!items.length) continue;
-      const og = document.createElement("optgroup");
-      og.label = MOTION_ENERGY_LABEL[energy] || energy;
-      for (const k of items) {
-        const g = (k.group || "site") === "reactbits" ? "RB · " : "";
-        const star = industryStarred(k.id, ind, plane) ? "★ " : "";
-        const o = document.createElement("option");
-        o.value = k.id;
-        o.textContent = `${star}${g}${k.label}`;
-        og.appendChild(o);
+  function industryDefaultAnimationRefIds(industryId) {
+    const presets = cat.animationRefPresets || [];
+    const rec = (cat.industryAnimationRefFit && cat.industryAnimationRefFit[industryId]) || [];
+    const ui = [];
+    const bg = [];
+    let uiN = 0;
+    let bgN = 0;
+    for (const id of rec) {
+      const pr = presets.find((x) => x.id === id);
+      if (!pr) continue;
+      if (animationRefPresetPlaneMatch(pr, "ui") && uiN < 4) {
+        ui.push(id);
+        uiN++;
       }
-      s.appendChild(og);
+      if (animationRefPresetPlaneMatch(pr, "bg") && bgN < 3) {
+        bg.push(id);
+        bgN++;
+      }
     }
+    if (!ui.length) ui.push("readme", "tone-to-motion", "motion-react", "css-tailwind");
+    if (!bg.length) bg.push("readme", "tone-to-motion", "galleries", "patterns-json");
+    return { uiIds: ui, bgIds: bg };
+  }
+
+  function motionVibeIsAuto(id) {
+    return !id || id === MOTION_VIBE_AUTO_ID || id === DEFAULT_VAL;
+  }
+
+  function resolveMotionVibeForPrompt(motionVibeId, industryId) {
+    const list = cat.motionVibes || [];
+    if (!list.length) {
+      const d = industryDefaultAnimationRefIds(industryId);
+      return {
+        vibeLabel: "Auto (industry defaults)",
+        keywords:
+          "Follow tone-to-motion.md in the hub; start gentle on UI and restrained on background unless the chosen style demands more energy.",
+        uiIds: d.uiIds,
+        bgIds: d.bgIds,
+      };
+    }
+    const wantsAuto = motionVibeIsAuto(motionVibeId);
+    const rawId = wantsAuto ? MOTION_VIBE_AUTO_ID : motionVibeId;
+    const v = list.find((x) => x.id === rawId) || list.find((x) => x.auto) || list[0];
+    const isAuto = Boolean(v?.auto) || wantsAuto;
+    if (isAuto) {
+      const d = industryDefaultAnimationRefIds(industryId);
+      return {
+        vibeLabel: v?.label || "Auto — industry & deliverable bias",
+        keywords:
+          "Follow tone-to-motion.md in the hub; start gentle on UI and restrained on background unless the chosen style demands more energy.",
+        uiIds: d.uiIds,
+        bgIds: d.bgIds,
+      };
+    }
+    return {
+      vibeLabel: v.label,
+      keywords: (v.keywords || "").trim(),
+      uiIds: [...new Set((v.uiRefIds || []).filter(Boolean))],
+      bgIds: [...new Set((v.bgRefIds || []).filter(Boolean))],
+    };
+  }
+
+  function fillMotionVibeSelect() {
+    const s = el("motionVibe");
+    if (!s || !cat.motionVibes || !cat.motionVibes.length) return;
+    const prev = s.value;
+    s.innerHTML = "";
+    for (const v of cat.motionVibes) {
+      const o = document.createElement("option");
+      o.value = v.id;
+      o.textContent = v.label;
+      if (v.auto) o.title = "Uses animation-reference picks ordered for the current industry.";
+      else if (v.keywords) o.title = `Feeling keywords: ${v.keywords}`;
+      s.appendChild(o);
+    }
+    if (prev && [...s.options].some((o) => o.value === prev)) s.value = prev;
+    else s.value = MOTION_VIBE_AUTO_ID;
+  }
+
+  function buildAnimationReferenceBlock(resolved) {
+    const hub =
+      cat.animationRefHubUrl ||
+      "https://github.com/Ictraeh/designers-pandora-box/tree/main/docs/animation-reference";
+    const presets = cat.animationRefPresets || [];
+    const pick = (ids) =>
+      [...new Set((ids || []).filter(Boolean))].map((id) => presets.find((p) => p.id === id)).filter(Boolean);
+    let ui = pick(resolved.uiIds);
+    let bg = pick(resolved.bgIds);
+    if (!ui.length) ui = pick(["readme", "tone-to-motion", "motion-react"]);
+    if (!bg.length) bg = pick(["readme", "galleries", "tone-to-motion"]);
+    const kw = (resolved.keywords || "").trim().slice(0, 280);
+    const label = (resolved.vibeLabel || "Motion vibe").replace(/"/g, "'");
+    const lines = [];
+    lines.push(
+      `[ANIMATION_REFERENCE] Hub: ${hub} — official docs first; galleries for ideas only (no bulk copy). Prefer Motion for React unless a linked note says otherwise; honor prefers-reduced-motion. Implement motion that matches the vibe below; use tone-to-motion.md to translate words into duration, easing, and distance.`
+    );
+    lines.push(`Motion vibe: "${label}"${kw ? ` — keyword cluster: ${kw.replace(/"/g, "'")}` : ""}`);
+    lines.push(`UI motion refs:\n${ui.map((p) => `- ${p.label}: ${p.url}`).join("\n")}`);
+    lines.push(`Background / ambient motion refs:\n${bg.map((p) => `- ${p.label}: ${p.url}`).join("\n")}`);
+    return lines.join("\n");
   }
 
   function firstRecKitForPlane(motionIds, plane) {
@@ -364,93 +388,33 @@
     return { motionEl: elKit, motionBg: bgKit };
   }
 
-  function resolveMotionKit(selectId, plane, style, platform, industry) {
-    const sel = el(selectId);
-    const v = sel?.value;
-    if (v && v !== DEFAULT_VAL) {
-      const k = cat.motionKits.find((m) => m.id === v);
-      if (k && motionKitMatchesPlane(k, plane)) return k;
+  function syncColorVibeSwatchPreview() {
+    const strip = el("colorVibeSwatchPreview");
+    const sel = el("colorVibe");
+    if (!strip || !sel || !cat.colorVibes) return;
+    strip.innerHTML = "";
+    const val = String(sel.value || "").trim();
+    let hexes = [];
+    if (val === DEFAULT_VAL) {
+      hexes = ["#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b"];
+    } else {
+      const opt = sel.selectedOptions && sel.selectedOptions[0];
+      const fromOpt = (opt?.dataset?.swatch || "")
+        .split(",")
+        .map((h) => h.trim())
+        .filter(Boolean)
+        .slice(0, 4);
+      if (fromOpt.length) hexes = fromOpt;
+      else hexes = (cat.colorVibes.find((x) => x.id === val)?.swatchHexes || []).filter(Boolean).slice(0, 4);
     }
-    const { motionEl, motionBg } = pickDefaultMotions(style, platform, industry);
-    return plane === "element" ? motionEl : motionBg;
-  }
-
-  function colorVibeSwatchStrip(hexes) {
-    const row = document.createElement("div");
-    row.className = "color-vibe-swatches";
-    const list = (hexes || []).filter(Boolean).slice(0, 5);
-    if (!list.length) {
-      for (let i = 0; i < 4; i += 1) {
-        const d = document.createElement("div");
-        d.className = "color-vibe-swatch";
-        d.style.background = "#e2e8f0";
-        row.appendChild(d);
-      }
-      return row;
-    }
+    const list = hexes.length ? hexes : ["#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b"];
     for (const h of list) {
       const d = document.createElement("div");
       d.className = "color-vibe-swatch";
       d.style.background = h;
-      row.appendChild(d);
+      d.title = "Guidance swatch (approximate)";
+      strip.appendChild(d);
     }
-    return row;
-  }
-
-  function syncColorVibePickerHighlight() {
-    const sel = el("colorVibe");
-    const picker = el("colorVibePicker");
-    if (!sel || !picker) return;
-    const v = sel.value;
-    let activeId = "";
-    picker.querySelectorAll(".color-vibe-option").forEach((btn) => {
-      const on = btn.getAttribute("data-color-id") === v;
-      btn.classList.toggle("is-selected", on);
-      btn.setAttribute("aria-selected", on ? "true" : "false");
-      if (on) activeId = btn.id;
-    });
-    if (activeId) picker.setAttribute("aria-activedescendant", activeId);
-    else picker.removeAttribute("aria-activedescendant");
-  }
-
-  function renderColorVibePicker() {
-    const picker = el("colorVibePicker");
-    const sel = el("colorVibe");
-    if (!picker || !sel || !cat.colorVibes) return;
-    picker.innerHTML = "";
-    const mkOption = (id, label, hexes) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "color-vibe-option";
-      btn.id = `color-vibe-opt-${id.replace(/[^a-z0-9_-]/gi, "_")}`;
-      btn.setAttribute("role", "option");
-      btn.dataset.colorId = id;
-      btn.appendChild(colorVibeSwatchStrip(hexes));
-      const lab = document.createElement("span");
-      lab.className = "color-vibe-option-label";
-      lab.textContent = label;
-      btn.appendChild(lab);
-      btn.addEventListener("click", () => {
-        sel.value = id;
-        sel.dispatchEvent(new Event("change", { bubbles: true }));
-      });
-      picker.appendChild(btn);
-    };
-    mkOption(DEFAULT_VAL, "Default (random color vibe)", []);
-    const groups = cat.colorVibeGroups || [{ id: "default", label: "Color vibes" }];
-    for (const g of groups) {
-      const items = cat.colorVibes.filter((c) => (c.group || "classic_vibes") === g.id);
-      if (!items.length) continue;
-      const gl = document.createElement("div");
-      gl.className = "color-vibe-group-label";
-      gl.textContent = g.label;
-      picker.appendChild(gl);
-      for (const c of items) {
-        const hexes = Array.isArray(c.swatchHexes) ? c.swatchHexes : [];
-        mkOption(c.id, c.label || c.labelZh || c.id, hexes);
-      }
-    }
-    syncColorVibePickerHighlight();
   }
 
   function fillColorSelect() {
@@ -471,26 +435,15 @@
         const o = document.createElement("option");
         o.value = c.id;
         o.textContent = c.label || c.labelZh || c.id;
-        const ex = [c.styleLibraryAlign].filter(Boolean).join(" — ").trim();
+        const sw = (c.swatchHexes || []).filter(Boolean).slice(0, 4);
+        if (sw.length) o.dataset.swatch = sw.join(",");
+        const ex = [c.tagline, c.styleLibraryAlign].filter(Boolean).join(" — ").trim();
         if (ex) o.title = ex.slice(0, 280);
         og.appendChild(o);
       }
       s.appendChild(og);
     }
-    renderColorVibePicker();
-  }
-
-  function syncColorVibeExplainer() {
-    const p = el("colorVibeExplainer");
-    if (!p || !cat.colorVibes) return;
-    const sel = el("colorVibe");
-    if (!sel) return;
-    if (sel.value === DEFAULT_VAL) {
-      p.textContent = 'With “Default” selected, each “Generate prompt” picks a random color vibe.';
-      return;
-    }
-    const c = cat.colorVibes.find((x) => x.id === sel.value);
-    p.textContent = [c?.label, c?.styleLibraryAlign].filter(Boolean).join(" — ") || "";
+    syncColorVibeSwatchPreview();
   }
 
   function syncPromptOutputVisibility() {
@@ -498,22 +451,18 @@
     const singleWrap = el("singlePromptOutput");
     const splitPanel = el("splitPromptPanel");
     const copyBtn = el("copy");
-    if (splitOn) {
-      singleWrap?.classList.add("is-hidden");
-      splitPanel?.classList.remove("is-hidden");
-      if (copyBtn) copyBtn.textContent = "Copy full prompt (A + B)";
-    } else {
-      singleWrap?.classList.remove("is-hidden");
-      splitPanel?.classList.add("is-hidden");
-      if (copyBtn) copyBtn.textContent = "Copy prompt";
-    }
+    const help = el("splitPromptHelp");
+    if (singleWrap) singleWrap.hidden = splitOn;
+    if (splitPanel) splitPanel.hidden = !splitOn;
+    if (help) help.hidden = !splitOn;
+    if (copyBtn) copyBtn.textContent = splitOn ? "Copy full prompt (A + B)" : "Copy prompt";
   }
 
-  /** https://github.com/Ictraeh/design.md + Stitch DESIGN.md — compact (4999 cap). */
+  /** Google design.md shape (Ictraeh/design.md + Stitch) — compact (4999 cap). */
   function buildDesignMdClause() {
     const stitch = (cat.designMdMeta && cat.designMdMeta.stitchFormatUrl) || "https://stitch.withgoogle.com/docs/design-md/format/";
     return (
-      "[DESIGN_MD] Ship ./DESIGN.md per https://github.com/Ictraeh/design.md + Stitch " +
+      "[DESIGN_MD] Follow the Google design.md standard: ship ./DESIGN.md using YAML + markdown sections per https://github.com/Ictraeh/design.md and Stitch " +
       stitch +
       " — YAML: colors #hex, typography roles, rounded, spacing, components.*. Body: Overview→Colors→Typography→Layout→Elevation→Shapes→Components→Do's. " +
       "Align with [FONTS]/[COLOR]/[DESIGN_MD_REFS]. Optional: npx @google/design.md lint|export.\n"
@@ -522,7 +471,7 @@
 
   function buildDesignMdClauseCompact() {
     const stitch = (cat.designMdMeta && cat.designMdMeta.stitchFormatUrl) || "https://stitch.withgoogle.com/docs/design-md/format/";
-    return `DESIGN.md (optional): one ./DESIGN.md with YAML tokens + markdown sections per github.com/Ictraeh/design.md and Stitch ${stitch} — mirror fonts/colors in this prompt.`;
+    return `DESIGN.md: follow Google design.md standard — ./DESIGN.md with YAML + sections per github.com/Ictraeh/design.md; Stitch ${stitch} — mirror fonts/colors in this prompt.`;
   }
 
   function tokenizeStr(s) {
@@ -683,7 +632,8 @@
   function buildDualMotionLayer(motionEl, motionBg, style) {
     const le = buildMotionLibLine(motionEl);
     const lb = buildMotionLibLine(motionBg);
-    const ch = style.skillTags.includes("char-motion") ? "H1 stagger if UI kit allows; total≤900ms." : "";
+    const tags = style.skillTags || [];
+    const ch = tags.includes("char-motion") ? "H1 stagger if UI kit allows; total≤900ms." : "";
     const de = (motionEl.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
     const db = (motionBg.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
     return `[L7_MOTION_SPEC] Split layers—UI(elements):${motionEl.id}|${de}|${le} · BG(ambient):${motionBg.id}|${db}|${lb}. ReactBits:≤2 modules→src/components/reactbits/*. anime.js: stagger+timeline y12–20px+opacity. GSAP only if scroll-scrub/clip-menu spec. Durations: nav150–200ms|section450–600ms|stagger50ms|hover180ms. ${ch}prefers-reduced-motion: opacity≤200ms fallback.`;
@@ -752,8 +702,9 @@
   }
 
   function buildColorLayer(colorVibe, style) {
-    const hint = [colorVibe.cssHint, colorVibe.styleLibraryAlign].filter(Boolean).join("|").slice(0, 160);
-    return `[L6_COLOR_ROLES] Roles:bg|surface|border|text|muted|accent|cta+ctaGhost.Huemint:${colorVibe.huemintRef || "derive"}.CSS:${hint}.Lib:${(style.colorSystemHint || "").slice(0, 120)}.Rule:body≥4.5:1 vs bg;accent≤12% pixels above fold.`;
+    const hint = [colorVibe.cssHint, colorVibe.styleLibraryAlign].filter(Boolean).join("|").replace(/\s+/g, " ").trim().slice(0, 320);
+    const tag = colorVibe.tagline ? `Mood:${colorVibe.tagline}.` : "";
+    return `[L6_COLOR_ROLES] ${tag}Feeling-vibe:${colorVibe.id}.Roles:bg|surface|border|text|muted|accent|cta+ctaGhost.Ref:${colorVibe.huemintRef || "derive"}.TOOL:${hint}.Lib:${(style.colorSystemHint || "").slice(0, 120)}.Rule:body≥4.5:1 vs bg;accent≤12% pixels above fold;hex anchors are approximate—preserve emotion and roles, not literal values.`;
   }
 
   const NAMING_STRATEGIES = [
@@ -853,7 +804,14 @@
       splitPromptParts = false,
       compactPrompt = false,
       creativeVoice = "spec_first",
+      motionVibeId = MOTION_VIBE_AUTO_ID,
     } = opts;
+
+    const motionVibeResolved = resolveMotionVibeForPrompt(motionVibeId, industry.id);
+    const animationRefBlock = buildAnimationReferenceBlock(motionVibeResolved);
+    const animationRefBlockCompact = animationRefBlock
+      ? animationRefBlock.replace(/\s+/g, " ").trim().slice(0, 420)
+      : "";
 
     const sections = sectionPlan(platform, industry.label);
     const l4Short = L4_HINTS[style.layoutArchetype] || style.layoutArchetype;
@@ -862,9 +820,13 @@
     const notesShort = (userNotes.trim() || "—").slice(0, 320);
 
     const rec = style.recommendations;
-    const recLine = rec
-      ? `CATALOG_REC: fontCandidates=${rec.fontVibeIds.join("|")} colorCandidates=${rec.colorVibeIds.join("|")} motionCandidates=${rec.motionIds.join("|")}`
-      : "";
+    const recLine =
+      rec &&
+      Array.isArray(rec.fontVibeIds) &&
+      Array.isArray(rec.colorVibeIds) &&
+      Array.isArray(rec.motionIds)
+        ? `CATALOG_REC: fontCandidates=${rec.fontVibeIds.join("|")} colorCandidates=${rec.colorVibeIds.join("|")} motionCandidates=${rec.motionIds.join("|")}`
+        : "";
 
     const namingBlock = buildNamingBlock(style, industry);
     const designMdRefBlock = buildDesignMdRefBlock(style, industry);
@@ -873,8 +835,10 @@
     const mediaSlots = buildRichMediaSlots(style);
 
     const forbidden = [];
-    if (colorVibe.id === "dark_cinematic") forbidden.push("no random purple/indigo unless tokenized");
-    if (style.skillTags.includes("video-bg")) {
+    if (["midnight", "aurora", "lavender"].includes(colorVibe.id)) {
+      forbidden.push("no random purple/indigo unless tokenized");
+    }
+    if ((style.skillTags || []).includes("video-bg")) {
       forbidden.push("text contrast via scrim/text-shadow unless spec forbids overlay on video");
     }
 
@@ -882,7 +846,7 @@
     const blendLine =
       blend && blend.id !== "none" && blend.hint ? `SECONDARY_BLEND(${blend.id}): ${blend.hint}` : "";
 
-    const glassLine = style.skillTags.includes("glass-nav")
+    const glassLine = (style.skillTags || []).includes("glass-nav")
       ? "GLASS: reusable .liquid-glass per §7.1 (luminosity blend, blur(4px), inset highlight, ::before 1.4px gradient mask ring); apply <GLASS_TINT> rgba to nav/CTAs/cards."
       : "";
 
@@ -1017,6 +981,7 @@ ${typoColorShort}`;
         buildDualMotionLayer(motionEl, motionBg, style)
           .replace(/^\[L7_MOTION_SPEC\]\s*/, "Motion layers: ")
           .slice(0, 420),
+        animationRefBlockCompact,
       ]
         .filter(Boolean)
         .join("\n");
@@ -1024,9 +989,13 @@ ${typoColorShort}`;
       const dmRefPlain = buildDesignMdRefBlock(style, industry).replace(/^\[DESIGN_MD_REFS\]\s*/, "").slice(0, 220);
       const govPlain = buildAgencyGuardBlock(style, industry).replace(/^\[L8_GOVERNANCE\]\s*/, "").slice(0, 180);
       const mediaPlain = mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "").slice(0, 200);
-      const recShort = rec
-        ? `Catalog bias: fonts ${rec.fontVibeIds.slice(0, 4).join("/")} · colors ${rec.colorVibeIds.slice(0, 4).join("/")} · motion ${rec.motionIds.slice(0, 5).join("/")}`
-        : "";
+      const recShort =
+        rec &&
+        Array.isArray(rec.fontVibeIds) &&
+        Array.isArray(rec.colorVibeIds) &&
+        Array.isArray(rec.motionIds)
+          ? `Catalog bias: fonts ${rec.fontVibeIds.slice(0, 4).join("/")} · colors ${rec.colorVibeIds.slice(0, 4).join("/")} · motion ${rec.motionIds.slice(0, 5).join("/")}`
+          : "";
       const glassShort =
         style.skillTags && style.skillTags.includes("glass-nav")
           ? "Glass: liquid-glass on nav/CTAs — blur + inset ring + rgba tint (see style lib §7.1)."
@@ -1047,7 +1016,14 @@ ${typoColorShort}`;
         .filter(Boolean)
         .join("\n");
     } else {
-      const motionPackFull = `${industryMotionLine ? `${industryMotionLine}\n` : ""}${buildStyleMotionUxBlock(style, motionEl, motionBg)}\n${buildDualMotionLayer(motionEl, motionBg, style)}`;
+      const motionPackFull = [
+        industryMotionLine,
+        buildStyleMotionUxBlock(style, motionEl, motionBg),
+        buildDualMotionLayer(motionEl, motionBg, style),
+        animationRefBlock,
+      ]
+        .filter(Boolean)
+        .join("\n");
       motionPack = motionPackFull;
       const projectBanner = `PROJECT: <HEADLINE> — ${style.name} · ${industry.label} · ${platform.labelEn || platform.label}\n`;
       baseThroughColor = `${langPreamble}${projectBanner}${creativeBlockFull}${workOrder}
@@ -1110,15 +1086,10 @@ ${restAfterMotion}`;
   }
 
   function applyStyleRecommendations(style) {
-    const cb = el("autoRecommend");
-    if (!cb || !cb.checked || !style) return;
+    if (!style) return;
     const r = style.recommendations;
     const fv = el("fontVibe");
     const cv = el("colorVibe");
-    const mel = el("motionElement");
-    const mbg = el("motionBackground");
-    const plat = cat.platforms.find((p) => p.id === el("platform")?.value);
-    const ind = cat.industries.find((i) => i.id === el("industry")?.value);
     const pick = (sel, id) => {
       if (!id || !sel) return;
       if ([...sel.options].some((o) => o.value === id)) sel.value = id;
@@ -1127,18 +1098,7 @@ ${restAfterMotion}`;
       if (fv && fv.value !== DEFAULT_VAL) pick(fv, r.fontVibeIds && r.fontVibeIds[0]);
       if (cv && cv.value !== DEFAULT_VAL) pick(cv, r.colorVibeIds && r.colorVibeIds[0]);
     }
-    syncColorVibePickerHighlight();
-    let elPick;
-    let bgPick;
-    const merged = mergedMotionCandidates(style, ind);
-    for (const id of merged) {
-      const k = cat.motionKits.find((m) => m.id === id);
-      if (!elPick && k && motionKitMatchesPlane(k, "element")) elPick = id;
-      if (!bgPick && k && motionKitMatchesPlane(k, "background")) bgPick = id;
-    }
-    const def = pickDefaultMotions(style, plat, ind);
-    if (mel && mel.value === DEFAULT_VAL) pick(mel, elPick || def.motionEl.id);
-    if (mbg && mbg.value === DEFAULT_VAL) pick(mbg, bgPick || def.motionBg.id);
+    syncColorVibeSwatchPreview();
   }
 
   function init() {
@@ -1148,6 +1108,9 @@ ${restAfterMotion}`;
       (p) => p.id,
       (p) => p.labelEn || p.label
     );
+    el("platform")?.addEventListener("change", () => {
+      rebuildReactbitsSnippetList();
+    });
     fillSelect(
       "industry",
       cat.industries,
@@ -1157,10 +1120,10 @@ ${restAfterMotion}`;
     refillStyleSelect();
     el("industry").addEventListener("change", () => {
       refillStyleSelect();
-      refillMotionSelectsForIndustry();
       const sid = el("style").value;
       const st = cat.styles.find((s) => s.id === sid);
       if (st) applyStyleRecommendations(st);
+      rebuildReactbitsSnippetList();
     });
 
     fillSelect("secondaryBlend", cat.styleBlends || [{ id: "none", label: "None" }], (b) => b.id, (b) => b.label);
@@ -1179,27 +1142,25 @@ ${restAfterMotion}`;
 
     fillColorSelect();
     if (cat.colorVibes[0]) el("colorVibe").value = cat.colorVibes[0].id;
-    syncColorVibePickerHighlight();
+    syncColorVibeSwatchPreview();
 
-    refillMotionSelectsForIndustry();
+    fillMotionVibeSelect();
     {
       const st0 = cat.styles.find((s) => s.id === el("style")?.value);
       if (st0) applyStyleRecommendations(st0);
     }
 
     el("style").addEventListener("change", () => {
-      syncColorVibeExplainer();
       const st = cat.styles.find((s) => s.id === el("style").value);
       if (st) applyStyleRecommendations(st);
+      rebuildReactbitsSnippetList();
     });
     const cvEl = el("colorVibe");
     if (cvEl) {
       cvEl.addEventListener("change", () => {
-        syncColorVibeExplainer();
-        syncColorVibePickerHighlight();
+        syncColorVibeSwatchPreview();
       });
     }
-    syncColorVibeExplainer();
 
     el("splitPromptParts")?.addEventListener("change", syncPromptOutputVisibility);
     syncPromptOutputVisibility();
@@ -1219,10 +1180,8 @@ ${restAfterMotion}`;
       const style = cat.styles.find((s) => s.id === styleSel?.value);
       const fontVibe = fontRoll ? pickRandom(cat.fontVibes) : cat.fontVibes.find((f) => f.id === fontSel?.value);
       const colorVibe = colorRoll ? pickRandom(cat.colorVibes) : cat.colorVibes.find((c) => c.id === colorSel?.value);
-      const motionEl = resolveMotionKit("motionElement", "element", style, platform, industry);
-      const motionBg = resolveMotionKit("motionBackground", "background", style, platform, industry);
-      const motionUiRoll = el("motionElement")?.value === DEFAULT_VAL;
-      const motionBgRoll = el("motionBackground")?.value === DEFAULT_VAL;
+      const { motionEl, motionBg } = pickDefaultMotions(style, platform, industry);
+      const motionVibeId = (el("motionVibe") && el("motionVibe").value) || MOTION_VIBE_AUTO_ID;
 
       let blend = { id: "none", hint: "" };
       if (blendEl && cat.styleBlends) {
@@ -1238,8 +1197,6 @@ ${restAfterMotion}`;
       if (fontRoll) blindBits.push(`font→${fontVibe?.pickerLabel || fontVibe?.labelZh || fontVibe?.label || "?"}`);
       if (colorRoll) blindBits.push(`color→${colorVibe?.label || colorVibe?.labelZh || "?"}`);
       if (blendRoll) blindBits.push(`blend→${blend?.label || blend?.id || "?"}`);
-      if (motionUiRoll) blindBits.push(`motionUI→${motionEl?.id || "?"}`);
-      if (motionBgRoll) blindBits.push(`motionBG→${motionBg?.id || "?"}`);
       const blindRollLine = blindBits.length ? `[BLIND_ROLL] ${blindBits.join("; ")}` : "";
 
       const blindNote = el("blindBoxNote");
@@ -1254,23 +1211,32 @@ ${restAfterMotion}`;
       el("copyStatus").textContent = "";
 
       const splitOn = Boolean(el("splitPromptParts")?.checked);
-      const text = buildPrompt({
-        platform,
-        industry,
-        style,
-        fontVibe,
-        colorVibe,
-        motionEl,
-        motionBg,
-        userNotes,
-        blend,
-        stackProfile,
-        blindRollLine,
-        includeDesignMd: Boolean(el("includeDesignMd")?.checked),
-        splitPromptParts: splitOn,
-        compactPrompt: Boolean(el("compactPrompt")?.checked),
-        creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
-      });
+      let text;
+      try {
+        text = buildPrompt({
+          platform,
+          industry,
+          style,
+          fontVibe,
+          colorVibe,
+          motionEl,
+          motionBg,
+          userNotes,
+          blend,
+          stackProfile,
+          blindRollLine,
+          includeDesignMd: Boolean(el("includeDesignMd")?.checked),
+          splitPromptParts: splitOn,
+          compactPrompt: Boolean(el("compactPrompt")?.checked),
+          creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
+          motionVibeId,
+        });
+      } catch (err) {
+        console.error(err);
+        el("copyStatus").textContent =
+          "Could not build prompt (see browser console). Try reloading; if it persists, report this error.";
+        return;
+      }
       const outA = el("outputPartA");
       const outB = el("outputPartB");
       if (splitOn && outA && outB) {
@@ -1335,17 +1301,44 @@ ${restAfterMotion}`;
   };
 
   const SNIPPET_BUCKET_ORDER = [
-    { key: "elements", label: "Element animation (text, sections, GSAP / Anime.js)" },
-    { key: "components", label: "Components" },
-    { key: "backgrounds", label: "Special effects & backgrounds" },
+    { key: "elements", label: "Element animation (sections, UI motion)" },
+    { key: "text_anim", label: "Text animation (kinetic type, headings)" },
+    { key: "components", label: "Components (menus, cards, controls)" },
+    { key: "backgrounds", label: "Background & special effects" },
+    { key: "gsap_docs", label: "GSAP / ScrollTrigger (doc excerpts)" },
+    { key: "anime_docs", label: "Anime.js (doc excerpts)" },
   ];
 
+  function inferSnippetLibrary(s) {
+    if (s.library) return s.library;
+    const id = String(s.id || "").toLowerCase();
+    if (id.startsWith("gsap-")) return "gsap";
+    if (id.includes("anime")) return "animejs";
+    return "reactbits";
+  }
+
+  /** React Bits folder from id when `category` missing (older bundles). */
+  function inferReactbitsCategoryFromId(id) {
+    const low = String(id || "").toLowerCase();
+    if (low.startsWith("components-")) return "Components";
+    if (low.startsWith("backgrounds-")) return "Backgrounds";
+    if (low.startsWith("textanimations-")) return "TextAnimations";
+    if (low.startsWith("animations-")) return "Animations";
+    return null;
+  }
+
   function snippetMotionBucket(s) {
-    if (s.library === "reactbits") {
-      if (s.category === "Components") return "components";
-      if (s.category === "Backgrounds") return "backgrounds";
+    const lib = inferSnippetLibrary(s);
+    if (lib === "reactbits") {
+      const cat = s.category || inferReactbitsCategoryFromId(s.id);
+      if (cat === "Components") return "components";
+      if (cat === "Backgrounds") return "backgrounds";
+      if (cat === "TextAnimations") return "text_anim";
+      if (cat === "Animations") return "elements";
       return "elements";
     }
+    if (lib === "gsap") return "gsap_docs";
+    if (lib === "animejs") return "anime_docs";
     return "elements";
   }
 
@@ -1354,20 +1347,8 @@ ${restAfterMotion}`;
     const plat = cat.platforms.find((p) => p.id === el("platform")?.value);
     const ind = cat.industries.find((i) => i.id === el("industry")?.value);
     const style = styleSel?.value ? cat.styles.find((s) => s.id === styleSel.value) : null;
-    const melV = el("motionElement")?.value;
-    const mbgV = el("motionBackground")?.value;
-    const kEl =
-      melV && melV !== DEFAULT_VAL
-        ? cat.motionKits.find((m) => m.id === melV)
-        : style
-          ? pickDefaultMotions(style, plat, ind).motionEl
-          : null;
-    const kBg =
-      mbgV && mbgV !== DEFAULT_VAL
-        ? cat.motionKits.find((m) => m.id === mbgV)
-        : style
-          ? pickDefaultMotions(style, plat, ind).motionBg
-          : null;
+    if (!style) return null;
+    const { motionEl: kEl, motionBg: kBg } = pickDefaultMotions(style, plat, ind);
     const rb = (k) => (k?.id?.startsWith("RB-") ? k.rbCategory : null);
     return rb(kEl) || rb(kBg) || null;
   }
@@ -1403,7 +1384,11 @@ ${restAfterMotion}`;
     function filteredSnippets() {
       const c = motionKitRbCategory();
       if (!c) return fullList;
-      const rbOnly = fullList.filter((s) => s.library === "reactbits" && s.category === c);
+      const rbOnly = fullList.filter((s) => {
+        if (inferSnippetLibrary(s) !== "reactbits") return false;
+        const cat = s.category || inferReactbitsCategoryFromId(s.id);
+        return cat === c;
+      });
       return rbOnly.length ? rbOnly : fullList;
     }
 
@@ -1417,41 +1402,70 @@ ${restAfterMotion}`;
       }
       codeEl.value = code;
       const catRb = motionKitRbCategory();
-      const filterNote = catRb ? `React Bits only · ${catRb}` : "All sources";
+      const filterNote = catRb ? `React Bits only · ${RB_CAT_EN[catRb] || catRb}` : "All sources";
       const title = s.label || s.name;
-      meta.textContent = `${title} · ${code.length} / ${MOTION_SNIPPET_MAX} chars · ${filterNote}`;
+      const bl = (cat.snippetBlurbs && cat.snippetBlurbs[s.id]) || "";
+      meta.textContent = `${title}${bl ? ` — ${bl}` : ""} · ${code.length} / ${MOTION_SNIPPET_MAX} chars · ${filterNote}`;
     }
 
     function rebuildReactbitsOptions() {
       const list = filteredSnippets();
       const prev = sel.value;
-      const narrow = Boolean(motionKitRbCategory());
+      const narrowCat = motionKitRbCategory();
+      const narrow = Boolean(narrowCat);
       sel.innerHTML = "";
-      const buckets = { elements: [], components: [], backgrounds: [] };
-      for (const s of list) {
-        buckets[snippetMotionBucket(s)].push(s);
-      }
+      const blurbs = cat.snippetBlurbs || {};
       const labelFor = (s) => {
-        const catEn = RB_CAT_EN[s.category] || s.category;
-        if (s.library === "reactbits") {
-          return narrow ? s.name : `${catEn} · ${s.name}`;
+        const blurb = blurbs[s.id] || "";
+        const baseName = (s.name || (s.label || "").split("·").pop() || "").trim();
+        const suffix = blurb ? ` — ${blurb}` : "";
+        const rbCat = s.category || inferReactbitsCategoryFromId(s.id) || "Animations";
+        const catEn = RB_CAT_EN[rbCat] || rbCat;
+        if (inferSnippetLibrary(s) === "reactbits") {
+          return narrow ? `${baseName}${suffix}` : `${catEn} · ${baseName}${suffix}`;
         }
-        return s.label || s.name;
+        return `${(s.label || baseName).trim()}${suffix}`;
       };
       const sortFn = (a, b) =>
         (a.label || a.name || "").localeCompare(b.label || b.name || "", "en", { sensitivity: "base" });
-      for (const { key, label } of SNIPPET_BUCKET_ORDER) {
-        const items = (buckets[key] || []).slice().sort(sortFn);
-        if (!items.length) continue;
+
+      if (narrow) {
         const og = document.createElement("optgroup");
-        og.label = label;
+        og.label = `React Bits — ${RB_CAT_EN[narrowCat] || narrowCat} (matches your motion pick)`;
+        const items = list.slice().sort(sortFn);
         for (const s of items) {
           const o = document.createElement("option");
           o.value = s.id;
           o.textContent = labelFor(s);
+          const bn = (s.name || (s.label || "").split("·").pop() || "").trim();
+          const bl = blurbs[s.id];
+          o.title = bl ? `${bn}: ${bl}` : s.label || bn;
           og.appendChild(o);
         }
         sel.appendChild(og);
+      } else {
+        const buckets = { elements: [], text_anim: [], components: [], backgrounds: [], gsap_docs: [], anime_docs: [] };
+        for (const s of list) {
+          const k = snippetMotionBucket(s);
+          if (!buckets[k]) buckets.elements.push(s);
+          else buckets[k].push(s);
+        }
+        for (const { key, label } of SNIPPET_BUCKET_ORDER) {
+          const items = (buckets[key] || []).slice().sort(sortFn);
+          if (!items.length) continue;
+          const og = document.createElement("optgroup");
+          og.label = label;
+          for (const s of items) {
+            const o = document.createElement("option");
+            o.value = s.id;
+            o.textContent = labelFor(s);
+            const bn = (s.name || (s.label || "").split("·").pop() || "").trim();
+            const bl = blurbs[s.id];
+            o.title = bl ? `${bn}: ${bl}` : s.label || bn;
+            og.appendChild(o);
+          }
+          sel.appendChild(og);
+        }
       }
       if ([...sel.options].some((o) => o.value === prev)) sel.value = prev;
       else if (sel.options[0]) sel.value = sel.options[0].value;
@@ -1460,11 +1474,7 @@ ${restAfterMotion}`;
 
     sel.disabled = false;
     sel.addEventListener("change", () => showSnippet(sel.value));
-    const motionUiSel = el("motionElement");
-    const motionBgSel = el("motionBackground");
     const platEl = el("platform");
-    if (motionUiSel) motionUiSel.addEventListener("change", rebuildReactbitsOptions);
-    if (motionBgSel) motionBgSel.addEventListener("change", rebuildReactbitsOptions);
     if (platEl) platEl.addEventListener("change", rebuildReactbitsOptions);
     el("style")?.addEventListener("change", rebuildReactbitsOptions);
     rebuildReactbitsSnippetList = rebuildReactbitsOptions;

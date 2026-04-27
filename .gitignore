@@ -3,6 +3,9 @@
 .env
 .env.*
 
+# Local scratch / exported prompts (not part of the app)
+prompt.txt
+
 # Copied by `node build-catalog.mjs` for Vercel `outputDirectory: public`
 public/*
 !public/.gitkeep

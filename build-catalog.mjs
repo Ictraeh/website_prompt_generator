@@ -12,6 +12,15 @@ import {
   DESIGN_MD_STITCH_FORMAT,
 } from "./design-md-refs.mjs";
 
+import { colorVibeGroups, colorVibes } from "./feel-color-vibes.mjs";
+import {
+  animationRefHubUrl,
+  animationRefPresets,
+  industryAnimationRefFit,
+} from "./animation-ref-presets.mjs";
+import { motionVibeOptions } from "./motion-vibes.mjs";
+
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const designMdSlugsResolved = resolveDesignMdSlugs(fs, path, __dirname);
 const designMdReferences = enrichDesignMdRefs(designMdSlugsResolved);
@@ -159,31 +168,31 @@ function inferRecommendations(style) {
   if (tags.has("poster-type")) {
     pf("brutalist_poster");
     pf("automotive_bold");
-    pc("dark_cinematic");
-    pc("high_saturation_pop");
-    pc("hm_mag_masthead_band");
-    pc("hb_split_energy");
+    pc("midnight");
+    pc("sunrise");
+    pc("ocean");
+    pc("neon");
   }
   if (tags.has("glass-nav")) {
     pm("M-fade-rise");
-    pc("dark_cinematic");
-    pc("hm_dark_aurora_glow");
-    pc("hm_soft_hue_ribbon_bg");
+    pc("midnight");
+    pc("aurora");
+    pc("aurora");
   }
   if (tags.has("char-motion")) pm("M-char-cascade");
   if (tags.has("scroll-scrub-hero") || tags.has("gsap-heavy")) pm("M-scroll-scrub-video");
   if (tags.has("saas-grid") || tags.has("calculator")) {
     pf("warm_saas");
     pf("technical_ai");
-    pc("cool_corporate");
-    pc("hb_tri_guardrails");
-    pc("hm_mono_cool_slate_data");
+    pc("slate");
+    pc("slate");
+    pc("arctic");
   }
   if (tags.has("script-accent")) pf("editorial_premium");
   if (tags.has("split-hero")) pf("warm_saas");
   if (tags.has("email-shell")) {
-    pc("dark_cinematic");
-    pc("hm_mag_four_roles");
+    pc("midnight");
+    pc("cream");
     pf("editorial_premium");
   }
   if (tags.has("social-card-wall")) {
@@ -194,47 +203,47 @@ function inferRecommendations(style) {
   const neonish =
     /neon|cyber|synth|y2k|vapor|pixel|graffiti|arcade|hud|chrome|glitch/.test(id) || /neon|cyber|glitch|arcade/.test(kw);
   if (neonish) {
-    pc("neon_cyber");
-    pc("hm_dark_aurora_glow");
+    pc("neon");
+    pc("aurora");
     pf("spline_scifi");
     pm("M-scroll-text-reveal");
   }
 
   const soft = /ethereal|kawaii|coquette|shabby|japandi|wabi|light-academia|scrapbook|lace|pastel/.test(id);
   if (soft) {
-    pc("pastel_soft");
-    pc("hm_pastel_chrome_safe");
-    pc("hm_soft_hue_ribbon_bg");
+    pc("petal");
+    pc("lavender");
+    pc("aurora");
     pf("warm_saas");
     pm("M-delay-fade");
   }
 
   const earth = /bohemian|farmhouse|south-west|western|steampunk|nautical|rustic|desert/.test(id) || /earth|terracotta|rust/.test(kw);
   if (earth) {
-    pc("warm_earth");
-    pc("hb_earth_jewel_spark");
-    pc("hb_analogous_ribbon");
+    pc("forest");
+    pc("sand");
+    pc("moss");
   }
 
   const lux =
     /luxury|baroque|filigree|victorian|tenebrism|deco|gothic|academia|neoclassical|acanthus|art-deco|filigree|coquette/.test(id) ||
     /luxury|gilded|heritage|museum|ceremonial/.test(kw);
   if (lux) {
-    pc("monochrome_luxury");
-    pc("dark_cinematic");
-    pc("hm_mono_metallic_outline");
+    pc("void");
+    pc("midnight");
+    pc("copper");
     pf("editorial_premium");
   }
 
   const util = /utilitarian|bauhaus|bento|rebus|glassmorphism|neo-frutiger/.test(id);
   if (util) {
     pf("technical_ai");
-    pc("cool_corporate");
-    pc("hm_mono_blue_gray_ramp");
-    pc("hb_warm_cold_pair");
+    pc("slate");
+    pc("arctic");
+    pc("ocean");
   }
 
-  if (tags.has("video-bg") && colors.size === 0) pc("dark_cinematic");
+  if (tags.has("video-bg") && colors.size === 0) pc("midnight");
   pm("M-button-lift");
   if (![...motions].some((m) => m.startsWith("M-scroll"))) pm("M-fade-rise");
 
@@ -243,8 +252,8 @@ function inferRecommendations(style) {
     pf("warm_saas");
   }
   if (colors.size === 0) {
-    pc("light_editorial");
-    pc("cool_corporate");
+    pc("cream");
+    pc("slate");
   }
 
   return {
@@ -900,387 +909,6 @@ const fontVibes = [
   },
 ];
 
-/** 色彩下拉分组：Huemint 式结构 + 经典气质（https://huemint.com/ ） */
-const colorVibeGroups = [
-  {
-    id: "brand_intersection",
-    label: "Brand intersection palettes (Huemint-style multi-hue lock)",
-  },
-  {
-    id: "website_magazine",
-    label: "Magazine-style web palettes (~4 roles, editorial rhythm)",
-  },
-  {
-    id: "website_monochrome",
-    label: "Monochrome web palettes (whitespace + mid-gray structure)",
-  },
-  {
-    id: "gradient_bridge",
-    label: "Tight hue bridges / dark-base glows (token-safe gradients)",
-  },
-  { id: "classic_vibes", label: "Classic vibes — cinematic, neon, earth, pop" },
-];
-
-const colorVibes = [
-  {
-    id: "hb_warm_cold_pair",
-    group: "brand_intersection",
-    huemintRef: "brand-intersection",
-    labelZh: "冷暖双色锁盘",
-    explainerZh:
-      "像 Huemint「品牌多色交集」：先锁定一枚暖主色与一枚冷主色，导航、链接、标签只用从中混合出的中性阶；两枚主色不要同时大面积铺满，整体仍像一个品牌手册。",
-    label: "Warm/cold brand pair + neutrals",
-    styleLibraryAlign: "Brand systems with two primaries + derived neutrals",
-    cssHint:
-      "Define --warm-600 --cool-600 --neutral-50…900; CTA uses one primary, links use the other at 70% saturation; no third hue except ±8° family tints",
-  },
-  {
-    id: "hb_tri_guardrails",
-    group: "brand_intersection",
-    huemintRef: "brand-intersection",
-    labelZh: "三色护栏盘",
-    explainerZh:
-      "背景 / 正文 / 强调 三色之外，只允许同一色相上 ±6% 亮度的「亲属色」做 hover、divider；饱和度由低到高只出现一次，避免彩虹散焦。",
-    label: "Tri-color guardrails",
-    styleLibraryAlign: "Strict 3-role palette + tint ladder only",
-    cssHint: "bg + fg + accent only; hover = accent @ 85% L or sibling step; forbid new hues on cards",
-  },
-  {
-    id: "hb_soft_complement",
-    group: "brand_intersection",
-    huemintRef: "brand-intersection",
-    labelZh: "软互补对",
-    explainerZh:
-      "一对低饱和互补色（不必 180° 拉满）+ 大面米白或冷灰底；互补只用于小图标、状态点、细线，阅读面保持冷静。",
-    label: "Soft complementary pair",
-    styleLibraryAlign: "Calm UI with restrained complement accents",
-    cssHint: "Complement accents max chroma 35–45; body text on neutral 96–98% L",
-  },
-  {
-    id: "hb_analogous_ribbon",
-    group: "brand_intersection",
-    huemintRef: "brand-intersection",
-    labelZh: "邻近色带",
-    explainerZh:
-      "在色环约 60° 内取 2–3 色，拆成 surface-1 / surface-2 / border，看起来像渐变被切成扁平层，仍算「一种色相家族」。",
-    label: "Analogous ribbon surfaces",
-    styleLibraryAlign: "Single-family hue spread across layers",
-    cssHint: "ΔH between surfaces ≤25°; vary L 8–15 steps; one darkest for text",
-  },
-  {
-    id: "hb_earth_jewel_spark",
-    group: "brand_intersection",
-    huemintRef: "brand-intersection",
-    labelZh: "大地 + 一颗宝石点",
-    explainerZh:
-      "陶土、沙、橄榄等大面大地色打底，只留一颗可「锁」的饱和宝石色（青绿或石榴红）做 CTA；其余交互回到大地阶，整体像珠宝衬布。",
-    label: "Earth base + single jewel accent",
-    styleLibraryAlign: "Bohemian / premium craft + one spark hue",
-    cssHint: "Jewel chroma 60+ only on buttons/badges; surfaces chroma ≤15",
-  },
-  {
-    id: "hb_split_energy",
-    group: "brand_intersection",
-    huemintRef: "brand-intersection",
-    labelZh: "分离互补能量",
-    explainerZh:
-      "主色一道 + 两侧邻近的「双强调」只做能量条、进度、小标签；两强调不要相邻大块并置，中间用中性带隔开。",
-    label: "Split-complement energy accents",
-    styleLibraryAlign: "Youth / sports / tech marketing with controlled triad",
-    cssHint: "Primary 220°; accents at +30° / +150° at ≤12% screen area each",
-  },
-  {
-    id: "hm_mag_four_roles",
-    group: "website_magazine",
-    huemintRef: "website-magazine",
-    labelZh: "杂志四角色",
-    explainerZh:
-      "对应 Huemint「Website · Magazine」式四色：纸感背景、标题墨、正文灰、唯一彩色专给章节标签或引用条；彩色不抢标题，只负责「这是新一块内容」。",
-    label: "Magazine 4-role palette",
-    styleLibraryAlign: "Editorial / magazine landing rhythm",
-    cssHint: "bg paper 96–98% L; headline #1a1a1a; body #444; accent single hsl for section kicker",
-  },
-  {
-    id: "hm_mag_masthead_band",
-    group: "website_magazine",
-    huemintRef: "website-magazine",
-    labelZh: "报头横色带",
-    explainerZh:
-      "大面积留白 + 一条高对比横色（报头 / hero band），内文区退回浅灰与墨字；横色里再嵌白字按钮，层次像印刷封面。",
-    label: "Masthead color band + calm body",
-    styleLibraryAlign: "News / culture / fashion hero layouts",
-    cssHint: "Hero band solid hue; below-fold neutral-100 surfaces; max 1 extra accent",
-  },
-  {
-    id: "hm_mag_warm_cool_zones",
-    group: "website_magazine",
-    huemintRef: "website-magazine",
-    labelZh: "暖区 / 冷区对页",
-    explainerZh:
-      "一栏偏暖沙、一栏偏冷灰，链接与图标共用同一中灰蓝，让读者感觉「同一本站」；左右区不要各引入新饱和色。",
-    label: "Warm vs cool column zones",
-    styleLibraryAlign: "Split layouts / bento with zoned temperature",
-    cssHint: "Shared link color H220 S25%; warm zone bg H35 S8%; cool zone H220 S6%",
-  },
-  {
-    id: "hm_mag_night_reader",
-    group: "website_magazine",
-    huemintRef: "website-magazine",
-    labelZh: "夜读杂志",
-    explainerZh:
-      "深蓝灰底、月白字、琥珀或铜色链接；图片框用再暗一阶，像夜间模式杂志，仍保持四色以内角色清晰。",
-    label: "Night magazine reader",
-    styleLibraryAlign: "Dark editorial / long-read comfort",
-    cssHint: "bg H230 S25% L12%; text L92%; links H35 S70% L55%; img frame L8%",
-  },
-  {
-    id: "hm_mag_muted_pop_quote",
-    group: "website_magazine",
-    huemintRef: "website-magazine",
-    labelZh: "低饱和 + 一句高亮",
-    explainerZh:
-      "全站低饱和灰彩底，只给 pull-quote 或数据高光一行饱和色；像杂志里只有引言用荧光笔划过。",
-    label: "Muted site + one pop quote color",
-    styleLibraryAlign: "SaaS report / annual review storytelling",
-    cssHint: "Surfaces chroma ≤12; pop hue single use on blockquote + KPI",
-  },
-  {
-    id: "hm_mag_dual_accent_rail",
-    group: "website_magazine",
-    huemintRef: "website-magazine",
-    labelZh: "双强调轨",
-    explainerZh:
-      "主文仍是黑白灰，两枚小面积强调色只出现在左侧导航轨与页内标签，互不接触则不乱；适合工具站分区。",
-    label: "Dual accent on rails only",
-    styleLibraryAlign: "Product shell + content chrome separation",
-    cssHint: "Nav accent A; tab accent B; never A+B on same component",
-  },
-  {
-    id: "hm_mono_paper_ink_stack",
-    group: "website_monochrome",
-    huemintRef: "website-monochrome",
-    labelZh: "纸墨四阶",
-    explainerZh:
-      "Huemint Monochrome 思路：白、浅灰卡片、中灰分割、墨字四阶即可成站；不要用彩色阴影冒充层次。",
-    label: "Paper–ink monochrome stack",
-    styleLibraryAlign: "Huemint-style monochrome + whitespace + thin type",
-    cssHint: "4 stops: 100% 96% 88% 12% L; borders use 88% vs 96% only",
-  },
-  {
-    id: "hm_mono_blue_gray_ramp",
-    group: "website_monochrome",
-    huemintRef: "website-monochrome",
-    labelZh: "蓝灰单色阶",
-    explainerZh:
-      "同一色相蓝灰，nav 与正文背景只差 5–8% 亮度即可区分；适合开发者文档、控制台外壳类站点。",
-    label: "Blue-gray single-hue ramp",
-    styleLibraryAlign: "Dev portals / API docs / dense UI",
-    cssHint: "Single H 215–225; S 6–14%; L steps 8–12 between chrome layers",
-  },
-  {
-    id: "hm_mono_middle_bridge",
-    group: "website_monochrome",
-    huemintRef: "website-monochrome",
-    labelZh: "中间灰桥梁",
-    explainerZh:
-      "对应 Huemint 说明里「前景与背景之间的中间shade」：卡片、表头、分割专用一层 bridge gray，让高对比黑白不刺眼。",
-    label: "Middle-shade bridge cards",
-    styleLibraryAlign: "Cards on white/black extremes",
-    cssHint: "Define --surface-bridge between bg and fg L; tables use bridge for zebra",
-  },
-  {
-    id: "hm_mono_warm_coffee",
-    group: "website_monochrome",
-    huemintRef: "website-monochrome",
-    labelZh: "咖啡暖单阶",
-    explainerZh:
-      "奶油 → 卡布奇诺 → 浓缩色阶讲品牌故事，无第二色相；适合餐饮、手工、慢品牌。",
-    label: "Warm coffee monochrome",
-    styleLibraryAlign: "Cafe / bakery / slow lifestyle",
-    cssHint: "Hue lock H25–35; vary L only; deepest for text not pure black",
-  },
-  {
-    id: "hm_mono_cool_slate_data",
-    group: "website_monochrome",
-    huemintRef: "website-monochrome",
-    labelZh: "冷灰数据阶",
-    explainerZh:
-      "冷灰单色阶上叠图表线色也用同一色相、只提高一度对比；避免彩虹图例破坏单色站感。",
-    label: "Cool slate data monochrome",
-    styleLibraryAlign: "Dashboards / analytics in mono discipline",
-    cssHint: "Chart series use L/S steps of same H; max one dashed emphasis pattern",
-  },
-  {
-    id: "hm_mono_metallic_outline",
-    group: "website_monochrome",
-    huemintRef: "website-monochrome",
-    labelZh: "金属线框单阶",
-    explainerZh:
-      "面仍是灰阶，用香槟或银的 1px ring 代替第二色相做「贵气」；金属色只描边，不涂大面。",
-    label: "Monochrome + metallic outline token",
-    styleLibraryAlign: "Luxury minimal / watch / jewelry mono",
-    cssHint: "ring-1 ring-[hsl(40_20%_70%)] style; fills stay neutral only",
-  },
-  {
-    id: "hm_soft_hue_ribbon_bg",
-    group: "gradient_bridge",
-    huemintRef: "gradient-family",
-    labelZh: "同族渐变底",
-    explainerZh:
-      "背景用约 15° 内的 Hue 渐变（很窄），前景 CTA 用该 family 里一个纯色点；整体像 Huemint 渐变工具里锁住色相漂移。",
-    label: "Tight-hue ribbon background",
-    styleLibraryAlign: "Soft marketing heroes / Aurora-lite without rainbow",
-    cssHint: "bg-gradient from hsl(H S 96%) to hsl(H+12 S 92%); CTA hsl(H S 45% 45%)",
-  },
-  {
-    id: "hm_dark_aurora_glow",
-    group: "gradient_bridge",
-    huemintRef: "gradient-family",
-    labelZh: "暗底极光边",
-    explainerZh:
-      "深青绿底上，两枚冷霓虹只做 border-glow / 1px 描边，填充体仍保持 deep teal 家族；克制光晕才显贵。",
-    label: "Dark base + aurora edge glows",
-    styleLibraryAlign: "Sci-fi premium / web3-adjacent without purple slop",
-    cssHint: "Glow tokens cyan/teal only; fill surfaces H175–195 S35–45% L10–18%",
-  },
-  {
-    id: "hm_pastel_chrome_safe",
-    group: "gradient_bridge",
-    huemintRef: "website-magazine",
-    labelZh: "粉彩 + 铬黄安全点",
-    explainerZh:
-      "粉彩大面仍配深灰字保证可读；一枚铬黄或柠黄只给主按钮与关键数字，像杂志里唯一荧光笔。",
-    label: "Pastel surfaces + safe chrome accent",
-    styleLibraryAlign: "Gen-Z soft UI with WCAG-safe accent",
-    cssHint: "Pastel bg chroma ≤18 L≥92%; text L≤25%; accent single high-L yellow-green",
-  },
-  {
-    id: "dark_cinematic",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "暗夜电影 · 深蓝黑底",
-    explainerZh:
-      "电影感深色底，视频或大图上叠渐变蒙版保证字可读；不要随意加未定义的紫/靛，除非写进 token。",
-    styleLibraryAlign: "Tenebrism / cinematic hero / video-bg legibility",
-    label: "Dark cinematic",
-    cssHint: "Deep navy/black HSL --background; scrim % stops on video; forbid random purple/indigo unless tokenized",
-  },
-  {
-    id: "light_editorial",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "日光编辑 · 纸感留白",
-    explainerZh:
-      "偏暖或偏冷的纸白底 + 炭黑字 + 极细分割线；留白本身就是「颜色」，适合长文与品牌故事页。",
-    styleLibraryAlign: "Light Academia / Japandi / editorial longform",
-    label: "Light editorial paper",
-    cssHint: "Off-white base; charcoal type; hairline borders; generous margins",
-  },
-  {
-    id: "neon_cyber",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "霓虹赛博 · 黑底荧光",
-    explainerZh:
-      "黑底上荧光绿/青/洋红只做小面积状态与线条；正文对比要过 WCAG，霓虹不是字体的借口。",
-    styleLibraryAlign: "Cybercore / Synthwave / Y2K chrome accents",
-    label: "Neon cyber",
-    cssHint: "Black base; neon green/cyan/magenta as accent tokens only; WCAG on body",
-  },
-  {
-    id: "warm_earth",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "大地陶土 · 暖灰绿",
-    explainerZh:
-      "陶土、沙、橄榄、奶油互相做邻居色，像自然材料摆在一起；高饱和只留给小标签或图标。",
-    styleLibraryAlign: "Bohemian / Farmhouse / Mystical Western earth palette",
-    label: "Warm earth",
-    cssHint: "Terracotta sand olive cream; low-chrome neutrals; wood texture optional <TEXTURE_IMAGE>",
-  },
-  {
-    id: "cool_corporate",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "冷色信任 · 蓝灰企业",
-    explainerZh:
-      "蓝灰白建立信任感，图表与表格只用同一冷族里的明度阶；一枚品牌蓝贯穿链接与焦点。",
-    styleLibraryAlign: "Bento / utilitarian / SaaS trust density",
-    label: "Cool corporate trust",
-    cssHint: "Slate blue-gray white; single accent hue; tables/charts neutrals",
-  },
-  {
-    id: "pastel_soft",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "粉彩雾面 · 柔和界面",
-    explainerZh:
-      "粉彩面 + 深灰字，避免粉配白字；可加极轻噪点层增加质感，但不改变色相数量。",
-    styleLibraryAlign: "Ethereal / Kawaii / Coquette soft UI",
-    label: "Soft pastel",
-    cssHint: "Pastel surfaces + charcoal text; verify contrast; optional grain overlay z-50 pointer-events-none",
-  },
-  {
-    id: "monochrome_luxury",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "黑白香槟 · 奢华克制",
-    explainerZh:
-      "黑、白、香槟金属三色阶；贵气来自留白和金属边，而不是彩虹渐变。",
-    styleLibraryAlign: "Luxury Typography / Neoclassical / Art Deco metals",
-    label: "Monochrome luxury",
-    cssHint: "Black white champagne; metallic borders via pseudo rings not rainbow gradients",
-  },
-  {
-    id: "high_saturation_pop",
-    group: "classic_vibes",
-    huemintRef: "general",
-    labelZh: "高饱和波普 · CMY 冲击",
-    explainerZh:
-      "黄青品 + 黑描边，像波普海报；每个高饱和块要有 token 名，禁止随手吸色破坏成套感。",
-    styleLibraryAlign: "Memphis / Pop Art / Kitsch campaigns",
-    label: "High-saturation pop",
-    cssHint: "CMY + black outlines; token-locked roles for fill/stroke/text; halftone optional",
-  },
-];
-
-/** Curated hex cues for the color picker (native <select> cannot render swatches). */
-const COLOR_SWATCH_HINTS = {
-  hb_warm_cold_pair: ["#ea580c", "#0369a1", "#f1f5f9", "#0f172a"],
-  hb_tri_guardrails: ["#ffffff", "#64748b", "#0d9488", "#020617"],
-  hb_soft_complement: ["#fef3c7", "#4338ca", "#1e293b", "#fafaf9"],
-  hb_analogous_ribbon: ["#e0f2fe", "#bae6fd", "#0ea5e9", "#0c4a6e"],
-  hb_earth_jewel_spark: ["#b45309", "#78716c", "#f5f5f4", "#0f766e"],
-  hb_split_energy: ["#2563eb", "#a855f7", "#facc15", "#020617"],
-  hm_mag_four_roles: ["#fafaf9", "#171717", "#525252", "#dc2626"],
-  hm_mag_masthead_band: ["#1d4ed8", "#ffffff", "#0f172a", "#e2e8f0"],
-  hm_mag_warm_cool_zones: ["#fefce8", "#e2e8f0", "#475569", "#2563eb"],
-  hm_mag_night_reader: ["#0f172a", "#e2e8f0", "#f59e0b", "#1e293b"],
-  hm_mag_muted_pop_quote: ["#f4f4f5", "#3f3f46", "#6366f1", "#18181b"],
-  hm_mag_dual_accent_rail: ["#f8fafc", "#8b5cf6", "#14b8a6", "#0f172a"],
-  hm_mono_paper_ink_stack: ["#ffffff", "#e4e4e7", "#a1a1aa", "#18181b"],
-  hm_mono_blue_gray_ramp: ["#f8fafc", "#cbd5e1", "#334155", "#0f172a"],
-  hm_mono_middle_bridge: ["#fafafa", "#d4d4d8", "#71717a", "#09090b"],
-  hm_mono_warm_coffee: ["#fefce8", "#d6d3d1", "#78716c", "#292524"],
-  hm_mono_cool_slate_data: ["#f1f5f9", "#94a3b8", "#334155", "#020617"],
-  hm_mono_metallic_outline: ["#fafaf9", "#d6d3d1", "#a8a29e", "#1c1917"],
-  hm_soft_hue_ribbon_bg: ["#eff6ff", "#dbeafe", "#3b82f6", "#1e3a8a"],
-  hm_dark_aurora_glow: ["#042f2e", "#134e4a", "#2dd4bf", "#67e8f9"],
-  hm_pastel_chrome_safe: ["#fdf2f8", "#fbcfe8", "#a3e635", "#171717"],
-  dark_cinematic: ["#020617", "#0f172a", "#e2e8f0", "#38bdf8"],
-  light_editorial: ["#fafaf9", "#d6d3d1", "#1c1917", "#78716c"],
-  neon_cyber: ["#030712", "#22d3ee", "#f472b6", "#a3e635"],
-  warm_earth: ["#fef3c7", "#d97706", "#78350f", "#15803d"],
-  cool_corporate: ["#f8fafc", "#64748b", "#2563eb", "#0f172a"],
-  pastel_soft: ["#fce7f3", "#ddd6fe", "#4b5563", "#fdf2f8"],
-  monochrome_luxury: ["#fafaf9", "#d4d4d8", "#171717", "#eab308"],
-  high_saturation_pop: ["#eab308", "#ec4899", "#06b6d4", "#020617"],
-};
-
-for (const c of colorVibes) {
-  c.swatchHexes = COLOR_SWATCH_HINTS[c.id] || [];
-}
-
 /** Motion kit groups: site-wide §8 M-kits + React Bits buckets (filters Motion code panel) */
 const motionKitGroups = [
   { id: "site", label: "Site / page-level (MotionSites §8)" },
@@ -1512,8 +1140,19 @@ function buildStyleLibraryCatalog() {
 
 const styleLibrary = buildStyleLibraryCatalog();
 
+const snippetBlurbsPath = path.join(__dirname, "snippet-blurbs.json");
+let snippetBlurbs = {};
+if (fs.existsSync(snippetBlurbsPath)) {
+  try {
+    const sj = JSON.parse(fs.readFileSync(snippetBlurbsPath, "utf8"));
+    snippetBlurbs = sj.blurbs && typeof sj.blurbs === "object" ? sj.blurbs : {};
+  } catch {
+    snippetBlurbs = {};
+  }
+}
+
 const out = {
-  version: "1.4.4",
+  version: "1.6.4",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     `Designer Style Layout Markdown (in-repo): ${GITHUB_REPO_STYLE_LIB_TREE}`,
@@ -1536,6 +1175,11 @@ const out = {
   fontVibes,
   colorVibes,
   colorVibeGroups,
+  animationRefHubUrl,
+  animationRefPresets,
+  industryAnimationRefFit,
+  motionVibes: motionVibeOptions,
+  snippetBlurbs,
   motionKits,
   motionKitGroups,
   l4Blueprint,

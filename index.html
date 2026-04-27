@@ -95,6 +95,9 @@
         min-height: 3.25rem;
         resize: vertical;
       }
+      #userNotes {
+        min-height: 11rem;
+      }
       .actions {
         display: flex;
         flex-wrap: wrap;
@@ -221,6 +224,10 @@
       .tab-panel.is-hidden {
         display: none !important;
       }
+      /* Any node with .is-hidden alone (not only .tab-panel) must not take space */
+      .is-hidden {
+        display: none !important;
+      }
       #cloneOutput {
         min-height: 180px;
         font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -255,92 +262,36 @@
         flex-shrink: 0;
         accent-color: var(--accent);
       }
+      .chk-row-block span {
+        display: block;
+        line-height: 1.45;
+      }
       #reactbitsCode {
         min-height: 160px;
         background: #fafafa;
       }
-      .color-vibe-field-label {
-        display: block;
-        font-size: 0.6875rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--muted);
-        margin-bottom: 0.25rem;
-      }
-      .color-vibe-sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-      .color-vibe-picker-wrap {
-        position: relative;
-      }
-      .color-vibe-picker {
-        max-height: 200px;
-        overflow-y: auto;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 0.3rem;
-        background: var(--panel);
-      }
-      .color-vibe-group-label {
-        font-size: 0.65rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--muted);
-        padding: 0.35rem 0.4rem 0.2rem;
-        margin-top: 0.15rem;
-      }
-      .color-vibe-group-label:first-child {
-        margin-top: 0;
-      }
-      .color-vibe-option {
+      .color-vibe-row {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        width: 100%;
-        text-align: left;
-        border: none;
-        background: transparent;
-        padding: 0.38rem 0.45rem;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: var(--text);
-        font-family: inherit;
+        flex-wrap: wrap;
       }
-      .color-vibe-option:hover {
-        background: #f8fafc;
+      .color-vibe-row select {
+        flex: 1;
+        min-width: 12rem;
       }
-      .color-vibe-option.is-selected {
-        background: var(--accent-dim);
-        box-shadow: inset 0 0 0 1px var(--accent);
-      }
-      .color-vibe-swatches {
+      #colorVibeSwatchPreview {
         display: flex;
-        gap: 2px;
+        gap: 3px;
+        align-items: center;
         flex-shrink: 0;
       }
       .color-vibe-swatch {
-        width: 13px;
-        height: 13px;
-        border-radius: 2px;
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
         border: 1px solid rgba(15, 23, 42, 0.14);
         flex-shrink: 0;
-      }
-      .color-vibe-option-label {
-        flex: 1;
-        min-width: 0;
-        line-height: 1.3;
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -391,47 +342,35 @@
           <div class="grid-span-2" style="grid-column: 1 / -1">
             <label for="creativeVoice">Creative voice</label>
             <select id="creativeVoice"></select>
-            <p class="field-hint">Spec-first = standard tags. Dramatic / Wild card adds anti-template creative pressure; BIND and stack unchanged.</p>
           </div>
           <div>
             <label for="fontVibe">Font vibe</label>
             <select id="fontVibe"></select>
           </div>
-          <div class="color-vibe-picker-wrap">
-            <span id="colorVibeLabel" class="color-vibe-field-label">Color vibe</span>
-            <div
-              id="colorVibePicker"
-              class="color-vibe-picker"
-              role="listbox"
-              aria-labelledby="colorVibeLabel"
-              aria-activedescendant=""
-            ></div>
-            <select id="colorVibe" class="color-vibe-sr-only" tabindex="-1" aria-hidden="true"></select>
-            <p id="colorVibeExplainer" class="field-hint"></p>
+          <div>
+            <label for="colorVibe">Color vibe</label>
+            <div class="color-vibe-row">
+              <select id="colorVibe"></select>
+              <div id="colorVibeSwatchPreview" aria-hidden="true"></div>
+            </div>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
-            <label for="motionElement">UI motion (elements, typography, controls)</label>
-            <select id="motionElement"></select>
-            <label for="motionBackground" class="label-mt">Background motion (hero / ambient)</label>
-            <select id="motionBackground"></select>
-            <p id="motionHint" class="field-hint">Loading…</p>
+            <label for="motionVibe">Motion vibe</label>
+            <select id="motionVibe"></select>
           </div>
           <div class="grid-span-2 chk-list" style="grid-column: 1 / -1">
-            <label class="chk-row" for="autoRecommend">
-              <input type="checkbox" id="autoRecommend" checked />
-              <span>Auto-suggest font, color, motion when style changes (only if that control is still Auto)</span>
-            </label>
-            <label class="chk-row" for="includeDesignMd">
+            <label class="chk-row chk-row-block" for="includeDesignMd">
               <input type="checkbox" id="includeDesignMd" checked />
-              <span>Include DESIGN.md instructions (<a href="https://github.com/Ictraeh/design.md" target="_blank" rel="noopener">Ictraeh/design.md</a>)</span>
+              <span><strong>Follow Google design.md standard</strong></span>
             </label>
             <label class="chk-row" for="splitPromptParts">
               <input type="checkbox" id="splitPromptParts" />
-              <span
-                ><strong>Split prompt</strong> — Part A: layout, copy, tokens, and governance. Part B: UI + background
-                motion only. Helps ~5k paste limits: run Part A to generate the site shell, then continue with Part B so
-                motion does not consume the first message.</span>
+              <span><strong>Split prompt</strong> — two-part output (Part A, then Part B) instead of one block</span>
             </label>
+            <p id="splitPromptHelp" class="field-hint" style="margin: 0 0 0 1.5rem" hidden>
+              With this on, only Part A and Part B appear below — paste A to build the page, then B for motion (~5k
+              limits per message).
+            </p>
             <label class="chk-row" for="compactPrompt">
               <input type="checkbox" id="compactPrompt" />
               <span>Compact prompt — shorter plain wording, fewer layer tags</span>
@@ -441,6 +380,7 @@
             <label for="userNotes">Extra notes (optional)</label>
             <textarea
               id="userNotes"
+              rows="6"
               placeholder="Paste content to mirror: hero copy, section headings, CTA labels. Link reference images, moodboard URLs, or video assets (e.g. brand reel). Any must-keep facts, legal lines, or locale."
             ></textarea>
             <p class="field-hint">
@@ -461,12 +401,9 @@
           <textarea id="output" readonly placeholder='Click "Generate prompt"'></textarea>
         </div>
 
-        <div id="splitPromptPanel" class="is-hidden">
-          <h2>Split prompt</h2>
-          <p class="field-hint">
-            <strong>Part A</strong> first (layout and content), then <strong>Part B</strong> in a follow-up message for
-            motion only.
-          </p>
+        <div id="splitPromptPanel" hidden>
+          <h2>Split output</h2>
+          <p class="field-hint">Part A first, then Part B in a follow-up message.</p>
           <label for="outputPartA">Part A — layout &amp; content</label>
           <textarea id="outputPartA" readonly placeholder='Check "Split prompt" above, then generate…'></textarea>
           <div class="actions">
@@ -490,11 +427,13 @@
       <div class="out-wrap panel" id="reactbitsPanel">
         <h2>Motion snippets</h2>
         <p class="field-hint">
-          <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener">React Bits</a>,
-          <a href="https://gsap.com/docs/v3/Plugins/ScrollTrigger/" target="_blank" rel="noopener">GSAP</a>,
-          <a href="https://animejs.com/documentation/animation/" target="_blank" rel="noopener">Anime.js</a>. Modules are
-          grouped: element animation, components, then special effects and backgrounds. The list narrows when your UI
-          motion pick is a React Bits category.
+          Bundled here: <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener">React Bits</a>
+          components (Animations, Backgrounds, Components, Text) plus small
+          <a href="https://gsap.com/docs/v3/Plugins/ScrollTrigger/" target="_blank" rel="noopener">GSAP</a> and
+          <a href="https://animejs.com/documentation/animation/" target="_blank" rel="noopener">Anime.js</a> doc excerpts.
+          The Module list is grouped by that taxonomy; each line ends with a short “what to expect” hint.
+          Libraries such as Magic UI, Kokonut UI, or Aceternity are not in this dropdown — name them in your prompt or
+          link their docs if you want those stacks.
         </p>
         <div class="grid" style="margin-bottom: 0.45rem">
           <div>
