@@ -21,6 +21,30 @@ python3 -m http.server 8765
 
 Open `http://127.0.0.1:8765/`. To refresh motion snippets: run `node fetch-reactbits.mjs`, then `node fetch-motion-docs.mjs` (needs network), then `npm run build` (writes `motion-snippets.bundle.js` and `standalone.html`).
 
+### Test a generated prompt with Kimi (terminal)
+
+[Kimi API](https://platform.kimi.ai/docs/api/quickstart) is OpenAI-compatible: base URL `https://api.moonshot.ai/v1`, model **`kimi-k2.6`**, header `Authorization: Bearer <key>`.
+
+1. Create an API key in the Kimi / Moonshot console and export it (never commit the key):
+
+   ```bash
+   export MOONSHOT_API_KEY="sk-..."
+   ```
+
+2. In the Vibe Prompt Generator UI, click **Generate prompt** → copy the full text into a file, e.g. `prompt.txt` in this folder.
+
+3. Run:
+
+   ```bash
+   npm run kimi:gen -- prompt.txt kimi-output.md
+   ```
+
+   Optional: `KIMI_MAX_TOKENS` (default `16384`, capped in script), `KIMI_TEMPERATURE` (default `0.35`).
+
+4. Open `kimi-output.md`: if the model returned a single `index.html`, save that HTML and open it in a browser; if it returned a Vite tree, paste files into a new Vite project or ask your editor agent to apply them.
+
+The script lives at `scripts/kimi-vibe-generate.mjs` if you want to customize the system message or output shape.
+
 ## Deploy to GitHub
 
 1. Create an empty repo on GitHub (no README).

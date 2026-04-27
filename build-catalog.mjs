@@ -254,6 +254,177 @@ function inferRecommendations(style) {
   };
 }
 
+/** Industry → ordered style ids (UI: ★ first = “best primary” picks; rest A–Z). Prompt: soft guidance, user may diverge. */
+const industryStyleFit = {
+  art_design: [
+    "conceptual-sketch",
+    "mixed-media",
+    "neo-brutalism",
+    "brutalism",
+    "art-nouveau",
+    "pop-art",
+    "pointillism",
+    "modular-typography",
+  ],
+  photography: [
+    "tenebrism",
+    "ethereal",
+    "luxury-typography",
+    "light-academia",
+    "glassmorphism",
+    "conceptual-sketch",
+    "neo-brutalism",
+  ],
+  portfolio_cv: [
+    "neo-brutalism",
+    "brutalism",
+    "bauhaus",
+    "modular-typography",
+    "glassmorphism",
+    "conceptual-sketch",
+    "luxury-typography",
+    "bento-box",
+  ],
+  fashion_beauty: [
+    "ethereal",
+    "coquette",
+    "luxury-typography",
+    "y2k",
+    "art-deco",
+    "tenebrism",
+    "filigree",
+    "vaporwave",
+  ],
+  fitness_wellness: [
+    "japandi",
+    "ethereal",
+    "wabi-sabi",
+    "neo-frutiger-aero",
+    "neo-brutalism",
+    "synthwave",
+    "glassmorphism",
+    "bauhaus",
+  ],
+  food_restaurants: [
+    "bohemian",
+    "farmhouse-cottagecore",
+    "shabby-chic",
+    "japandi",
+    "memphis",
+    "mid-century-modern",
+    "scrapbook",
+    "kawaii",
+  ],
+  real_estate_home: [
+    "mid-century-modern",
+    "japandi",
+    "bauhaus",
+    "farmhouse-cottagecore",
+    "tenebrism",
+    "art-deco",
+    "glassmorphism",
+    "neoclassical",
+  ],
+  travel_tourism: [
+    "bohemian",
+    "south-west-wild-west",
+    "nautical",
+    "mystical-western",
+    "ethereal",
+    "vaporwave",
+    "synthwave",
+    "memphis",
+  ],
+  weddings_events: [
+    "filigree",
+    "shabby-chic",
+    "ethereal",
+    "coquette",
+    "art-nouveau",
+    "neoclassical",
+    "light-academia",
+    "pointillism",
+  ],
+  education: [
+    "anthropomorphic",
+    "light-academia",
+    "japandi",
+    "neo-frutiger-aero",
+    "kawaii",
+    "rebus",
+    "bauhaus",
+    "scrapbook",
+  ],
+  professional_services: [
+    "neoclassical",
+    "bauhaus",
+    "glassmorphism",
+    "bento-box",
+    "neo-brutalism",
+    "utilitarian",
+    "art-deco",
+    "tenebrism",
+  ],
+  community_nonprofits: [
+    "light-academia",
+    "japandi",
+    "ethereal",
+    "anthropomorphic",
+    "rebus",
+    "wabi-sabi",
+    "scrapbook",
+    "bauhaus",
+  ],
+  entertainment_media: [
+    "synthwave",
+    "vaporwave",
+    "y2k",
+    "cybercore",
+    "pop-art",
+    "graffiti",
+    "pixel-art",
+    "surrealism",
+  ],
+  hobbies_lifestyle: [
+    "scrapbook",
+    "kawaii",
+    "coquette",
+    "vaporwave",
+    "memphis",
+    "kitsch",
+    "mixed-media",
+    "anthropomorphic",
+  ],
+  saas_it_services: [
+    "bento-box",
+    "glassmorphism",
+    "neo-frutiger-aero",
+    "aurora",
+    "utilitarian",
+    "cybercore",
+    "neo-brutalism",
+    "bauhaus",
+  ],
+  ecommerce: ["memphis", "pop-art", "y2k", "neo-brutalism", "glassmorphism", "bento-box", "synthwave", "brutalism"],
+  industrial: ["utilitarian", "brutalism", "cybercore", "bauhaus", "neo-frutiger-aero", "steampunk", "tenebrism", "modular-typography"],
+};
+
+function inferMotionInteractionBlurb(style) {
+  const tags = style.skillTags || [];
+  const m = style.recommendations?.motionIds || [];
+  const mk = m.filter(Boolean).slice(0, 4).join("|");
+  const bits = [`MotionSites M-kits:${mk || "M-fade-rise"}`];
+  if (tags.includes("char-motion")) bits.push("ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero");
+  if (tags.includes("video-bg")) bits.push("ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer");
+  if (tags.includes("glass-nav")) bits.push("CSS backdrop-blur+anime opacity height on nav");
+  if (tags.includes("stagger-motion")) bits.push("anime.timeline card/list stagger 50–70ms");
+  if (tags.includes("gsap-heavy") || style.layoutArchetype === "L4.8") bits.push("GSAP ScrollTrigger scrub/pin MotionSites §");
+  if (tags.includes("scroll-scrub-hero")) bits.push("scroll-scrub video.currentTime guards");
+  if (tags.includes("poster-type")) bits.push("CSS @keyframes accent pulse on CTAs sparingly");
+  bits.push("Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion");
+  return bits.join(" · ");
+}
+
 const styles = [
   ["neoclassical", "Neoclassical", "L4.3", ["center-hero", "mono-labels", "stagger-motion"], "Formal timeless authority; symmetry; marble/architectural refs", "Cinzel + EB Garamond or Inter", "Alabaster, slate, olive gray, antique gold", "luxury heritage, museum, legal, academia, symmetry, timeless authority"],
   ["baroque", "Baroque", "L4.3", ["bottom-hero", "script-accent", "stagger-motion"], "Ornate theatrical drama; layered modules", "Playfair Display + Lora", "Crimson, navy, plum, black, metallic gold", "invitation, premium event, luxury hospitality, gilded, dramatic lighting"],
@@ -447,12 +618,15 @@ const styleObjects = styles.map((row, idx) => {
     libraryLayout =
       "Cinematic centered stack + translucent chrome; generous vertical air (style library).";
   }
+  const recommendations = inferRecommendations(base);
+  const withRec = { ...base, recommendations };
   return {
     ...base,
     libraryMood,
     libraryLayout,
     userBlurb: styleUserBlurbs[id] || libraryMood,
-    recommendations: inferRecommendations(base),
+    recommendations,
+    interactionMotionBlurb: inferMotionInteractionBlurb(withRec),
   };
 });
 
@@ -506,6 +680,98 @@ const industries = [
   { id: "ecommerce", label: "E-commerce" },
   { id: "industrial", label: "Industrial" },
 ];
+
+/**
+ * Vertical-aware motion priorities — merged after each style's `recommendations.motionIds` for Auto picks + dropdown sort.
+ * All motion kits remain selectable; this only biases order (★) and defaults.
+ */
+const industryMotionFit = {
+  art_design: {
+    hint: "Portfolio-led: editorial text reveals + layered BGs; avoid stacking multiple scroll-scrub drivers.",
+    elementIds: ["M-scroll-text-reveal", "M-char-cascade", "M-fade-rise", "RB-TextAnimations", "M-media-zoom", "M-delay-fade"],
+    backgroundIds: ["RB-Backgrounds", "M-spotlight-mask", "M-video-raf-loop", "minimal"],
+  },
+  photography: {
+    hint: "Hero media first: soft UI entrance; immersive BG loops or scrub only when the page is hero-led.",
+    elementIds: ["M-media-zoom", "M-fade-rise", "M-delay-fade", "M-button-lift", "RB-Components"],
+    backgroundIds: ["M-scroll-scrub-video", "M-video-raf-loop", "minimal", "RB-Backgrounds"],
+  },
+  portfolio_cv: {
+    hint: "Personal brand: crisp section reveals; optional scroll-linked headline—keep BG calmer than UI.",
+    elementIds: ["M-scroll-text-reveal", "M-fade-rise", "M-char-cascade", "M-delay-fade", "RB-TextAnimations"],
+    backgroundIds: ["minimal", "M-video-raf-loop", "RB-Backgrounds", "M-spotlight-mask"],
+  },
+  fashion_beauty: {
+    hint: "Campaign energy: headline choreography + partner strip; spotlight or premium BG washes.",
+    elementIds: ["M-char-cascade", "M-horizontal-marquee", "M-fade-rise", "M-media-zoom", "RB-TextAnimations"],
+    backgroundIds: ["M-spotlight-mask", "M-video-raf-loop", "RB-Backgrounds", "minimal"],
+  },
+  fitness_wellness: {
+    hint: "Motivating but readable: strong CTAs + calm sections; video hero common—guard text contrast.",
+    elementIds: ["M-button-lift", "M-fade-rise", "M-media-zoom", "M-delay-fade"],
+    backgroundIds: ["M-video-raf-loop", "minimal", "RB-Backgrounds"],
+  },
+  food_restaurants: {
+    hint: "Menu-forward: card media hover; warm BG video or soft ambient—no competing scrub on UI+BG.",
+    elementIds: ["M-media-zoom", "M-fade-rise", "M-horizontal-marquee", "M-button-lift"],
+    backgroundIds: ["M-video-raf-loop", "M-spotlight-mask", "minimal"],
+  },
+  real_estate_home: {
+    hint: "Trust + space: restrained UI; full-bleed property media with subtle BG treatment.",
+    elementIds: ["M-delay-fade", "M-fade-rise", "M-media-zoom", "RB-Components"],
+    backgroundIds: ["M-video-raf-loop", "minimal", "RB-Backgrounds"],
+  },
+  travel_tourism: {
+    hint: "Destination story: tickers for partners ok; cinematic BG without drowning primary CTAs.",
+    elementIds: ["M-horizontal-marquee", "M-fade-rise", "M-scroll-text-reveal", "M-media-zoom"],
+    backgroundIds: ["M-scroll-scrub-video", "M-video-raf-loop", "RB-Backgrounds", "M-spline-bg"],
+  },
+  weddings_events: {
+    hint: "Romantic hierarchy: headline cascades; soft masks—keep motion purposeful for RSVP paths.",
+    elementIds: ["M-char-cascade", "M-fade-rise", "M-delay-fade", "RB-TextAnimations"],
+    backgroundIds: ["M-spotlight-mask", "M-video-raf-loop", "RB-Backgrounds", "minimal"],
+  },
+  education: {
+    hint: "Clarity first: deck/slide patterns for curricula; reduced-motion friendly entrances.",
+    elementIds: ["M-slide-deck", "M-delay-fade", "RB-Components", "M-fade-rise", "M-button-lift"],
+    backgroundIds: ["minimal", "M-video-raf-loop", "RB-Backgrounds"],
+  },
+  professional_services: {
+    hint: "Credibility: minimal choreography; dense pages favor delay-fade over flashy scrub.",
+    elementIds: ["M-delay-fade", "M-fade-rise", "minimal", "M-button-lift", "RB-Components"],
+    backgroundIds: ["minimal", "M-video-raf-loop", "RB-Backgrounds"],
+  },
+  community_nonprofits: {
+    hint: "Inclusive + low-friction: simple reveals; story BG without heavy 3D.",
+    elementIds: ["M-fade-rise", "M-button-lift", "M-delay-fade", "RB-Components"],
+    backgroundIds: ["minimal", "M-video-raf-loop", "RB-Backgrounds"],
+  },
+  entertainment_media: {
+    hint: "Showcase: bolder layers allowed—still one primary scroll driver between UI and BG.",
+    elementIds: ["M-horizontal-marquee", "M-scroll-text-reveal", "M-char-cascade", "RB-Animations", "M-slide-deck"],
+    backgroundIds: ["RB-Backgrounds", "M-scroll-scrub-video", "M-spline-bg", "M-spotlight-mask", "M-video-raf-loop"],
+  },
+  hobbies_lifestyle: {
+    hint: "Community clubs: lively tickers optional; large touch targets on mobile.",
+    elementIds: ["M-fade-rise", "M-horizontal-marquee", "M-media-zoom", "RB-Components"],
+    backgroundIds: ["RB-Backgrounds", "M-video-raf-loop", "M-spotlight-mask", "minimal"],
+  },
+  saas_it_services: {
+    hint: "Product truth: table-safe motion; micro-interactions on controls beat headline gimmicks.",
+    elementIds: ["M-delay-fade", "M-button-lift", "RB-Components", "M-fade-rise", "minimal"],
+    backgroundIds: ["minimal", "M-video-raf-loop", "RB-Backgrounds"],
+  },
+  ecommerce: {
+    hint: "Merch/grid: hover zoom on cards; trust CTAs; BG stays subtle for product readability.",
+    elementIds: ["M-media-zoom", "M-button-lift", "M-fade-rise", "M-horizontal-marquee"],
+    backgroundIds: ["M-video-raf-loop", "minimal", "RB-Backgrounds"],
+  },
+  industrial: {
+    hint: "B2B sturdiness: few effects; precision fades; optional operations BG loop.",
+    elementIds: ["M-delay-fade", "M-fade-rise", "minimal", "M-button-lift"],
+    backgroundIds: ["minimal", "M-video-raf-loop", "RB-Backgrounds"],
+  },
+};
 
 /** MotionSites §5.1 pairing recipes — + 中文「气质」标签（风格库模糊意图） */
 const fontVibes = [
@@ -943,95 +1209,129 @@ const motionKitGroups = [
   },
 ];
 
-/** MotionSites §8 — ids stay English for prompts; labels are short English for the UI */
+/**
+ * MotionSites §8 + React Bits — ids stay English for prompts.
+ * plane: element = UI/choreography on components; background = hero/ambient layers; both = allowed in either picker.
+ * energy: gentle default bias; playful = extra delight; bold = heavier / scroll / 3D.
+ */
 const motionKits = [
   {
     id: "M-fade-rise",
     group: "site",
+    plane: "element",
+    energy: "gentle",
     label: "Fade-rise — sections ease in upward",
     detail: "~0.8s ease-out; translateY(24px)→0; stagger via animation-delay",
   },
   {
     id: "M-char-cascade",
     group: "site",
+    plane: "element",
+    energy: "playful",
     label: "Character cascade — headline attention",
     detail: "~30ms/char; 200ms start delay; opacity + translateX on inline-block spans",
   },
   {
     id: "M-delay-fade",
     group: "site",
+    plane: "element",
+    energy: "gentle",
     label: "Delayed fade — calmer entrance",
     detail: "opacity 0→1 after delay; transition-opacity ~1000ms",
   },
   {
     id: "M-media-zoom",
     group: "site",
+    plane: "element",
+    energy: "gentle",
     label: "Image/video hover zoom",
     detail: "group overflow-hidden rounded-[14px]; child duration-700 group-hover:scale-[1.03]",
   },
   {
     id: "M-button-lift",
     group: "site",
+    plane: "element",
+    energy: "gentle",
     label: "Button hover lift",
     detail: "hover:-translate-y-0.5 transition-all duration-200 + subtle bg",
   },
   {
     id: "M-video-raf-loop",
     group: "site",
+    plane: "background",
+    energy: "gentle",
     label: "Video loop crossfade — seamless feel",
     detail: "rAF near loop ends; guard re-entrancy; on ended reset currentTime",
   },
   {
     id: "M-scroll-text-reveal",
     group: "site",
+    plane: "element",
+    energy: "playful",
     label: "Scroll-linked text reveal",
     detail: "motion useScroll + useTransform per word/char opacity",
   },
   {
     id: "M-horizontal-marquee",
     group: "site",
+    plane: "element",
+    energy: "playful",
     label: "Horizontal marquee — logos / ticker",
     detail: "duplicate row translateX(-50%) infinite linear; optional edge masks",
   },
   {
     id: "M-scroll-scrub-video",
     group: "site",
+    plane: "background",
+    energy: "bold",
     label: "Scroll-scrubbed video — progress follows scroll",
     detail: "GSAP ScrollTrigger scrub→video.currentTime; seek coalescing; buffer overlay",
   },
   {
     id: "M-clip-circle-menu",
     group: "site",
+    plane: "element",
+    energy: "bold",
     label: "Circular expanding fullscreen menu",
     detail: "clip-path circle expand; stagger links; body scroll lock",
   },
   {
     id: "M-slide-deck",
     group: "site",
+    plane: "element",
+    energy: "playful",
     label: "Slide deck / multi-screen",
     detail: "slides mounted; opacity+z+pointerEvents; keyboard + dots",
   },
   {
     id: "M-spline-bg",
     group: "site",
+    plane: "background",
+    energy: "bold",
     label: "Spline 3D scene as background",
     detail: "lazy @splinetool/react-spline; pointer-events vs CTAs",
   },
   {
     id: "M-spotlight-mask",
     group: "site",
+    plane: "background",
+    energy: "playful",
     label: "Cursor spotlight / masked reveal",
     detail: "SVG mask trails; perf gate + mobile fallback",
   },
   {
     id: "minimal",
     group: "site",
+    plane: "both",
+    energy: "gentle",
     label: "Minimal — hover-only micro motion",
     detail: "No entrance choreography; respect prefers-reduced-motion",
   },
   {
     id: "RB-Animations",
     group: "reactbits",
+    plane: "element",
+    energy: "playful",
     rbCategory: "Animations",
     label: "React Bits · Animations (cursor, particles, GSAP, …)",
     detail:
@@ -1040,6 +1340,8 @@ const motionKits = [
   {
     id: "RB-Backgrounds",
     group: "reactbits",
+    plane: "background",
+    energy: "playful",
     rbCategory: "Backgrounds",
     label: "React Bits · Backgrounds (gradients, grids, aurora)",
     detail: "React Bits / Backgrounds: hero or section fills; watch z-index vs body text contrast",
@@ -1047,6 +1349,8 @@ const motionKits = [
   {
     id: "RB-Components",
     group: "reactbits",
+    plane: "element",
+    energy: "playful",
     rbCategory: "Components",
     label: "React Bits · Components (carousels, accordions, cards)",
     detail: "React Bits / Components: reusable blocks; trim props to need",
@@ -1054,6 +1358,8 @@ const motionKits = [
   {
     id: "RB-TextAnimations",
     group: "reactbits",
+    plane: "element",
+    energy: "playful",
     rbCategory: "TextAnimations",
     label: "React Bits · Text (gradients, splits, scroll type)",
     detail: "React Bits / TextAnimations: headline/tagline hierarchy; avoid whole-page overload",
@@ -1126,7 +1432,7 @@ function buildStyleLibraryCatalog() {
 const styleLibrary = buildStyleLibraryCatalog();
 
 const out = {
-  version: "1.4.0",
+  version: "1.4.3",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     `Designer Style Layout Markdown (in-repo): ${GITHUB_REPO_STYLE_LIB_TREE}`,
@@ -1139,6 +1445,8 @@ const out = {
     getdesignPattern: "https://getdesign.md/<slug>/design-md",
   },
   designMdReferences,
+  industryStyleFit,
+  industryMotionFit,
   styleLibrary,
   pexelsAttribution: "Placeholder media from https://www.pexels.com/ — replace with licensed assets for production.",
   pexelsPool,

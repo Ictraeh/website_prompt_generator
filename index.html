@@ -284,6 +284,7 @@
           <div>
             <label for="style">Primary style</label>
             <select id="style"></select>
+            <p id="styleIndustryHint" class="field-hint"></p>
           </div>
           <div>
             <label for="secondaryBlend">Secondary blend (optional)</label>
@@ -302,14 +303,17 @@
             <select id="colorVibe"></select>
             <p id="colorVibeExplainer" class="field-hint"></p>
           </div>
-          <div>
-            <label for="motion">Motion</label>
-            <select id="motion"></select>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
+            <label for="motionElement">UI motion (elements, typography, controls)</label>
+            <select id="motionElement"></select>
+            <label for="motionBackground" style="margin-top: 0.55rem">Background motion (hero / ambient layers)</label>
+            <select id="motionBackground"></select>
+            <p id="motionHint" class="field-hint">Loading…</p>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
             <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
               <input type="checkbox" id="autoRecommend" checked />
-              When the primary style changes, auto-suggest font / color / motion (you can still override)
+              When style changes, auto-suggest font / color / motion (only for controls still on <strong>Auto</strong>; industry re-sorts ★ picks)
             </label>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">
@@ -318,6 +322,12 @@
               Include
               <a href="https://github.com/Ictraeh/design.md" target="_blank" rel="noopener" style="color: var(--accent)">DESIGN.md</a>
               instructions (YAML design tokens + markdown sections for agents)
+            </label>
+          </div>
+          <div class="grid-span-2" style="grid-column: 1 / -1">
+            <label style="display: flex; align-items: center; gap: 0.5rem; text-transform: none; letter-spacing: 0">
+              <input type="checkbox" id="splitPromptParts" />
+              Split prompt into <strong>Part A</strong> (layout, type, color, content) and <strong>Part B</strong> (motion only)—helps stay under ~5000 chars when pasting in two steps
             </label>
           </div>
           <div>
@@ -353,7 +363,7 @@
           <a href="https://reactbits.dev/get-started/introduction" target="_blank" rel="noopener" style="color: var(--accent)">React Bits</a>,
           <a href="https://gsap.com/docs/v3/Plugins/ScrollTrigger/" target="_blank" rel="noopener" style="color: var(--accent)">GSAP ScrollTrigger</a>, and
           <a href="https://animejs.com/documentation/animation/" target="_blank" rel="noopener" style="color: var(--accent)">Anime.js</a>
-          docs. Choosing a React Bits motion category above filters this list to React Bits only; otherwise all libraries are shown. Each snippet ≤ 20000 bytes.
+          docs. If either motion pick is a <strong>React Bits</strong> category, this list filters to that category; <strong>Auto</strong> resolves from style + deliverable when possible. Each snippet ≤ 20000 bytes.
         </p>
         <div class="grid" style="margin-bottom: 0.75rem">
           <div>

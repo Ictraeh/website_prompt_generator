@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.4.3",
   "sourceDocs": [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     "Designer Style Layout Markdown (in-repo): https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md",
@@ -759,6 +759,435 @@
       ]
     }
   ],
+  "industryStyleFit": {
+    "art_design": [
+      "conceptual-sketch",
+      "mixed-media",
+      "neo-brutalism",
+      "brutalism",
+      "art-nouveau",
+      "pop-art",
+      "pointillism",
+      "modular-typography"
+    ],
+    "photography": [
+      "tenebrism",
+      "ethereal",
+      "luxury-typography",
+      "light-academia",
+      "glassmorphism",
+      "conceptual-sketch",
+      "neo-brutalism"
+    ],
+    "portfolio_cv": [
+      "neo-brutalism",
+      "brutalism",
+      "bauhaus",
+      "modular-typography",
+      "glassmorphism",
+      "conceptual-sketch",
+      "luxury-typography",
+      "bento-box"
+    ],
+    "fashion_beauty": [
+      "ethereal",
+      "coquette",
+      "luxury-typography",
+      "y2k",
+      "art-deco",
+      "tenebrism",
+      "filigree",
+      "vaporwave"
+    ],
+    "fitness_wellness": [
+      "japandi",
+      "ethereal",
+      "wabi-sabi",
+      "neo-frutiger-aero",
+      "neo-brutalism",
+      "synthwave",
+      "glassmorphism",
+      "bauhaus"
+    ],
+    "food_restaurants": [
+      "bohemian",
+      "farmhouse-cottagecore",
+      "shabby-chic",
+      "japandi",
+      "memphis",
+      "mid-century-modern",
+      "scrapbook",
+      "kawaii"
+    ],
+    "real_estate_home": [
+      "mid-century-modern",
+      "japandi",
+      "bauhaus",
+      "farmhouse-cottagecore",
+      "tenebrism",
+      "art-deco",
+      "glassmorphism",
+      "neoclassical"
+    ],
+    "travel_tourism": [
+      "bohemian",
+      "south-west-wild-west",
+      "nautical",
+      "mystical-western",
+      "ethereal",
+      "vaporwave",
+      "synthwave",
+      "memphis"
+    ],
+    "weddings_events": [
+      "filigree",
+      "shabby-chic",
+      "ethereal",
+      "coquette",
+      "art-nouveau",
+      "neoclassical",
+      "light-academia",
+      "pointillism"
+    ],
+    "education": [
+      "anthropomorphic",
+      "light-academia",
+      "japandi",
+      "neo-frutiger-aero",
+      "kawaii",
+      "rebus",
+      "bauhaus",
+      "scrapbook"
+    ],
+    "professional_services": [
+      "neoclassical",
+      "bauhaus",
+      "glassmorphism",
+      "bento-box",
+      "neo-brutalism",
+      "utilitarian",
+      "art-deco",
+      "tenebrism"
+    ],
+    "community_nonprofits": [
+      "light-academia",
+      "japandi",
+      "ethereal",
+      "anthropomorphic",
+      "rebus",
+      "wabi-sabi",
+      "scrapbook",
+      "bauhaus"
+    ],
+    "entertainment_media": [
+      "synthwave",
+      "vaporwave",
+      "y2k",
+      "cybercore",
+      "pop-art",
+      "graffiti",
+      "pixel-art",
+      "surrealism"
+    ],
+    "hobbies_lifestyle": [
+      "scrapbook",
+      "kawaii",
+      "coquette",
+      "vaporwave",
+      "memphis",
+      "kitsch",
+      "mixed-media",
+      "anthropomorphic"
+    ],
+    "saas_it_services": [
+      "bento-box",
+      "glassmorphism",
+      "neo-frutiger-aero",
+      "aurora",
+      "utilitarian",
+      "cybercore",
+      "neo-brutalism",
+      "bauhaus"
+    ],
+    "ecommerce": [
+      "memphis",
+      "pop-art",
+      "y2k",
+      "neo-brutalism",
+      "glassmorphism",
+      "bento-box",
+      "synthwave",
+      "brutalism"
+    ],
+    "industrial": [
+      "utilitarian",
+      "brutalism",
+      "cybercore",
+      "bauhaus",
+      "neo-frutiger-aero",
+      "steampunk",
+      "tenebrism",
+      "modular-typography"
+    ]
+  },
+  "industryMotionFit": {
+    "art_design": {
+      "hint": "Portfolio-led: editorial text reveals + layered BGs; avoid stacking multiple scroll-scrub drivers.",
+      "elementIds": [
+        "M-scroll-text-reveal",
+        "M-char-cascade",
+        "M-fade-rise",
+        "RB-TextAnimations",
+        "M-media-zoom",
+        "M-delay-fade"
+      ],
+      "backgroundIds": [
+        "RB-Backgrounds",
+        "M-spotlight-mask",
+        "M-video-raf-loop",
+        "minimal"
+      ]
+    },
+    "photography": {
+      "hint": "Hero media first: soft UI entrance; immersive BG loops or scrub only when the page is hero-led.",
+      "elementIds": [
+        "M-media-zoom",
+        "M-fade-rise",
+        "M-delay-fade",
+        "M-button-lift",
+        "RB-Components"
+      ],
+      "backgroundIds": [
+        "M-scroll-scrub-video",
+        "M-video-raf-loop",
+        "minimal",
+        "RB-Backgrounds"
+      ]
+    },
+    "portfolio_cv": {
+      "hint": "Personal brand: crisp section reveals; optional scroll-linked headline—keep BG calmer than UI.",
+      "elementIds": [
+        "M-scroll-text-reveal",
+        "M-fade-rise",
+        "M-char-cascade",
+        "M-delay-fade",
+        "RB-TextAnimations"
+      ],
+      "backgroundIds": [
+        "minimal",
+        "M-video-raf-loop",
+        "RB-Backgrounds",
+        "M-spotlight-mask"
+      ]
+    },
+    "fashion_beauty": {
+      "hint": "Campaign energy: headline choreography + partner strip; spotlight or premium BG washes.",
+      "elementIds": [
+        "M-char-cascade",
+        "M-horizontal-marquee",
+        "M-fade-rise",
+        "M-media-zoom",
+        "RB-TextAnimations"
+      ],
+      "backgroundIds": [
+        "M-spotlight-mask",
+        "M-video-raf-loop",
+        "RB-Backgrounds",
+        "minimal"
+      ]
+    },
+    "fitness_wellness": {
+      "hint": "Motivating but readable: strong CTAs + calm sections; video hero common—guard text contrast.",
+      "elementIds": [
+        "M-button-lift",
+        "M-fade-rise",
+        "M-media-zoom",
+        "M-delay-fade"
+      ],
+      "backgroundIds": [
+        "M-video-raf-loop",
+        "minimal",
+        "RB-Backgrounds"
+      ]
+    },
+    "food_restaurants": {
+      "hint": "Menu-forward: card media hover; warm BG video or soft ambient—no competing scrub on UI+BG.",
+      "elementIds": [
+        "M-media-zoom",
+        "M-fade-rise",
+        "M-horizontal-marquee",
+        "M-button-lift"
+      ],
+      "backgroundIds": [
+        "M-video-raf-loop",
+        "M-spotlight-mask",
+        "minimal"
+      ]
+    },
+    "real_estate_home": {
+      "hint": "Trust + space: restrained UI; full-bleed property media with subtle BG treatment.",
+      "elementIds": [
+        "M-delay-fade",
+        "M-fade-rise",
+        "M-media-zoom",
+        "RB-Components"
+      ],
+      "backgroundIds": [
+        "M-video-raf-loop",
+        "minimal",
+        "RB-Backgrounds"
+      ]
+    },
+    "travel_tourism": {
+      "hint": "Destination story: tickers for partners ok; cinematic BG without drowning primary CTAs.",
+      "elementIds": [
+        "M-horizontal-marquee",
+        "M-fade-rise",
+        "M-scroll-text-reveal",
+        "M-media-zoom"
+      ],
+      "backgroundIds": [
+        "M-scroll-scrub-video",
+        "M-video-raf-loop",
+        "RB-Backgrounds",
+        "M-spline-bg"
+      ]
+    },
+    "weddings_events": {
+      "hint": "Romantic hierarchy: headline cascades; soft masks—keep motion purposeful for RSVP paths.",
+      "elementIds": [
+        "M-char-cascade",
+        "M-fade-rise",
+        "M-delay-fade",
+        "RB-TextAnimations"
+      ],
+      "backgroundIds": [
+        "M-spotlight-mask",
+        "M-video-raf-loop",
+        "RB-Backgrounds",
+        "minimal"
+      ]
+    },
+    "education": {
+      "hint": "Clarity first: deck/slide patterns for curricula; reduced-motion friendly entrances.",
+      "elementIds": [
+        "M-slide-deck",
+        "M-delay-fade",
+        "RB-Components",
+        "M-fade-rise",
+        "M-button-lift"
+      ],
+      "backgroundIds": [
+        "minimal",
+        "M-video-raf-loop",
+        "RB-Backgrounds"
+      ]
+    },
+    "professional_services": {
+      "hint": "Credibility: minimal choreography; dense pages favor delay-fade over flashy scrub.",
+      "elementIds": [
+        "M-delay-fade",
+        "M-fade-rise",
+        "minimal",
+        "M-button-lift",
+        "RB-Components"
+      ],
+      "backgroundIds": [
+        "minimal",
+        "M-video-raf-loop",
+        "RB-Backgrounds"
+      ]
+    },
+    "community_nonprofits": {
+      "hint": "Inclusive + low-friction: simple reveals; story BG without heavy 3D.",
+      "elementIds": [
+        "M-fade-rise",
+        "M-button-lift",
+        "M-delay-fade",
+        "RB-Components"
+      ],
+      "backgroundIds": [
+        "minimal",
+        "M-video-raf-loop",
+        "RB-Backgrounds"
+      ]
+    },
+    "entertainment_media": {
+      "hint": "Showcase: bolder layers allowed—still one primary scroll driver between UI and BG.",
+      "elementIds": [
+        "M-horizontal-marquee",
+        "M-scroll-text-reveal",
+        "M-char-cascade",
+        "RB-Animations",
+        "M-slide-deck"
+      ],
+      "backgroundIds": [
+        "RB-Backgrounds",
+        "M-scroll-scrub-video",
+        "M-spline-bg",
+        "M-spotlight-mask",
+        "M-video-raf-loop"
+      ]
+    },
+    "hobbies_lifestyle": {
+      "hint": "Community clubs: lively tickers optional; large touch targets on mobile.",
+      "elementIds": [
+        "M-fade-rise",
+        "M-horizontal-marquee",
+        "M-media-zoom",
+        "RB-Components"
+      ],
+      "backgroundIds": [
+        "RB-Backgrounds",
+        "M-video-raf-loop",
+        "M-spotlight-mask",
+        "minimal"
+      ]
+    },
+    "saas_it_services": {
+      "hint": "Product truth: table-safe motion; micro-interactions on controls beat headline gimmicks.",
+      "elementIds": [
+        "M-delay-fade",
+        "M-button-lift",
+        "RB-Components",
+        "M-fade-rise",
+        "minimal"
+      ],
+      "backgroundIds": [
+        "minimal",
+        "M-video-raf-loop",
+        "RB-Backgrounds"
+      ]
+    },
+    "ecommerce": {
+      "hint": "Merch/grid: hover zoom on cards; trust CTAs; BG stays subtle for product readability.",
+      "elementIds": [
+        "M-media-zoom",
+        "M-button-lift",
+        "M-fade-rise",
+        "M-horizontal-marquee"
+      ],
+      "backgroundIds": [
+        "M-video-raf-loop",
+        "minimal",
+        "RB-Backgrounds"
+      ]
+    },
+    "industrial": {
+      "hint": "B2B sturdiness: few effects; precision fades; optional operations BG loop.",
+      "elementIds": [
+        "M-delay-fade",
+        "M-fade-rise",
+        "minimal",
+        "M-button-lift"
+      ],
+      "backgroundIds": [
+        "minimal",
+        "M-video-raf-loop",
+        "RB-Backgrounds"
+      ]
+    }
+  },
   "styleLibrary": {
     "present": true,
     "treeUrl": "https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md",
@@ -1382,90 +1811,120 @@
     {
       "id": "M-fade-rise",
       "group": "site",
+      "plane": "element",
+      "energy": "gentle",
       "label": "Fade-rise — sections ease in upward",
       "detail": "~0.8s ease-out; translateY(24px)→0; stagger via animation-delay"
     },
     {
       "id": "M-char-cascade",
       "group": "site",
+      "plane": "element",
+      "energy": "playful",
       "label": "Character cascade — headline attention",
       "detail": "~30ms/char; 200ms start delay; opacity + translateX on inline-block spans"
     },
     {
       "id": "M-delay-fade",
       "group": "site",
+      "plane": "element",
+      "energy": "gentle",
       "label": "Delayed fade — calmer entrance",
       "detail": "opacity 0→1 after delay; transition-opacity ~1000ms"
     },
     {
       "id": "M-media-zoom",
       "group": "site",
+      "plane": "element",
+      "energy": "gentle",
       "label": "Image/video hover zoom",
       "detail": "group overflow-hidden rounded-[14px]; child duration-700 group-hover:scale-[1.03]"
     },
     {
       "id": "M-button-lift",
       "group": "site",
+      "plane": "element",
+      "energy": "gentle",
       "label": "Button hover lift",
       "detail": "hover:-translate-y-0.5 transition-all duration-200 + subtle bg"
     },
     {
       "id": "M-video-raf-loop",
       "group": "site",
+      "plane": "background",
+      "energy": "gentle",
       "label": "Video loop crossfade — seamless feel",
       "detail": "rAF near loop ends; guard re-entrancy; on ended reset currentTime"
     },
     {
       "id": "M-scroll-text-reveal",
       "group": "site",
+      "plane": "element",
+      "energy": "playful",
       "label": "Scroll-linked text reveal",
       "detail": "motion useScroll + useTransform per word/char opacity"
     },
     {
       "id": "M-horizontal-marquee",
       "group": "site",
+      "plane": "element",
+      "energy": "playful",
       "label": "Horizontal marquee — logos / ticker",
       "detail": "duplicate row translateX(-50%) infinite linear; optional edge masks"
     },
     {
       "id": "M-scroll-scrub-video",
       "group": "site",
+      "plane": "background",
+      "energy": "bold",
       "label": "Scroll-scrubbed video — progress follows scroll",
       "detail": "GSAP ScrollTrigger scrub→video.currentTime; seek coalescing; buffer overlay"
     },
     {
       "id": "M-clip-circle-menu",
       "group": "site",
+      "plane": "element",
+      "energy": "bold",
       "label": "Circular expanding fullscreen menu",
       "detail": "clip-path circle expand; stagger links; body scroll lock"
     },
     {
       "id": "M-slide-deck",
       "group": "site",
+      "plane": "element",
+      "energy": "playful",
       "label": "Slide deck / multi-screen",
       "detail": "slides mounted; opacity+z+pointerEvents; keyboard + dots"
     },
     {
       "id": "M-spline-bg",
       "group": "site",
+      "plane": "background",
+      "energy": "bold",
       "label": "Spline 3D scene as background",
       "detail": "lazy @splinetool/react-spline; pointer-events vs CTAs"
     },
     {
       "id": "M-spotlight-mask",
       "group": "site",
+      "plane": "background",
+      "energy": "playful",
       "label": "Cursor spotlight / masked reveal",
       "detail": "SVG mask trails; perf gate + mobile fallback"
     },
     {
       "id": "minimal",
       "group": "site",
+      "plane": "both",
+      "energy": "gentle",
       "label": "Minimal — hover-only micro motion",
       "detail": "No entrance choreography; respect prefers-reduced-motion"
     },
     {
       "id": "RB-Animations",
       "group": "reactbits",
+      "plane": "element",
+      "energy": "playful",
       "rbCategory": "Animations",
       "label": "React Bits · Animations (cursor, particles, GSAP, …)",
       "detail": "React Bits / Animations: pick TSX in Motion code panel; layer lightly with site M-kits; mind §3.2 perf + reduced-motion"
@@ -1473,6 +1932,8 @@
     {
       "id": "RB-Backgrounds",
       "group": "reactbits",
+      "plane": "background",
+      "energy": "playful",
       "rbCategory": "Backgrounds",
       "label": "React Bits · Backgrounds (gradients, grids, aurora)",
       "detail": "React Bits / Backgrounds: hero or section fills; watch z-index vs body text contrast"
@@ -1480,6 +1941,8 @@
     {
       "id": "RB-Components",
       "group": "reactbits",
+      "plane": "element",
+      "energy": "playful",
       "rbCategory": "Components",
       "label": "React Bits · Components (carousels, accordions, cards)",
       "detail": "React Bits / Components: reusable blocks; trim props to need"
@@ -1487,6 +1950,8 @@
     {
       "id": "RB-TextAnimations",
       "group": "reactbits",
+      "plane": "element",
+      "energy": "playful",
       "rbCategory": "TextAnimations",
       "label": "React Bits · Text (gradients, splits, scroll type)",
       "detail": "React Bits / TextAnimations: headline/tagline hierarchy; avoid whole-page overload"
@@ -1624,7 +2089,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "baroque",
@@ -1667,7 +2133,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "aurora",
@@ -1712,7 +2179,8 @@
           "M-fade-rise",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS backdrop-blur+anime opacity height on nav · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "ethereal",
@@ -1759,7 +2227,8 @@
           "M-delay-fade",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-char-cascade|M-delay-fade|M-button-lift · ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero · CSS backdrop-blur+anime opacity height on nav · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "filigree",
@@ -1800,7 +2269,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "acanthus",
@@ -1846,7 +2316,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "anthropomorphic",
@@ -1888,7 +2359,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "pixel-art",
@@ -1936,7 +2408,8 @@
           "M-scroll-text-reveal",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "conceptual-sketch",
@@ -1979,7 +2452,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "luxury-typography",
@@ -2024,7 +2498,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "japandi",
@@ -2071,7 +2546,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "memphis",
@@ -2115,7 +2591,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "bohemian",
@@ -2158,7 +2635,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "shabby-chic",
@@ -2203,7 +2681,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "farmhouse-cottagecore",
@@ -2244,7 +2723,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "victorian",
@@ -2284,7 +2764,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "art-deco",
@@ -2327,7 +2808,8 @@
           "M-fade-rise",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · CSS backdrop-blur+anime opacity height on nav · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "art-nouveau",
@@ -2365,7 +2847,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "mystical-western",
@@ -2406,7 +2889,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "kitsch",
@@ -2445,7 +2929,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "y2k",
@@ -2488,7 +2973,8 @@
           "M-scroll-text-reveal",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-scroll-text-reveal|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS backdrop-blur+anime opacity height on nav · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "bauhaus",
@@ -2530,7 +3016,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "brutalism",
@@ -2576,7 +3063,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "cybercore",
@@ -2621,7 +3109,8 @@
           "M-scroll-text-reveal",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-scrub-video|M-scroll-text-reveal|M-button-lift · GSAP ScrollTrigger scrub/pin MotionSites § · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "synthwave",
@@ -2660,7 +3149,8 @@
           "M-scroll-text-reveal",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "vaporwave",
@@ -2706,7 +3196,8 @@
           "M-scroll-text-reveal",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "pop-art",
@@ -2749,7 +3240,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "bento-box",
@@ -2792,7 +3284,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "graffiti",
@@ -2837,7 +3330,8 @@
           "M-scroll-text-reveal",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · anime.timeline card/list stagger 50–70ms · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "tenebrism",
@@ -2877,7 +3371,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "gothic",
@@ -2917,7 +3412,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "pointillism",
@@ -2957,7 +3453,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-char-cascade|M-button-lift|M-fade-rise · ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "mixed-media",
@@ -2999,7 +3496,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "steampunk",
@@ -3038,7 +3536,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "kawaii",
@@ -3083,7 +3582,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "coquette",
@@ -3128,7 +3628,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "surrealism",
@@ -3167,7 +3668,8 @@
           "M-scroll-scrub-video",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-scrub-video|M-button-lift · GSAP ScrollTrigger scrub/pin MotionSites § · scroll-scrub video.currentTime guards · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "utilitarian",
@@ -3209,7 +3711,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "mid-century-modern",
@@ -3247,7 +3750,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "scrapbook",
@@ -3293,7 +3797,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "neo-frutiger-aero",
@@ -3337,7 +3842,8 @@
           "M-fade-rise",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · CSS backdrop-blur+anime opacity height on nav · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "dark-magic-academia",
@@ -3377,7 +3883,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "light-academia",
@@ -3423,7 +3930,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-char-cascade|M-delay-fade|M-button-lift|M-fade-rise · ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "wabi-sabi",
@@ -3464,7 +3972,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "south-west-wild-west",
@@ -3508,7 +4017,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "nautical",
@@ -3553,7 +4063,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "rebus",
@@ -3595,7 +4106,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "glassmorphism",
@@ -3638,7 +4150,8 @@
           "M-fade-rise",
           "M-button-lift"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS backdrop-blur+anime opacity height on nav · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "modular-typography",
@@ -3680,7 +4193,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "neo-brutalism",
@@ -3727,7 +4241,8 @@
           "M-button-lift",
           "M-fade-rise"
         ]
-      }
+      },
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     }
   ]
 }

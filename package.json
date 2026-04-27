@@ -4,7 +4,8 @@
   "description": "MotionSites-style vibe prompt generator (static)",
   "scripts": {
     "build": "node build-catalog.mjs",
-    "fetch:motion": "node fetch-reactbits.mjs && node fetch-motion-docs.mjs && node build-catalog.mjs"
+    "fetch:motion": "node fetch-reactbits.mjs && node fetch-motion-docs.mjs && node build-catalog.mjs",
+    "kimi:gen": "node scripts/kimi-vibe-generate.mjs"
   },
   "engines": {
     "node": "20.x"

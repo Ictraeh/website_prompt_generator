@@ -6,6 +6,9 @@
     return;
   }
 
+  /** Set in initReactBits so industry/motion refills can refresh the snippet list. */
+  let rebuildReactbitsSnippetList = function () {};
+
   /** Hard cap: output must stay under 5000 characters (inclusive limit 4999). */
   const MAX_PROMPT_CHARS = 4999;
 
@@ -60,24 +63,221 @@
     }
   }
 
-  function fillMotionSelect() {
-    const s = el("motion");
+  /** ★ = industry fit (priority order); remainder A–Z by style name. */
+  function sortStylesForPicker(industryId, allStyles) {
+    const pri = (cat.industryStyleFit && cat.industryStyleFit[industryId]) || [];
+    const picked = [];
+    const seen = new Set();
+    for (const id of pri) {
+      const s = allStyles.find((x) => x.id === id);
+      if (s && !seen.has(s.id)) {
+        picked.push(s);
+        seen.add(s.id);
+      }
+    }
+    const rest = allStyles
+      .filter((s) => !seen.has(s.id))
+      .sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+    return { ordered: [...picked, ...rest], recommendedCount: picked.length };
+  }
+
+  function updateStyleIndustryHint(industryId, recommendedCount, ordered) {
+    const p = el("styleIndustryHint");
+    if (!p) return;
+    const ind = cat.industries.find((i) => i.id === industryId);
+    const top = ordered.slice(0, Math.min(4, recommendedCount || 0)).map((s) => s.name).join(", ");
+    p.textContent = recommendedCount
+      ? `★ = strongest fit for ${ind?.label || "this industry"} (${recommendedCount} curated). Then A–Z by style name—override anytime. Suggested first: ${top}.`
+      : `Styles A–Z by name for ${ind?.label || "this industry"}.`;
+  }
+
+  function refillStyleSelect() {
+    const industryId = el("industry").value;
+    const styleSel = el("style");
+    if (!styleSel || !cat.styles) return;
+    const prev = styleSel.value;
+    const { ordered, recommendedCount } = sortStylesForPicker(industryId, cat.styles);
+    styleSel.innerHTML = "";
+    const def = document.createElement("option");
+    def.value = DEFAULT_VAL;
+    def.textContent = "Default (random primary style)";
+    styleSel.appendChild(def);
+    ordered.forEach((s, i) => {
+      const o = document.createElement("option");
+      o.value = s.id;
+      const star = i < recommendedCount ? "★ " : "";
+      const blurb = (s.userBlurb || s.libraryMood || "").slice(0, 82);
+      o.textContent = `${star}${s.name} — ${blurb}`;
+      styleSel.appendChild(o);
+    });
+    if (ordered.some((s) => s.id === prev)) styleSel.value = prev;
+    else if (ordered[0]) styleSel.value = ordered[0].id;
+    else styleSel.value = DEFAULT_VAL;
+    updateStyleIndustryHint(industryId, recommendedCount, ordered);
+    const st = cat.styles.find((s) => s.id === styleSel.value);
+    if (st && styleSel.value !== DEFAULT_VAL) applyStyleRecommendations(st);
+  }
+
+  const MOTION_ENERGY_ORDER = ["gentle", "playful", "bold"];
+  const MOTION_ENERGY_LABEL = {
+    gentle: "Gentle & nice (default bias)",
+    playful: "Fun & punch",
+    bold: "Bold / cinematic",
+  };
+
+  function motionKitMatchesPlane(kit, plane) {
+    if (!kit) return false;
+    if (plane === "element") return kit.plane === "element" || kit.plane === "both";
+    if (plane === "background") return kit.plane === "background" || kit.plane === "both";
+    return false;
+  }
+
+  function mergedMotionCandidates(style, industry) {
+    const styleIds = style?.recommendations?.motionIds || [];
+    const fit = (cat.industryMotionFit && industry && cat.industryMotionFit[industry.id]) || {};
+    const el = fit.elementIds || [];
+    const bg = fit.backgroundIds || [];
+    const out = [];
+    const seen = new Set();
+    for (const id of [...styleIds, ...el, ...bg]) {
+      if (!id || seen.has(id)) continue;
+      seen.add(id);
+      out.push(id);
+    }
+    return out;
+  }
+
+  function industryPlaneRank(kitId, industryId, plane) {
+    const fit = cat.industryMotionFit?.[industryId];
+    if (!fit) return 999;
+    const ord = plane === "element" ? fit.elementIds || [] : fit.backgroundIds || [];
+    const i = ord.indexOf(kitId);
+    if (i === -1) return 400 + ord.length;
+    return i;
+  }
+
+  function industryStarred(kitId, industryId, plane) {
+    const fit = cat.industryMotionFit?.[industryId];
+    if (!fit) return false;
+    const ord = plane === "element" ? fit.elementIds || [] : fit.backgroundIds || [];
+    const i = ord.indexOf(kitId);
+    return i !== -1 && i < 3;
+  }
+
+  function updateMotionIndustryHint(industryId) {
+    const p = el("motionHint");
+    if (!p) return;
+    const ind = cat.industries.find((i) => i.id === industryId);
+    const fit = cat.industryMotionFit?.[industryId];
+    const hint = (fit?.hint || "").replace(/\s+/g, " ").trim();
+    const hintSpan = hint
+      ? ` <span style="opacity:0.9">${hint.length > 210 ? `${hint.slice(0, 210)}…` : hint}</span>`
+      : "";
+    p.innerHTML = `For <strong>${ind?.label || "this vertical"}</strong>, ★ marks top industry picks inside each energy group (list order is biased). <strong>Auto</strong> merges style catalog + industry + deliverable; you can still pick any kit.${hintSpan}`;
+  }
+
+  function refillMotionSelectsForIndustry() {
+    const indId = el("industry")?.value || "";
+    const preserveEl = el("motionElement")?.value;
+    const preserveBg = el("motionBackground")?.value;
+    fillPlaneMotionSelect("motionElement", "element", indId);
+    prependDefaultOption("motionElement", "Auto (style + industry + deliverable)");
+    if (preserveEl && [...el("motionElement").options].some((o) => o.value === preserveEl)) {
+      el("motionElement").value = preserveEl;
+    } else {
+      el("motionElement").value = DEFAULT_VAL;
+    }
+    fillPlaneMotionSelect("motionBackground", "background", indId);
+    prependDefaultOption("motionBackground", "Auto (style + industry + deliverable)");
+    if (preserveBg && [...el("motionBackground").options].some((o) => o.value === preserveBg)) {
+      el("motionBackground").value = preserveBg;
+    } else {
+      el("motionBackground").value = DEFAULT_VAL;
+    }
+    updateMotionIndustryHint(indId);
+    rebuildReactbitsSnippetList();
+  }
+
+  /** Fills one select: kits for UI (element) or ambient (background), grouped by energy; optional industry bias for sort + ★. */
+  function fillPlaneMotionSelect(selectId, plane, industryId) {
+    const s = el(selectId);
     if (!s || !cat.motionKits) return;
+    const ind = industryId || el("industry")?.value || "";
     s.innerHTML = "";
-    const groups = cat.motionKitGroups || [{ id: "site", label: "Motion" }];
-    for (const g of groups) {
-      const items = cat.motionKits.filter((k) => (k.group || "site") === g.id);
+    for (const energy of MOTION_ENERGY_ORDER) {
+      const items = cat.motionKits
+        .filter((k) => motionKitMatchesPlane(k, plane) && (k.energy || "gentle") === energy)
+        .sort((a, b) => {
+          const ra = industryPlaneRank(a.id, ind, plane);
+          const rb = industryPlaneRank(b.id, ind, plane);
+          if (ra !== rb) return ra - rb;
+          return (a.label || "").localeCompare(b.label || "", "en", { sensitivity: "base" });
+        });
       if (!items.length) continue;
       const og = document.createElement("optgroup");
-      og.label = g.label;
+      og.label = MOTION_ENERGY_LABEL[energy] || energy;
       for (const k of items) {
+        const g = (k.group || "site") === "reactbits" ? "RB · " : "";
+        const star = industryStarred(k.id, ind, plane) ? "★ " : "";
         const o = document.createElement("option");
         o.value = k.id;
-        o.textContent = k.label;
+        o.textContent = `${star}${g}${k.label}`;
         og.appendChild(o);
       }
       s.appendChild(og);
     }
+  }
+
+  function firstRecKitForPlane(motionIds, plane) {
+    for (const id of motionIds || []) {
+      const k = cat.motionKits.find((m) => m.id === id);
+      if (k && motionKitMatchesPlane(k, plane)) return k;
+    }
+    return null;
+  }
+
+  function pickDefaultMotions(style, platform, industry) {
+    const merged = mergedMotionCandidates(style, industry);
+    let elKit = firstRecKitForPlane(merged, "element");
+    let bgKit = firstRecKitForPlane(merged, "background");
+    const tags = style?.skillTags || [];
+    const fit = (cat.industryMotionFit && industry && cat.industryMotionFit[industry.id]) || {};
+    const gentleSiteEl = cat.motionKits.filter(
+      (k) => motionKitMatchesPlane(k, "element") && k.energy === "gentle" && (k.group || "site") === "site"
+    );
+    const gentleSiteBg = cat.motionKits.filter(
+      (k) => motionKitMatchesPlane(k, "background") && k.energy === "gentle" && (k.group || "site") === "site"
+    );
+    if (!elKit) elKit = firstRecKitForPlane(fit.elementIds || [], "element");
+    if (!bgKit) bgKit = firstRecKitForPlane(fit.backgroundIds || [], "background");
+    if (!elKit) {
+      if (tags.includes("char-motion")) elKit = cat.motionKits.find((k) => k.id === "M-char-cascade");
+      else if (platform?.id === "web_app_dashboard") elKit = cat.motionKits.find((k) => k.id === "M-delay-fade");
+      else if (platform?.id === "web_hero_single") elKit = cat.motionKits.find((k) => k.id === "M-fade-rise");
+      else elKit = cat.motionKits.find((k) => k.id === "M-fade-rise");
+      if (!elKit) elKit = gentleSiteEl[0];
+    }
+    if (!bgKit) {
+      if (tags.includes("video-bg")) bgKit = cat.motionKits.find((k) => k.id === "M-video-raf-loop");
+      else if (platform?.id === "web_app_dashboard") bgKit = cat.motionKits.find((k) => k.id === "minimal");
+      else bgKit = cat.motionKits.find((k) => k.id === "M-video-raf-loop");
+      if (!bgKit) bgKit = gentleSiteBg[0];
+    }
+    const minimal = cat.motionKits.find((k) => k.id === "minimal");
+    if (!elKit) elKit = minimal;
+    if (!bgKit) bgKit = minimal;
+    return { motionEl: elKit, motionBg: bgKit };
+  }
+
+  function resolveMotionKit(selectId, plane, style, platform, industry) {
+    const sel = el(selectId);
+    const v = sel?.value;
+    if (v && v !== DEFAULT_VAL) {
+      const k = cat.motionKits.find((m) => m.id === v);
+      if (k && motionKitMatchesPlane(k, plane)) return k;
+    }
+    const { motionEl, motionBg } = pickDefaultMotions(style, platform, industry);
+    return plane === "element" ? motionEl : motionBg;
   }
 
   function fillColorSelect() {
@@ -259,6 +459,41 @@
     return `[L4_MOOD→EXEC] Mood:"${(style.libraryMood || "").slice(0, 120)}" Layout hint:"${(style.libraryLayout || "").slice(0, 100)}" → ${lines.join(" | ")}`;
   }
 
+  function buildStyleIndustryFitBlock(industry, style) {
+    const fit = (cat.industryStyleFit && cat.industryStyleFit[industry.id]) || [];
+    const head = fit.slice(0, 8).join("|") || "(any)";
+    return `[STYLE×INDUSTRY] Vertical:${industry.label}.Suggested primaries(in order):${head}.Chosen:"${style.name}"—suggestions are soft rails; remix freely if a stronger concept serves ${industry.label}.`;
+  }
+
+  function buildStyleTypeColorAuthority(style, fontVibe, colorVibe) {
+    const ad = (style.artDirection || "").replace(/\s+/g, " ").trim().slice(0, 130);
+    return `[STYLE→TYPE_COLOR] "${style.name}" drives typography+color mood:fonts→${(style.fontPairingHint || "").slice(0, 120)}|colors→${(style.colorSystemHint || "").slice(0, 120)}|artDir:${ad}.Map tool picks font[${fontVibe.id}] color[${colorVibe.id}]—on conflict,style hints win for emotional palette+display personality;tool/recipe wins for measurable scale+contrast.`;
+  }
+
+  function buildStyleMotionUxBlock(style, motionEl, motionBg) {
+    const b = (style.interactionMotionBlurb || "").slice(0, 380);
+    return `[STYLE_MOTION_UX] ${b} | UI(elements):${motionEl.id} · BG(ambient):${motionBg.id}. Stack: ReactBits+anime.js+CSS+MotionSites §8; hover/focus/stagger; no motion without purpose.`;
+  }
+
+  function buildMotionLibLine(kit) {
+    if (!kit) return "";
+    if (kit.id.startsWith("RB-"))
+      return `ReactBits(${kit.rbCategory || "snippet"})→Motion code panel`;
+    if (["M-scroll-text-reveal", "M-scroll-scrub-video", "M-spline-bg", "M-slide-deck"].includes(kit.id))
+      return "motion/react or GSAP when spec demands";
+    if (kit.id === "minimal") return "hover-only micro";
+    return "CSS+anime ok";
+  }
+
+  function buildDualMotionLayer(motionEl, motionBg, style) {
+    const le = buildMotionLibLine(motionEl);
+    const lb = buildMotionLibLine(motionBg);
+    const ch = style.skillTags.includes("char-motion") ? "H1 stagger if UI kit allows; total≤900ms." : "";
+    const de = (motionEl.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
+    const db = (motionBg.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
+    return `[L7_MOTION_SPEC] Split layers—UI(elements):${motionEl.id}|${de}|${le} · BG(ambient):${motionBg.id}|${db}|${lb}. ReactBits:≤2 modules→src/components/reactbits/*. anime.js: stagger+timeline y12–20px+opacity. GSAP only if scroll-scrub/clip-menu spec. Durations: nav150–200ms|section450–600ms|stagger50ms|hover180ms. ${ch}prefers-reduced-motion: opacity≤200ms fallback.`;
+  }
+
   /** In-repo designer markdown (sources/design-style-layout-md) — excerpts + L4 layout doc URL. */
   function buildStyleLibraryBlock(style) {
     const sl = cat.styleLibrary;
@@ -324,11 +559,6 @@
   function buildColorLayer(colorVibe, style) {
     const hint = [colorVibe.cssHint, colorVibe.styleLibraryAlign].filter(Boolean).join("|").slice(0, 160);
     return `[L6_COLOR_ROLES] Roles:bg|surface|border|text|muted|accent|cta+ctaGhost.Huemint:${colorVibe.huemintRef || "derive"}.CSS:${hint}.Lib:${(style.colorSystemHint || "").slice(0, 120)}.Rule:body≥4.5:1 vs bg;accent≤12% pixels above fold.`;
-  }
-
-  function buildMotionLayer(motion, motionLib, style) {
-    const ch = style.skillTags.includes("char-motion") ? "H1 char-stagger total≤900ms." : "";
-    return `[L7_MOTION_SPEC] id:${motion.id}|${motion.detail.slice(0, 130)}|${motionLib} ReactBits:2 modules→src/components/reactbits/*.anime.js:import from 'animejs' stagger+timeline section y12–20px+opacity.GSAP only if scroll-scrub.Durations:nav150–200ms out|section450–600ms out|stagger50ms|hover lift180ms.${ch}prefers-reduced-motion:opacity200ms only.`;
   }
 
   const NAMING_STRATEGIES = [
@@ -418,13 +648,15 @@
       style,
       fontVibe,
       colorVibe,
-      motion,
+      motionEl,
+      motionBg,
       userNotes,
       outputLang,
       blend,
       stackProfile,
       blindRollLine = "",
       includeDesignMd = true,
+      splitPromptParts = false,
     } = opts;
 
     const sections = sectionPlan(platform, industry.label);
@@ -450,14 +682,6 @@
       forbidden.push("text contrast via scrim/text-shadow unless spec forbids overlay on video");
     }
 
-    const motionLib = motion.id.startsWith("RB-")
-      ? `React Bits (${motion.rbCategory || "snippet"}): pick matching TSX in the Motion code panel; MIT; layer lightly with site M-kits; honor prefers-reduced-motion and §3.2 perf.`
-      : ["M-scroll-text-reveal", "M-scroll-scrub-video", "M-spline-bg", "M-slide-deck"].includes(motion.id)
-        ? "Prefer motion/react or GSAP per complexity; never hand-roll where spec demands library."
-        : motion.id === "minimal"
-          ? "Hover-only micro; respect prefers-reduced-motion."
-          : "CSS keyframes acceptable; upgrade to motion/react if orchestration grows.";
-
     const stackExtra = (stackProfile && stackProfile.optionalLines && stackProfile.optionalLines.join(" ")) || "";
     const blendLine =
       blend && blend.id !== "none" && blend.hint ? `SECONDARY_BLEND(${blend.id}): ${blend.hint}` : "";
@@ -472,7 +696,11 @@
         : "§5.1_custom";
     const moodFont = (fontVibe.moodTags || []).join("/");
 
-    const motionLayer = buildMotionLayer(motion, motionLib, style);
+    const indFit = cat.industryMotionFit?.[industry.id];
+    const industryMotionLine = indFit?.hint
+      ? `[INDUSTRY_MOTION] ${industry.label}: ${indFit.hint.replace(/\s+/g, " ").trim().slice(0, 220)}`
+      : "";
+    const motionPack = `${industryMotionLine ? `${industryMotionLine}\n` : ""}${buildStyleMotionUxBlock(style, motionEl, motionBg)}\n${buildDualMotionLayer(motionEl, motionBg, style)}`;
     const workOrder = buildWorkOrderLayer();
     const contentLayer = buildContentLayer(industry, sectionLine, notesShort);
     const layoutLayer = buildLayoutLayer(style, platform, l4Short, l4Doc);
@@ -493,11 +721,13 @@
         ? "UI strings: Simplified Chinese where listing literals is required."
         : "UI strings: English.";
     const designMdBlock = includeDesignMd ? buildDesignMdClause() : "";
-    const body = `${langPreamble}${workOrder}
+    const bindLine = `${platform.labelEn || platform.label}|${industry.label}|#${style.libraryNumber} ${style.name}`;
+    const baseThroughColor = `${langPreamble}${workOrder}
 [ROLE] Senior FE — implement UI per layers L0–L8; spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.
 [STACK] React18+TS+Vite+Tailwind3+lucide-react ./index.html+./src/**/*.{ts,tsx}. ${stackExtra}
-[BIND] ${platform.labelEn || platform.label}|${industry.label}|#${style.libraryNumber} ${style.name}
+[BIND] ${bindLine}
 ${namingBlock}
+${buildStyleIndustryFitBlock(industry, style)}
 ${contentLayer}
 ${layoutLayer}
 ${heroShell}
@@ -505,13 +735,14 @@ ${spaceLayer}
 ${surfaceLayer}
 ${moodExec}
 ${buildStyleLibraryBlock(style)}
+${buildStyleTypeColorAuthority(style, fontVibe, colorVibe)}
 ${typoLayer}|vibe:${moodFont}|${(fontVibe.notes || "").slice(0, 140)}
 ${fontVarBlock}
-${colorLayer}|tool:${colorVibe.label || colorVibe.labelZh}
-${motionLayer}
-${glassLine}
-${blendLine}
-${blindRollLine ? `${blindRollLine}\n` : ""}${designMdRefBlock}
+${colorLayer}|tool:${colorVibe.label || colorVibe.labelZh}`;
+
+    const restAfterMotion = `${glassLine ? `${glassLine}\n` : ""}${blendLine ? `${blendLine}\n` : ""}${
+      blindRollLine ? `${blindRollLine}\n` : ""
+    }${designMdRefBlock}
 ${agencyGuardBlock}
 ${designMdBlock}
 [L9_ASSETS] ${mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "")}
@@ -520,23 +751,56 @@ ${designMdBlock}
 ${recLine}
 ${uiLang}`;
 
+    let body;
+    if (splitPromptParts) {
+      const partA = `${baseThroughColor}
+[DEFER_MOTION] Part B (below) adds UI+BG motion—implement after layout, type, and color roles are stable.
+${restAfterMotion}`;
+      const motionRec = rec?.motionIds?.length ? `motionCandidates=${rec.motionIds.join("|")}` : "";
+      const partB = `[PART_B_MOTION] Same [BIND] ${bindLine}. Add motion on top of existing layers (do not redesign layout here).
+${motionPack}
+[GUARD_MOTION] Prefer gentle energy; playful/bold only where style energy fits. One primary scroll driver (UI xor BG). prefers-reduced-motion.
+[QA_MOTION] No duplicate scrub drivers; CLS; focus-visible during transitions.
+${motionRec ? `CATALOG_REC: ${motionRec}` : ""}`;
+      body = `${partA.trim()}\n\n──────── PART B — MOTION (after layout) ────────\n\n${partB.trim()}`;
+    } else {
+      body = `${baseThroughColor}
+${motionPack}
+${restAfterMotion}`;
+    }
+
     return clampPrompt(body.trim(), MAX_PROMPT_CHARS);
   }
 
   function applyStyleRecommendations(style) {
     const cb = el("autoRecommend");
-    if (!cb || !cb.checked || !style?.recommendations) return;
+    if (!cb || !cb.checked || !style) return;
     const r = style.recommendations;
     const fv = el("fontVibe");
     const cv = el("colorVibe");
-    const mv = el("motion");
+    const mel = el("motionElement");
+    const mbg = el("motionBackground");
+    const plat = cat.platforms.find((p) => p.id === el("platform")?.value);
+    const ind = cat.industries.find((i) => i.id === el("industry")?.value);
     const pick = (sel, id) => {
       if (!id || !sel) return;
       if ([...sel.options].some((o) => o.value === id)) sel.value = id;
     };
-    if (fv && fv.value !== DEFAULT_VAL) pick(fv, r.fontVibeIds && r.fontVibeIds[0]);
-    if (cv && cv.value !== DEFAULT_VAL) pick(cv, r.colorVibeIds && r.colorVibeIds[0]);
-    if (mv && mv.value !== DEFAULT_VAL) pick(mv, r.motionIds && r.motionIds[0]);
+    if (r) {
+      if (fv && fv.value !== DEFAULT_VAL) pick(fv, r.fontVibeIds && r.fontVibeIds[0]);
+      if (cv && cv.value !== DEFAULT_VAL) pick(cv, r.colorVibeIds && r.colorVibeIds[0]);
+    }
+    let elPick;
+    let bgPick;
+    const merged = mergedMotionCandidates(style, ind);
+    for (const id of merged) {
+      const k = cat.motionKits.find((m) => m.id === id);
+      if (!elPick && k && motionKitMatchesPlane(k, "element")) elPick = id;
+      if (!bgPick && k && motionKitMatchesPlane(k, "background")) bgPick = id;
+    }
+    const def = pickDefaultMotions(style, plat, ind);
+    if (mel && mel.value === DEFAULT_VAL) pick(mel, elPick || def.motionEl.id);
+    if (mbg && mbg.value === DEFAULT_VAL) pick(mbg, bgPick || def.motionBg.id);
   }
 
   function init() {
@@ -552,14 +816,16 @@ ${uiLang}`;
       (i) => i.id,
       (i) => i.label
     );
-    fillSelect(
-      "style",
-      cat.styles,
-      (s) => s.id,
-      (s) => `${s.name} — ${s.userBlurb || s.libraryMood}`
-    );
-    prependDefaultOption("style", "Default (random primary style)");
-    if (cat.styles[0]) el("style").value = cat.styles[0].id;
+    refillStyleSelect();
+    el("industry").addEventListener("change", () => {
+      refillStyleSelect();
+      refillMotionSelectsForIndustry();
+      const sid = el("style").value;
+      if (sid !== DEFAULT_VAL) {
+        const st = cat.styles.find((s) => s.id === sid);
+        if (st) applyStyleRecommendations(st);
+      }
+    });
 
     fillSelect("secondaryBlend", cat.styleBlends || [{ id: "none", label: "None" }], (b) => b.id, (b) => b.label);
     prependDefaultOption("secondaryBlend", "Default (random secondary blend)");
@@ -582,7 +848,11 @@ ${uiLang}`;
     fillColorSelect();
     if (cat.colorVibes[0]) el("colorVibe").value = cat.colorVibes[0].id;
 
-    fillMotionSelect();
+    refillMotionSelectsForIndustry();
+    {
+      const st0 = cat.styles.find((s) => s.id === el("style")?.value);
+      if (st0) applyStyleRecommendations(st0);
+    }
 
     el("style").addEventListener("change", () => {
       const sid = el("style").value;
@@ -593,8 +863,6 @@ ${uiLang}`;
     });
     const cvEl = el("colorVibe");
     if (cvEl) cvEl.addEventListener("change", syncColorVibeExplainer);
-    const firstStyle = cat.styles[0];
-    if (firstStyle) applyStyleRecommendations(firstStyle);
     syncColorVibeExplainer();
 
     const outLang = el("outputLang");
@@ -626,7 +894,10 @@ ${uiLang}`;
       const style = styleRoll ? pickRandom(cat.styles) : cat.styles.find((s) => s.id === styleSel?.value);
       const fontVibe = fontRoll ? pickRandom(cat.fontVibes) : cat.fontVibes.find((f) => f.id === fontSel?.value);
       const colorVibe = colorRoll ? pickRandom(cat.colorVibes) : cat.colorVibes.find((c) => c.id === colorSel?.value);
-      const motion = cat.motionKits.find((m) => m.id === el("motion").value);
+      const motionEl = resolveMotionKit("motionElement", "element", style, platform, industry);
+      const motionBg = resolveMotionKit("motionBackground", "background", style, platform, industry);
+      const motionUiRoll = el("motionElement")?.value === DEFAULT_VAL;
+      const motionBgRoll = el("motionBackground")?.value === DEFAULT_VAL;
 
       let blend = { id: "none", hint: "" };
       if (blendEl && cat.styleBlends) {
@@ -646,6 +917,8 @@ ${uiLang}`;
       if (fontRoll) blindBits.push(`font→${fontVibe?.pickerLabel || fontVibe?.labelZh || fontVibe?.label || "?"}`);
       if (colorRoll) blindBits.push(`color→${colorVibe?.label || colorVibe?.labelZh || "?"}`);
       if (blendRoll) blindBits.push(`blend→${blend?.label || blend?.id || "?"}`);
+      if (motionUiRoll) blindBits.push(`motionUI→${motionEl?.id || "?"}`);
+      if (motionBgRoll) blindBits.push(`motionBG→${motionBg?.id || "?"}`);
       const blindRollLine = blindBits.length ? `[BLIND_ROLL] ${blindBits.join("; ")}` : "";
 
       const blindNote = el("blindBoxNote");
@@ -653,7 +926,7 @@ ${uiLang}`;
         blindNote.textContent = blindBits.length ? `Random picks this run: ${blindBits.join("; ")}` : "";
       }
 
-      if (!platform || !industry || !style || !fontVibe || !colorVibe || !motion) {
+      if (!platform || !industry || !style || !fontVibe || !colorVibe || !motionEl || !motionBg) {
         el("copyStatus").textContent = "Incomplete options: check deliverable, industry, motion, or reload the page.";
         return;
       }
@@ -665,13 +938,15 @@ ${uiLang}`;
         style,
         fontVibe,
         colorVibe,
-        motion,
+        motionEl,
+        motionBg,
         userNotes,
         outputLang,
         blend,
         stackProfile,
         blindRollLine,
         includeDesignMd: Boolean(el("includeDesignMd")?.checked),
+        splitPromptParts: Boolean(el("splitPromptParts")?.checked),
       });
       el("output").value = text;
       el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;
@@ -703,9 +978,27 @@ ${uiLang}`;
   };
 
   function motionKitRbCategory() {
-    const mid = el("motion")?.value;
-    const kit = cat.motionKits?.find((m) => m.id === mid);
-    return kit?.rbCategory || null;
+    const styleSel = el("style");
+    const plat = cat.platforms.find((p) => p.id === el("platform")?.value);
+    const ind = cat.industries.find((i) => i.id === el("industry")?.value);
+    const style =
+      styleSel?.value && styleSel.value !== DEFAULT_VAL ? cat.styles.find((s) => s.id === styleSel.value) : null;
+    const melV = el("motionElement")?.value;
+    const mbgV = el("motionBackground")?.value;
+    const kEl =
+      melV && melV !== DEFAULT_VAL
+        ? cat.motionKits.find((m) => m.id === melV)
+        : style
+          ? pickDefaultMotions(style, plat, ind).motionEl
+          : null;
+    const kBg =
+      mbgV && mbgV !== DEFAULT_VAL
+        ? cat.motionKits.find((m) => m.id === mbgV)
+        : style
+          ? pickDefaultMotions(style, plat, ind).motionBg
+          : null;
+    const rb = (k) => (k?.id?.startsWith("RB-") ? k.rbCategory : null);
+    return rb(kEl) || rb(kBg) || null;
   }
 
   function initReactBits() {
@@ -781,8 +1074,14 @@ ${uiLang}`;
 
     sel.disabled = false;
     sel.addEventListener("change", () => showSnippet(sel.value));
-    const motionEl = el("motion");
-    if (motionEl) motionEl.addEventListener("change", rebuildReactbitsOptions);
+    const motionUiSel = el("motionElement");
+    const motionBgSel = el("motionBackground");
+    const platEl = el("platform");
+    if (motionUiSel) motionUiSel.addEventListener("change", rebuildReactbitsOptions);
+    if (motionBgSel) motionBgSel.addEventListener("change", rebuildReactbitsOptions);
+    if (platEl) platEl.addEventListener("change", rebuildReactbitsOptions);
+    el("style")?.addEventListener("change", rebuildReactbitsOptions);
+    rebuildReactbitsSnippetList = rebuildReactbitsOptions;
     rebuildReactbitsOptions();
 
     el("copyReactbits").addEventListener("click", async () => {
