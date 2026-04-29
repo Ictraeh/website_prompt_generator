@@ -1,5 +1,5 @@
 {
-  "version": "1.6.5",
+  "version": "1.6.4",
   "sourceDocs": [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     "Designer Style Layout Markdown (in-repo): https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md",
@@ -2623,7 +2623,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade · Section rhythm: anime.timeline stagger 42–68ms on grids OR Motion staggerChildren 0.04–0.07 (pick one stack) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "baroque",
@@ -2667,7 +2667,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-horizontal-marquee partner strip below fold only; H1 uses M-fade-rise or M-scroll-text-reveal · Cards/lists: IntersectionObserver once + translateY opacity (no scroll-linked scrub on both UI+BG) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "aurora",
@@ -2708,11 +2708,11 @@
           "aurora"
         ],
         "motionIds": [
-          "M-button-lift",
-          "M-fade-rise"
+          "M-fade-rise",
+          "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero media: full-bleed video + CSS Ken Burns scale 1→1.06 over 12s (pause on prefers-reduced-motion) · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy) · Section rhythm: anime.timeline stagger 42–68ms on grids OR Motion staggerChildren 0.04–0.07 (pick one stack) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS backdrop-blur+anime opacity height on nav · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "ethereal",
@@ -2753,13 +2753,13 @@
           "lavender"
         ],
         "motionIds": [
-          "M-char-cascade",
           "M-fade-rise",
+          "M-char-cascade",
           "M-delay-fade",
           "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-char-cascade|M-fade-rise|M-delay-fade|M-button-lift · Hero type ONE: BlurText|TrueFocus for soft luxury; avoid duplicate TextType default unless brand demands typewriter · Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-char-cascade|M-delay-fade|M-button-lift · ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero · CSS backdrop-blur+anime opacity height on nav · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "filigree",
@@ -2801,7 +2801,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "acanthus",
@@ -2847,7 +2847,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "anthropomorphic",
@@ -2889,7 +2889,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Below-fold: `@starting-style` + view transitions OR CSS keyframes height/opacity sparingly on 1 band · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "pixel-art",
@@ -2934,11 +2934,11 @@
           "arctic"
         ],
         "motionIds": [
-          "M-button-lift",
-          "M-scroll-text-reveal"
+          "M-scroll-text-reveal",
+          "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-scroll-text-reveal · Poster hero: oversized display + clip-path inset wipe once on load; CTAs micro-bounce not scroll-scrub · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "conceptual-sketch",
@@ -2982,7 +2982,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Poster hero: @keyframes hue-shift or border-dash offset on one frame element; typography scale hover 1.01 max · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "luxury-typography",
@@ -3028,7 +3028,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Poster hero: @keyframes hue-shift or border-dash offset on one frame element; typography scale hover 1.01 max · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "japandi",
@@ -3070,12 +3070,12 @@
           "aurora"
         ],
         "motionIds": [
-          "M-fade-rise",
           "M-delay-fade",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-delay-fade|M-button-lift · Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card · Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "memphis",
@@ -3120,7 +3120,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · Poster hero: oversized display + clip-path inset wipe once on load; CTAs micro-bounce not scroll-scrub · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "bohemian",
@@ -3164,7 +3164,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero media: parallax transform on background only (translateZ-1 rAF or spring); UI stays transform-none for clarity · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Section rhythm: anime.timeline stagger 42–68ms on grids OR Motion staggerChildren 0.04–0.07 (pick one stack) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "shabby-chic",
@@ -3205,12 +3205,12 @@
           "aurora"
         ],
         "motionIds": [
-          "M-button-lift",
           "M-delay-fade",
+          "M-button-lift",
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-delay-fade|M-fade-rise · Hero entrance: M-horizontal-marquee partner strip below fold only; H1 uses M-fade-rise or M-scroll-text-reveal · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "farmhouse-cottagecore",
@@ -3252,7 +3252,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: ReactBits Animations Magnet|GlareHover OR Backgrounds DotField|Beams-lite behind headline (≤1 heavy module §3.2) · Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "victorian",
@@ -3293,7 +3293,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "art-deco",
@@ -3336,7 +3336,7 @@
           "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · CSS backdrop-blur+anime opacity height on nav · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "art-nouveau",
@@ -3375,7 +3375,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "mystical-western",
@@ -3417,7 +3417,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero media: layered loop + gradient scrim; headline: plain CSS fade-up OR M-scroll-text-reveal (one driver only) · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "kitsch",
@@ -3452,12 +3452,12 @@
           "slate"
         ],
         "motionIds": [
-          "M-fade-rise",
           "M-media-zoom",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-media-zoom|M-button-lift · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "y2k",
@@ -3495,12 +3495,12 @@
           "neon"
         ],
         "motionIds": [
-          "M-button-lift",
           "M-fade-rise",
-          "M-scroll-text-reveal"
+          "M-scroll-text-reveal",
+          "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise|M-scroll-text-reveal · Hero media: parallax transform on background only (translateZ-1 rAF or spring); UI stays transform-none for clarity · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy) · Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-scroll-text-reveal|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS backdrop-blur+anime opacity height on nav · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "bauhaus",
@@ -3541,7 +3541,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "brutalism",
@@ -3588,7 +3588,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Poster hero: oversized display + clip-path inset wipe once on load; CTAs micro-bounce not scroll-scrub · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "cybercore",
@@ -3628,12 +3628,12 @@
           "aurora"
         ],
         "motionIds": [
-          "M-button-lift",
           "M-scroll-scrub-video",
-          "M-scroll-text-reveal"
+          "M-scroll-text-reveal",
+          "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-scroll-scrub-video|M-scroll-text-reveal · Hero choreography: GSAP ScrollTrigger scrub/pin per MotionSites § — headline optional scrub; guard reduced-motion with static keyframe · GSAP: ScrollTrigger scrub/pin — cite MotionSites timeline § for pin spacing · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-scrub-video|M-scroll-text-reveal|M-button-lift · GSAP ScrollTrigger scrub/pin MotionSites § · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "synthwave",
@@ -3673,7 +3673,7 @@
           "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · Hero media: parallax transform on background only (translateZ-1 rAF or spring); UI stays transform-none for clarity · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "vaporwave",
@@ -3719,7 +3719,7 @@
           "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · Poster hero: oversized display + clip-path inset wipe once on load; CTAs micro-bounce not scroll-scrub · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "pop-art",
@@ -3758,12 +3758,12 @@
           "neon"
         ],
         "motionIds": [
-          "M-button-lift",
           "M-media-zoom",
+          "M-button-lift",
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-media-zoom|M-fade-rise · Poster hero: @keyframes hue-shift or border-dash offset on one frame element; typography scale hover 1.01 max · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-media-zoom|M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "bento-box",
@@ -3801,11 +3801,11 @@
           "ocean"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "graffiti",
@@ -3846,11 +3846,11 @@
           "aurora"
         ],
         "motionIds": [
-          "M-button-lift",
-          "M-scroll-text-reveal"
+          "M-scroll-text-reveal",
+          "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-scroll-text-reveal · Poster hero: halftone/dot SVG mask animation OR crisp scale-in on key word only (rest static) · Section rhythm: anime.timeline stagger 42–68ms on grids OR Motion staggerChildren 0.04–0.07 (pick one stack) · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-text-reveal|M-button-lift · anime.timeline card/list stagger 50–70ms · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "tenebrism",
@@ -3891,7 +3891,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero media: parallax transform on background only (translateZ-1 rAF or spring); UI stays transform-none for clarity · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "gothic",
@@ -3928,11 +3928,11 @@
           "copper"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "pointillism",
@@ -3973,7 +3973,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-char-cascade|M-button-lift|M-fade-rise · Hero type ONE: Shuffle|Splittext OR ScrambledText|DecryptedText for cinematic reveal; cap total ≤900ms enter · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-char-cascade|M-button-lift|M-fade-rise · ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "mixed-media",
@@ -4011,11 +4011,11 @@
           "arctic"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card · Below-fold: `@starting-style` + view transitions OR CSS keyframes height/opacity sparingly on 1 band · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "steampunk",
@@ -4051,11 +4051,11 @@
           "moss"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero entrance: ReactBits Animations Magnet|GlareHover OR Backgrounds DotField|Beams-lite behind headline (≤1 heavy module §3.2) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "kawaii",
@@ -4095,12 +4095,12 @@
           "aurora"
         ],
         "motionIds": [
-          "M-fade-rise",
           "M-delay-fade",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-delay-fade|M-button-lift · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Below-fold: `@starting-style` + view transitions OR CSS keyframes height/opacity sparingly on 1 band · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "coquette",
@@ -4146,7 +4146,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · Hero entrance: M-horizontal-marquee partner strip below fold only; H1 uses M-fade-rise or M-scroll-text-reveal · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "surrealism",
@@ -4182,11 +4182,11 @@
           "slate"
         ],
         "motionIds": [
-          "M-button-lift",
-          "M-scroll-scrub-video"
+          "M-scroll-scrub-video",
+          "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-scroll-scrub-video · Hero choreography: GSAP ScrollTrigger scrub/pin per MotionSites § — headline optional scrub; guard reduced-motion with static keyframe · GSAP: ScrollTrigger scrub/pin — cite MotionSites timeline § for pin spacing · scroll-scrub video.currentTime guards + seek coalescing · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-scroll-scrub-video|M-button-lift · GSAP ScrollTrigger scrub/pin MotionSites § · scroll-scrub video.currentTime guards · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "utilitarian",
@@ -4223,11 +4223,11 @@
           "ocean"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "mid-century-modern",
@@ -4266,7 +4266,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card · Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "scrapbook",
@@ -4308,12 +4308,12 @@
           "lavender"
         ],
         "motionIds": [
-          "M-fade-rise",
           "M-delay-fade",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-delay-fade|M-button-lift · Poster hero: @keyframes hue-shift or border-dash offset on one frame element; typography scale hover 1.01 max · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "neo-frutiger-aero",
@@ -4357,7 +4357,7 @@
           "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade · Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · CSS backdrop-blur+anime opacity height on nav · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "dark-magic-academia",
@@ -4394,11 +4394,11 @@
           "copper"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "light-academia",
@@ -4439,13 +4439,13 @@
           "copper"
         ],
         "motionIds": [
-          "M-fade-rise",
           "M-char-cascade",
           "M-delay-fade",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-char-cascade|M-delay-fade|M-button-lift · Hero type ONE: BlurText|TrueFocus for soft luxury; avoid duplicate TextType default unless brand demands typewriter · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-char-cascade|M-delay-fade|M-button-lift|M-fade-rise · ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "wabi-sabi",
@@ -4487,7 +4487,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card · Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-delay-fade|M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "south-west-wild-west",
@@ -4528,11 +4528,11 @@
           "sand"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero media: layered loop + gradient scrim; headline: plain CSS fade-up OR M-scroll-text-reveal (one driver only) · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "nautical",
@@ -4577,7 +4577,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: M-horizontal-marquee partner strip below fold only; H1 uses M-fade-rise or M-scroll-text-reveal · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "rebus",
@@ -4618,7 +4618,7 @@
           "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · Hero entrance: ReactBits Animations Magnet|GlareHover OR Backgrounds DotField|Beams-lite behind headline (≤1 heavy module §3.2) · Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "glassmorphism",
@@ -4661,7 +4661,7 @@
           "M-button-lift"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Hero media: parallax transform on background only (translateZ-1 rAF or spring); UI stays transform-none for clarity · ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video · Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy) · Cards/lists: IntersectionObserver once + translateY opacity (no scroll-linked scrub on both UI+BG) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer · CSS backdrop-blur+anime opacity height on nav · anime.timeline card/list stagger 50–70ms · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "modular-typography",
@@ -4700,11 +4700,11 @@
           "neon"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Poster hero: @keyframes hue-shift or border-dash offset on one frame element; typography scale hover 1.01 max · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     },
     {
       "id": "neo-brutalism",
@@ -4748,11 +4748,11 @@
           "arctic"
         ],
         "motionIds": [
-          "M-fade-rise",
-          "M-button-lift"
+          "M-button-lift",
+          "M-fade-rise"
         ]
       },
-      "interactionMotionBlurb": "MotionSites M-kits:M-fade-rise|M-button-lift · Poster hero: oversized display + clip-path inset wipe once on load; CTAs micro-bounce not scroll-scrub · Below-fold: `@starting-style` + view transitions OR CSS keyframes height/opacity sparingly on 1 band · Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop) · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
+      "interactionMotionBlurb": "MotionSites M-kits:M-button-lift|M-fade-rise · anime.timeline card/list stagger 50–70ms · CSS @keyframes accent pulse on CTAs sparingly · Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion"
     }
   ]
 }

@@ -273,20 +273,15 @@
     return !id || id === MOTION_VIBE_AUTO_ID || id === DEFAULT_VAL;
   }
 
-  function resolveMotionVibeForPrompt(motionVibeId, industryId, styleId) {
+  function resolveMotionVibeForPrompt(motionVibeId, industryId) {
     const list = cat.motionVibes || [];
-    const styleRot = String(styleId || "default");
-    const autoUiExtras = () => {
-      const pool = ["gsap", "animejs", "recipes", "motion-react", "patterns-json", "css-tailwind"];
-      return [pool[hashMod(`${styleRot}|aref`, pool.length)]];
-    };
     if (!list.length) {
       const d = industryDefaultAnimationRefIds(industryId);
       return {
         vibeLabel: "Auto (industry defaults)",
         keywords:
           "Follow tone-to-motion.md in the hub; start gentle on UI and restrained on background unless the chosen style demands more energy.",
-        uiIds: [...new Set([...(d.uiIds || []), ...autoUiExtras()])].slice(0, 6),
+        uiIds: d.uiIds,
         bgIds: d.bgIds,
       };
     }
@@ -300,7 +295,7 @@
         vibeLabel: v?.label || "Auto — industry & deliverable bias",
         keywords:
           "Follow tone-to-motion.md in the hub; start gentle on UI and restrained on background unless the chosen style demands more energy.",
-        uiIds: [...new Set([...(d.uiIds || []), ...autoUiExtras()])].slice(0, 6),
+        uiIds: d.uiIds,
         bgIds: d.bgIds,
       };
     }
@@ -377,34 +372,14 @@
     if (!elKit) {
       if (tags.includes("char-motion")) elKit = cat.motionKits.find((k) => k.id === "M-char-cascade");
       else if (platform?.id === "web_app_dashboard") elKit = cat.motionKits.find((k) => k.id === "M-delay-fade");
-      else {
-        const sid = (style && style.id) || "default";
-        const heroElPool = [
-          cat.motionKits.find((k) => k.id === "M-scroll-text-reveal"),
-          cat.motionKits.find((k) => k.id === "M-char-cascade"),
-          cat.motionKits.find((k) => k.id === "M-delay-fade"),
-          cat.motionKits.find((k) => k.id === "M-horizontal-marquee"),
-          cat.motionKits.find((k) => k.id === "M-fade-rise"),
-        ].filter(Boolean);
-        const ix = hashMod(`${sid}|${platform?.id || "p"}|el`, heroElPool.length || 1);
-        elKit = heroElPool[ix] || cat.motionKits.find((k) => k.id === "M-fade-rise");
-      }
+      else if (platform?.id === "web_hero_single") elKit = cat.motionKits.find((k) => k.id === "M-fade-rise");
+      else elKit = cat.motionKits.find((k) => k.id === "M-fade-rise");
       if (!elKit) elKit = gentleSiteEl[0];
     }
     if (!bgKit) {
       if (tags.includes("video-bg")) bgKit = cat.motionKits.find((k) => k.id === "M-video-raf-loop");
       else if (platform?.id === "web_app_dashboard") bgKit = cat.motionKits.find((k) => k.id === "minimal");
-      else {
-        const sid = (style && style.id) || "default";
-        const heroBgPool = [
-          cat.motionKits.find((k) => k.id === "M-video-raf-loop"),
-          cat.motionKits.find((k) => k.id === "M-spotlight-mask"),
-          cat.motionKits.find((k) => k.id === "minimal"),
-          cat.motionKits.find((k) => k.id === "RB-Backgrounds"),
-        ].filter(Boolean);
-        const ib = hashMod(`${sid}|${platform?.id || "p"}|bg`, heroBgPool.length || 1);
-        bgKit = heroBgPool[ib] || cat.motionKits.find((k) => k.id === "M-video-raf-loop");
-      }
+      else bgKit = cat.motionKits.find((k) => k.id === "M-video-raf-loop");
       if (!bgKit) bgKit = gentleSiteBg[0];
     }
     const minimal = cat.motionKits.find((k) => k.id === "minimal");
@@ -640,8 +615,8 @@
   }
 
   function buildStyleMotionUxBlock(style, motionEl, motionBg) {
-    const b = (style.interactionMotionBlurb || "").slice(0, 520);
-    return `[STYLE_MOTION_UX] ${b} | UI(elements):${motionEl.id} · BG(ambient):${motionBg.id}. Stack: ReactBits+anime.js+CSS+MotionSites §8; hero recipe is unique to this style—do not clone motion from unrelated exports; hover/focus/stagger with purpose.`;
+    const b = (style.interactionMotionBlurb || "").slice(0, 380);
+    return `[STYLE_MOTION_UX] ${b} | UI(elements):${motionEl.id} · BG(ambient):${motionBg.id}. Stack: ReactBits+anime.js+CSS+MotionSites §8; hover/focus/stagger; no motion without purpose.`;
   }
 
   function buildMotionLibLine(kit) {
@@ -661,12 +636,7 @@
     const ch = tags.includes("char-motion") ? "H1 stagger if UI kit allows; total≤900ms." : "";
     const de = (motionEl.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
     const db = (motionBg.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
-    const rbHints = [
-      "ReactBits≤2: one signature module for hero (TextAnimations|Animations|Backgrounds)—rotate family vs other builds.",
-      "ReactBits≤2: pair one TextAnimations headline treatment with one Components OR Animations accent—not the same pair every site.",
-    ];
-    const rbPick = rbHints[hashMod(`${style.id}|l7rb`, rbHints.length)];
-    return `[L7_MOTION_SPEC] ${rbPick} Split layers—UI(elements):${motionEl.id}|${de}|${le} · BG(ambient):${motionBg.id}|${db}|${lb}. anime.js: timeline stagger y12–24px+opacity unless GSAP path. GSAP only if scroll-scrub/clip-menu spec. Durations: nav150–200ms|section450–650ms|stagger45–70ms|hover180ms. ${ch}prefers-reduced-motion: opacity≤200ms fallback.`;
+    return `[L7_MOTION_SPEC] Split layers—UI(elements):${motionEl.id}|${de}|${le} · BG(ambient):${motionBg.id}|${db}|${lb}. ReactBits:≤2 modules→src/components/reactbits/*. anime.js: stagger+timeline y12–20px+opacity. GSAP only if scroll-scrub/clip-menu spec. Durations: nav150–200ms|section450–600ms|stagger50ms|hover180ms. ${ch}prefers-reduced-motion: opacity≤200ms fallback.`;
   }
 
   /** In-repo designer markdown (sources/design-style-layout-md) — excerpts + L4 layout doc URL. */
@@ -837,7 +807,7 @@
       motionVibeId = MOTION_VIBE_AUTO_ID,
     } = opts;
 
-    const motionVibeResolved = resolveMotionVibeForPrompt(motionVibeId, industry.id, style.id);
+    const motionVibeResolved = resolveMotionVibeForPrompt(motionVibeId, industry.id);
     const animationRefBlock = buildAnimationReferenceBlock(motionVibeResolved);
     const animationRefBlockCompact = animationRefBlock
       ? animationRefBlock.replace(/\s+/g, " ").trim().slice(0, 420)

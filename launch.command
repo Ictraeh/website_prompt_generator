@@ -20,14 +20,13 @@ while lsof -iTCP:"$PORT" -sTCP:LISTEN -n -P >/dev/null 2>&1; do
   fi
 done
 
-URL="http://127.0.0.1:$PORT/"
+URL="http://127.0.0.1:$PORT/standalone.html"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  Folder: $DIR"
-echo "  App:    $URL  → index.html (serve-local.py)"
-echo "  Also:   http://127.0.0.1:$PORT/standalone.html"
+echo "  URL:    $URL"
 echo "  Leave this window open while serving (Ctrl+C to stop)."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 ( sleep 1 && open "$URL" ) &
 
-exec python3 "$DIR/serve-local.py" "$PORT"
+exec python3 -m http.server "$PORT"
