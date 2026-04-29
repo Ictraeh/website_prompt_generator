@@ -153,6 +153,41 @@ const stackProfiles = [
   },
 ];
 
+/** Kits where `plane` is element or both — used to rotate default UI motion per style id */
+const ELEMENT_MOTION_KIT_IDS = new Set([
+  "M-fade-rise",
+  "M-char-cascade",
+  "M-delay-fade",
+  "M-media-zoom",
+  "M-button-lift",
+  "M-scroll-text-reveal",
+  "M-horizontal-marquee",
+  "M-clip-circle-menu",
+  "M-slide-deck",
+  "RB-Animations",
+  "RB-Components",
+  "RB-TextAnimations",
+  "minimal",
+]);
+
+function hashMod(str, mod) {
+  let h = 0;
+  const s = String(str || "");
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+  return mod ? Math.abs(h) % mod : Math.abs(h);
+}
+
+/** Each style gets a different first UI-motion candidate so prompts and models do not all latch onto M-fade-rise. */
+function prioritizeStyleMotionOrder(styleId, ids) {
+  const uniq = [...new Set((ids || []).filter(Boolean))];
+  const elCandidates = uniq.filter((id) => ELEMENT_MOTION_KIT_IDS.has(id));
+  if (!elCandidates.length) return uniq;
+  const h = hashMod(`${styleId}|motionPri`, elCandidates.length);
+  const primary = elCandidates[h];
+  const rest = uniq.filter((id) => id !== primary);
+  return [primary, ...rest];
+}
+
 function inferRecommendations(style) {
   const tags = new Set(style.skillTags || []);
   const id = style.id;
@@ -256,10 +291,11 @@ function inferRecommendations(style) {
     pc("slate");
   }
 
+  const motionIds = prioritizeStyleMotionOrder(style.id, [...motions]);
   return {
     fontVibeIds: [...fonts].slice(0, 5),
     colorVibeIds: [...colors].slice(0, 6),
-    motionIds: [...motions].slice(0, 4),
+    motionIds: motionIds.slice(0, 4),
   };
 }
 
@@ -418,18 +454,76 @@ const industryStyleFit = {
   industrial: ["utilitarian", "brutalism", "cybercore", "bauhaus", "neo-frutiger-aero", "steampunk", "tenebrism", "modular-typography"],
 };
 
+const HERO_TEXT_RB_LINE = [
+  "Hero type ONE ReactBits TextAnimations choice (do not copy last site): GradientText|ShinyText|GlitchText|FuzzyText|AsciiText",
+  "Hero type ONE: CurvedLoop|RotatingText|CountUp (metrics) OR VariableProximity — keep subhead static for hierarchy",
+  "Hero type ONE: ScrollReveal|ScrollFloat|ScrollVelocity on headline; body Inter, no nested heavy text effects",
+  "Hero type ONE: Shuffle|Splittext OR ScrambledText|DecryptedText for cinematic reveal; cap total ≤900ms enter",
+  "Hero type ONE: TextPressure|TextCursor for editorial/spatial feel; pair with subtle y12 opacity entrance",
+  "Hero type ONE: BlurText|TrueFocus for soft luxury; avoid duplicate TextType default unless brand demands typewriter",
+];
+
+const HERO_STAGGER_LINE = [
+  "Section rhythm: anime.timeline stagger 42–68ms on grids OR Motion staggerChildren 0.04–0.07 (pick one stack)",
+  "Cards/lists: IntersectionObserver once + translateY opacity (no scroll-linked scrub on both UI+BG)",
+  "Below-fold: `@starting-style` + view transitions OR CSS keyframes height/opacity sparingly on 1 band",
+  "Feature rows: alternate offset (odd:translate-x-2 even:-translate-x-2) fade 500ms ease-out stagger 55ms",
+];
+
+const HERO_VIDEO_LINE = [
+  "Hero media: full-bleed video + CSS Ken Burns scale 1→1.06 over 12s (pause on prefers-reduced-motion)",
+  "Hero media: layered loop + gradient scrim; headline: plain CSS fade-up OR M-scroll-text-reveal (one driver only)",
+  "Hero media: parallax transform on background only (translateZ-1 rAF or spring); UI stays transform-none for clarity",
+];
+
+const HERO_POSTER_LINE = [
+  "Poster hero: @keyframes hue-shift or border-dash offset on one frame element; typography scale hover 1.01 max",
+  "Poster hero: oversized display + clip-path inset wipe once on load; CTAs micro-bounce not scroll-scrub",
+  "Poster hero: halftone/dot SVG mask animation OR crisp scale-in on key word only (rest static)",
+];
+
 function inferMotionInteractionBlurb(style) {
   const tags = style.skillTags || [];
   const m = style.recommendations?.motionIds || [];
   const mk = m.filter(Boolean).slice(0, 4).join("|");
+  const h0 = hashMod(`${style.id}|ix`, 997);
   const bits = [`MotionSites M-kits:${mk || "M-fade-rise"}`];
-  if (tags.includes("char-motion")) bits.push("ReactBits TextAnimations(TextType|DecryptedText)+anime.stagger hero");
-  if (tags.includes("video-bg")) bits.push("ReactBits Backgrounds(Aurora|Silk|Galaxy)+scrim+GPU video layer");
-  if (tags.includes("glass-nav")) bits.push("CSS backdrop-blur+anime opacity height on nav");
-  if (tags.includes("stagger-motion")) bits.push("anime.timeline card/list stagger 50–70ms");
-  if (tags.includes("gsap-heavy") || style.layoutArchetype === "L4.8") bits.push("GSAP ScrollTrigger scrub/pin MotionSites §");
-  if (tags.includes("scroll-scrub-hero")) bits.push("scroll-scrub video.currentTime guards");
-  if (tags.includes("poster-type")) bits.push("CSS @keyframes accent pulse on CTAs sparingly");
+
+  if (tags.includes("char-motion")) {
+    bits.push(HERO_TEXT_RB_LINE[h0 % HERO_TEXT_RB_LINE.length]);
+  } else if (tags.includes("video-bg")) {
+    bits.push(HERO_VIDEO_LINE[h0 % HERO_VIDEO_LINE.length]);
+  } else if (tags.includes("poster-type")) {
+    bits.push(HERO_POSTER_LINE[h0 % HERO_POSTER_LINE.length]);
+  } else if (tags.includes("scroll-scrub-hero") || tags.includes("gsap-heavy") || style.layoutArchetype === "L4.8") {
+    bits.push(
+      "Hero choreography: GSAP ScrollTrigger scrub/pin per MotionSites § — headline optional scrub; guard reduced-motion with static keyframe"
+    );
+  } else if (tags.includes("split-hero")) {
+    bits.push(
+      "Split hero: stagger L/R columns 80ms offset (anime or motion); mock panel inner micro-zoom M-media-zoom only inside card"
+    );
+  } else {
+    bits.push(
+      [
+        "Hero entrance: M-scroll-text-reveal OR M-char-cascade headline (one); supporting line M-delay-fade",
+        "Hero entrance: M-horizontal-marquee partner strip below fold only; H1 uses M-fade-rise or M-scroll-text-reveal",
+        "Hero entrance: M-media-zoom on hero still with M-fade-rise copy column (asymmetric split)",
+        "Hero entrance: ReactBits Animations Magnet|GlareHover OR Backgrounds DotField|Beams-lite behind headline (≤1 heavy module §3.2)",
+      ][h0 % 4]
+    );
+  }
+
+  if (tags.includes("video-bg") && !bits.some((b) => /Backgrounds|Aurora/i.test(b))) {
+    bits.push("ReactBits Backgrounds pick ONE ambient layer: Aurora|Galaxy|Silk|Beams|DotField|Metaballs+scrim+GPU video");
+  }
+  if (tags.includes("glass-nav")) bits.push("Nav: CSS backdrop-blur+opacity slide-down OR anime stagger links 40ms (not both heavy)");
+  if (tags.includes("stagger-motion")) bits.push(HERO_STAGGER_LINE[h0 % HERO_STAGGER_LINE.length]);
+  if (tags.includes("gsap-heavy") || style.layoutArchetype === "L4.8") bits.push("GSAP: ScrollTrigger scrub/pin — cite MotionSites timeline § for pin spacing");
+  if (tags.includes("scroll-scrub-hero")) bits.push("scroll-scrub video.currentTime guards + seek coalescing");
+  if (tags.includes("poster-type") && !tags.includes("char-motion") && !tags.includes("video-bg")) {
+    bits.push("Micro type pulse: CSS @keyframes letter-spacing breath on eyebrow only (≤4s loop)");
+  }
   bits.push("Micro-IX:active:scale-[0.98] buttons;focus-visible:ring-2;transition 180–280ms;respect prefers-reduced-motion");
   return bits.join(" · ");
 }
@@ -1152,7 +1246,7 @@ if (fs.existsSync(snippetBlurbsPath)) {
 }
 
 const out = {
-  version: "1.6.4",
+  version: "1.6.5",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     `Designer Style Layout Markdown (in-repo): ${GITHUB_REPO_STYLE_LIB_TREE}`,
@@ -1267,16 +1361,17 @@ const launch = [
   "  fi",
   "done",
   "",
-  'URL="http://127.0.0.1:$PORT/standalone.html"',
+  'URL="http://127.0.0.1:$PORT/"',
   'echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"',
   'echo "  Folder: $DIR"',
-  'echo "  URL:    $URL"',
+  'echo "  App:    $URL  → index.html (serve-local.py)"',
+  'echo "  Also:   http://127.0.0.1:$PORT/standalone.html"',
   'echo "  Leave this window open while serving (Ctrl+C to stop)."',
   'echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"',
   "",
   '( sleep 1 && open "$URL" ) &',
   "",
-  'exec python3 -m http.server "$PORT"',
+  'exec python3 "$DIR/serve-local.py" "$PORT"',
   "",
 ].join("\n");
 fs.writeFileSync(path.join(dir, "launch.command"), launch, "utf8");
@@ -1298,6 +1393,10 @@ fs.chmodSync(path.join(dir, "open-standalone.command"), 0o755);
 fs.copyFileSync(indexPath, path.join(publicDir, "index.html"));
 fs.copyFileSync(appPath, path.join(publicDir, "app.js"));
 fs.copyFileSync(siteFromUrlPath, path.join(publicDir, "site-from-url.js"));
+const moodDemoPath = path.join(dir, "mood-motion-demo.html");
+if (fs.existsSync(moodDemoPath)) {
+  fs.copyFileSync(moodDemoPath, path.join(publicDir, "mood-motion-demo.html"));
+}
 for (const name of [
   "index.html",
   "app.js",
@@ -1305,6 +1404,7 @@ for (const name of [
   "catalog.bundle.js",
   "motion-snippets.bundle.js",
   "standalone.html",
+  "mood-motion-demo.html",
 ]) {
   const p = path.join(publicDir, name);
   if (!fs.existsSync(p)) throw new Error(`[build-catalog] Missing Vercel output file: ${p}`);

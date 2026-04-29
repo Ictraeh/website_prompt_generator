@@ -3,7 +3,10 @@
   "private": true,
   "description": "MotionSites-style vibe prompt generator (static)",
   "scripts": {
-    "build": "node build-catalog.mjs",
+    "start": "python3 serve-local.py",
+    "map:mood": "node scripts/generate-mood-to-motion-map.mjs",
+    "mood-demo": "echo Open http://127.0.0.1:8765/mood-motion-demo.html after: python3 serve-local.py",
+    "build": "node build-catalog.mjs && node scripts/generate-mood-to-motion-map.mjs",
     "blurbs": "node scripts/gen-snippet-blurbs.mjs",
     "fetch:motion": "node fetch-reactbits.mjs && node fetch-motion-docs.mjs && node scripts/gen-snippet-blurbs.mjs && node build-catalog.mjs",
     "kimi:gen": "node scripts/kimi-vibe-generate.mjs"
