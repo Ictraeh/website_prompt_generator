@@ -306,7 +306,7 @@
       <header>
         <h1>Vibe Prompt Generator</h1>
         <p class="tagline">
-          Choose options, generate, copy. Output up to 4999 characters — MotionSites-style layers, style library, optional
+          Choose options, generate, copy. Full prompts (no character cap) — MotionSites-style layers, style library, optional
           <a href="https://github.com/Ictraeh/design.md" target="_blank" rel="noopener">DESIGN.md</a>.
           <a href="https://github.com/VoltAgent/awesome-design-md" target="_blank" rel="noopener">Design references</a> for discipline.
         </p>
@@ -368,12 +368,16 @@
               <span><strong>Split prompt</strong> — two-part output (Part A, then Part B) instead of one block</span>
             </label>
             <p id="splitPromptHelp" class="field-hint" style="margin: 0 0 0 1.5rem" hidden>
-              With this on, only Part A and Part B appear below — paste A to build the page, then B for motion (~5k
-              limits per message).
+              With this on, only Part A and Part B appear below — paste A to build the page, then B for motion (each part
+              is full length; split only if your model has per-message limits).
             </p>
             <label class="chk-row" for="compactPrompt">
               <input type="checkbox" id="compactPrompt" />
               <span>Compact prompt — shorter plain wording, fewer layer tags</span>
+            </label>
+            <label class="chk-row" for="includeMotionInteractionCatalog">
+              <input type="checkbox" id="includeMotionInteractionCatalog" checked />
+              <span><strong>Motion interaction catalog</strong> — trigger → pattern → timing matched to style &amp; motion vibe</span>
             </label>
           </div>
           <div class="grid-span-2" style="grid-column: 1 / -1">

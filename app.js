@@ -9,8 +9,8 @@
   /** Set in initReactBits so industry/motion refills can refresh the snippet list. */
   let rebuildReactbitsSnippetList = function () {};
 
-  /** Hard cap: output must stay under 5000 characters (inclusive limit 4999). */
-  const MAX_PROMPT_CHARS = 4999;
+  /** No character cap — full prompt is emitted (split Part A/B if your model has per-message limits). */
+  const MAX_PROMPT_CHARS = null;
 
   /** Sentinel value for "random blind pick" on supported selects. */
   const DEFAULT_VAL = "__default__";
@@ -124,8 +124,7 @@
     }
     const kw = (style.triggerKeywords || []).slice(0, 5).join(", ");
     if (kw) s += `Surface these keywords visually (not only in copy): ${kw}.\n`;
-    const out = `${s.trim()}\n`;
-    return out.length > 1300 ? `${out.slice(0, 1270).trimEnd()}…\n` : out;
+    return `${s.trim()}\n`;
   }
 
   function buildCreativeDivergenceCompact(voiceId, style, industry, platform, seed) {
@@ -137,14 +136,11 @@
       voiceId === "wild_card"
         ? " Wild: one bold memorable move (a11y-safe); avoid Dribbble SaaS hero clone."
         : "";
-    const line = `CREATIVE: Avoid generic startup landing. ${comp} · Ban: ${ban} · Twist: ${twist}.${wild}`;
-    return line.length > 340 ? `${line.slice(0, 330).trimEnd()}…` : line;
+    return `CREATIVE: Avoid generic startup landing. ${comp} · Ban: ${ban} · Twist: ${twist}.${wild}`;
   }
 
-  function clampPrompt(s, max) {
-    if (s.length <= max) return s;
-    const suffix = "\n…[truncated]";
-    return s.slice(0, max - suffix.length).trimEnd() + suffix;
+  function clampPrompt(s) {
+    return s.trim();
   }
 
   function el(id) {
@@ -347,6 +343,200 @@
     return lines.join("\n");
   }
 
+  const MOTION_PACE_SLOW = new Set([
+    "natural_calm",
+    "elegant_refined",
+    "ambient_light",
+    "technical_precise",
+  ]);
+  const MOTION_PACE_FAST = new Set(["snappy_energetic", "playful_bouncy"]);
+
+  function resolveMotionInteractionPace(motionVibeId, motionEl, motionBg, colorVibe) {
+    if (MOTION_PACE_FAST.has(motionVibeId)) return "fastPlayful";
+    if (MOTION_PACE_SLOW.has(motionVibeId)) return "slowCalm";
+    if (motionVibeId === "cinematic_bold" || motionVibeId === "story_scroll") return "default";
+    if (motionVibeIsAuto(motionVibeId)) {
+      const energies = [motionEl?.energy, motionBg?.energy].filter(Boolean);
+      if (energies.includes("bold") || energies.includes("playful")) return "fastPlayful";
+      if (energies.every((e) => e === "gentle")) return "slowCalm";
+      return "default";
+    }
+    const cv = (colorVibe?.id || "").toLowerCase();
+    if (/calm|soft|midnight|lavender|sage|mist|pearl|dusk/.test(cv)) return "slowCalm";
+    if (/neon|candy|pop|fire|tiktok|electric|vivid/.test(cv)) return "fastPlayful";
+    return "default";
+  }
+
+  function collectMotionPatternIds(style, platform, motionEl, motionBg, motionVibeId) {
+    const ids = [];
+    const push = (list) => {
+      for (const id of list || []) {
+        if (id && !ids.includes(id)) ids.push(id);
+      }
+    };
+    push(motionEl?.patternIds);
+    push(motionBg?.patternIds);
+    const tags = style?.skillTags || [];
+    if (tags.includes("char-motion")) push(["typography-stagger-units"]);
+    if (tags.includes("video-bg")) push(["breathing-video-loop", "media-poster-handoff", "blur-reveal"]);
+    if (tags.includes("glass-nav")) push(["ambient-text-surface", "hover-micro-feedback"]);
+    const l4 = style?.layoutArchetype;
+    if (l4 === "L4.7") push(["deck-slide-transition", "opacity-fade", "chart-draw-reveal"]);
+    if (l4 === "L4.8") push(["scroll-scrub-media", "scroll-parallax-layered"]);
+    if (l4 === "L4.6") push(["scroll-parallax-layered", "fade-rise-up"]);
+    if (l4 === "L4.4") push(["panel-slide-in", "chart-draw-reveal"]);
+    if (l4 === "L4.1") push(["sequential-block-stagger", "blur-reveal"]);
+    if (platform?.id === "web_hero_single") push(["sequential-block-stagger", "fade-rise-up"]);
+    if (platform?.id === "web_app_dashboard") push(["fade-rise-up", "hover-micro-feedback", "opacity-fade"]);
+    if (platform?.id === "web_app_product") push(["sequential-block-stagger", "panel-slide-in"]);
+    if (motionVibeId === "story_scroll" || motionVibeId === "cinematic_bold") {
+      push(["scroll-text-highlight", "scroll-parallax-layered", "cinematic-section-transition", "blur-reveal"]);
+    }
+    if (motionVibeId === "playful_bouncy") push(["typography-stagger-units", "hover-micro-feedback"]);
+    if (motionVibeId === "natural_calm" || motionVibeId === "elegant_refined") {
+      push(["fade-rise-up", "opacity-fade", "sequential-block-stagger"]);
+    }
+    if (motionVibeId === "snappy_energetic") {
+      push(["fade-rise-up", "hover-micro-feedback", "press-active-feedback"]);
+    }
+    return ids;
+  }
+
+  function pickMotionInteractionPatterns(style, platform, motionEl, motionBg, motionVibeId, maxCount) {
+    const catalog = cat.motionInteractionCatalog;
+    if (!catalog?.patterns?.length) return [];
+    const byId = Object.fromEntries(catalog.patterns.map((p) => [p.id, p]));
+    const ordered = collectMotionPatternIds(style, platform, motionEl, motionBg, motionVibeId);
+    const out = [];
+    for (const id of ordered) {
+      if (byId[id] && !out.find((p) => p.id === id)) out.push(byId[id]);
+      if (out.length >= maxCount) break;
+    }
+    if (out.length < Math.min(3, maxCount)) {
+      for (const p of catalog.patterns) {
+        if (out.length >= maxCount) break;
+        if (!out.find((x) => x.id === p.id)) out.push(p);
+      }
+    }
+    return out;
+  }
+
+  function formatPatternTiming(pattern, pace) {
+    const sv = pattern.speedVariations || {};
+    const pick =
+      pace === "slowCalm" ? sv.slowCalm : pace === "fastPlayful" ? sv.fastPlayful : sv.slowCalm || sv.fastPlayful;
+    if (!pick) return "";
+    const parts = [];
+    if (pick.duration || pick.perElement) parts.push(pick.duration || pick.perElement);
+    if (pick.stagger || pick.delays) parts.push(`stagger ${pick.stagger || pick.delays}`);
+    if (pick.translateY || pick.y) parts.push(`Y ${pick.translateY || pick.y}`);
+    if (pick.mood) parts.push(pick.mood);
+    return parts.join("; ");
+  }
+
+  function assignPatternsToSections(patterns) {
+    const buckets = {
+      hero: [],
+      sections: [],
+      ui: [],
+      background: [],
+    };
+    for (const p of patterns) {
+      const triggers = p.interactionTriggers || [];
+      const objects = p.targetObjects || [];
+      if (objects.includes("heroSection") || triggers.includes("onPageLoad")) buckets.hero.push(p);
+      else if (objects.includes("background") || triggers.includes("onAmbientLoop")) buckets.background.push(p);
+      else if (
+        objects.includes("button") ||
+        objects.includes("navigation") ||
+        triggers.includes("onHover") ||
+        triggers.includes("onClickActive")
+      )
+        buckets.ui.push(p);
+      else buckets.sections.push(p);
+    }
+    for (const k of Object.keys(buckets)) {
+      if (!buckets[k].length && patterns.length) {
+        const rest = patterns.find((x) => !Object.values(buckets).flat().includes(x));
+        if (rest) buckets[k].push(rest);
+      }
+    }
+    return buckets;
+  }
+
+  function buildMotionInteractionBlock(opts) {
+    const {
+      style,
+      platform,
+      motionEl,
+      motionBg,
+      motionVibeId,
+      colorVibe,
+      compact = false,
+    } = opts;
+    const catalog = cat.motionInteractionCatalog;
+    if (!catalog?.patterns?.length) return "";
+    const pace = resolveMotionInteractionPace(motionVibeId, motionEl, motionBg, colorVibe);
+    const paceLabel =
+      pace === "slowCalm" ? "slow & calm" : pace === "fastPlayful" ? "fast & playful" : "default (catalog mid)";
+    const maxPat = compact ? 10 : 14;
+    const patterns = pickMotionInteractionPatterns(
+      style,
+      platform,
+      motionEl,
+      motionBg,
+      motionVibeId,
+      maxPat
+    );
+    if (!patterns.length) return "";
+    const cheat = catalog.timingCheatSheet || {};
+    const cheatIdx = pace === "slowCalm" ? 0 : pace === "fastPlayful" ? 2 : 1;
+    const globalTiming = cheat.duration
+      ? `Global: ${cheat.duration[cheatIdx]} · ${(cheat.stagger && cheat.stagger[cheatIdx]) || ""} · ${(cheat.movement && cheat.movement[cheatIdx]) || ""}`
+      : "";
+    const buckets = assignPatternsToSections(patterns);
+    const lineFor = (p) => {
+      const trig = (p.interactionTriggers || []).slice(0, 2).join("+");
+      const obj = (p.targetObjects || []).slice(0, 2).join("+");
+      const feel = (p.feel || "").replace(/\s+/g, " ").trim();
+      const timing = formatPatternTiming(p, pace);
+      const refs = (p.sourceExcerpts || []).map((r) => String(r).replace(/\s+/g, " ").trim()).filter(Boolean);
+      const refLine = refs.length ? ` Ref: ${refs.join(" | ")}` : "";
+      return compact
+        ? `• ${p.name} (${trig}·${obj}): ${feel}${timing ? ` | ${timing}` : ""}${refLine}`
+        : `• ${p.name} [${trig} → ${obj}] — ${feel}. Timing (${paceLabel}): ${timing || "see catalog"}.${refLine}`;
+    };
+    const sections = [];
+    if (buckets.hero.length) {
+      sections.push(
+        `${compact ? "Hero:" : "HERO (page load / hero):"}\n${buckets.hero.map(lineFor).join("\n")}`
+      );
+    }
+    if (buckets.sections.length) {
+      sections.push(
+        `${compact ? "Sections:" : "SECTIONS (in-view / cards / type):"}\n${buckets.sections.map(lineFor).join("\n")}`
+      );
+    }
+    if (buckets.ui.length) {
+      sections.push(
+        `${compact ? "UI:" : "UI (hover / press / nav):"}\n${buckets.ui.map(lineFor).join("\n")}`
+      );
+    }
+    if (buckets.background.length) {
+      sections.push(
+        `${compact ? "BG:" : "BACKGROUND (ambient / media):"}\n${buckets.background.map(lineFor).join("\n")}`
+      );
+    }
+    const styleLine = `Style "${style.name}" + motion kits UI:${motionEl.id} BG:${motionBg.id} — animations must match this aesthetic (not generic template motion).`;
+    const guard = compact
+      ? "Guard: prefers-reduced-motion; one scroll driver; ≤2 hero entrance systems."
+      : "[GUARD_MOTION_CAT] prefers-reduced-motion: opacity-only ≤200ms. One primary scroll driver (UI xor BG). Max two entrance systems above fold. Do not stack conflicting blurs on hero.";
+    if (compact) {
+      return `[MOTION_INTERACTIONS] Pace: ${paceLabel}. ${globalTiming}\n${styleLine}\n${sections.join("\n")}\n${guard}`;
+    }
+    return `[MOTION_INTERACTIONS] Catalog ${catalog.meta?.version || "1.0"} — implement concrete animations (trigger → object → pattern). Pace: ${paceLabel}. ${globalTiming}\n${styleLine}\n${sections.join("\n\n")}\n${guard}`;
+  }
+
   function firstRecKitForPlane(motionIds, plane) {
     for (const id of motionIds || []) {
       const k = cat.motionKits.find((m) => m.id === id);
@@ -458,7 +648,7 @@
     if (copyBtn) copyBtn.textContent = splitOn ? "Copy full prompt (A + B)" : "Copy prompt";
   }
 
-  /** Google design.md shape (Ictraeh/design.md + Stitch) — compact (4999 cap). */
+  /** Google design.md shape (Ictraeh/design.md + Stitch). */
   function buildDesignMdClause() {
     const stitch = (cat.designMdMeta && cat.designMdMeta.stitchFormatUrl) || "https://stitch.withgoogle.com/docs/design-md/format/";
     return (
@@ -615,7 +805,7 @@
   }
 
   function buildStyleMotionUxBlock(style, motionEl, motionBg) {
-    const b = (style.interactionMotionBlurb || "").slice(0, 380);
+    const b = style.interactionMotionBlurb || "";
     return `[STYLE_MOTION_UX] ${b} | UI(elements):${motionEl.id} · BG(ambient):${motionBg.id}. Stack: ReactBits+anime.js+CSS+MotionSites §8; hover/focus/stagger; no motion without purpose.`;
   }
 
@@ -634,8 +824,8 @@
     const lb = buildMotionLibLine(motionBg);
     const tags = style.skillTags || [];
     const ch = tags.includes("char-motion") ? "H1 stagger if UI kit allows; total≤900ms." : "";
-    const de = (motionEl.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
-    const db = (motionBg.detail || "").replace(/\s+/g, " ").trim().slice(0, 100);
+    const de = (motionEl.detail || "").replace(/\s+/g, " ").trim();
+    const db = (motionBg.detail || "").replace(/\s+/g, " ").trim();
     return `[L7_MOTION_SPEC] Split layers—UI(elements):${motionEl.id}|${de}|${le} · BG(ambient):${motionBg.id}|${db}|${lb}. ReactBits:≤2 modules→src/components/reactbits/*. anime.js: stagger+timeline y12–20px+opacity. GSAP only if scroll-scrub/clip-menu spec. Durations: nav150–200ms|section450–600ms|stagger50ms|hover180ms. ${ch}prefers-reduced-motion: opacity≤200ms fallback.`;
   }
 
@@ -805,19 +995,27 @@
       compactPrompt = false,
       creativeVoice = "spec_first",
       motionVibeId = MOTION_VIBE_AUTO_ID,
+      includeMotionInteractionCatalog = true,
     } = opts;
 
     const motionVibeResolved = resolveMotionVibeForPrompt(motionVibeId, industry.id);
     const animationRefBlock = buildAnimationReferenceBlock(motionVibeResolved);
-    const animationRefBlockCompact = animationRefBlock
-      ? animationRefBlock.replace(/\s+/g, " ").trim().slice(0, 420)
+    const motionInteractionBlock = includeMotionInteractionCatalog
+      ? buildMotionInteractionBlock({
+          style,
+          platform,
+          motionEl,
+          motionBg,
+          motionVibeId,
+          colorVibe,
+          compact: compactPrompt,
+        })
       : "";
-
     const sections = sectionPlan(platform, industry.label);
     const l4Short = L4_HINTS[style.layoutArchetype] || style.layoutArchetype;
     const l4Doc = (cat.l4Blueprint && (cat.l4Blueprint[style.layoutArchetype] || cat.l4Blueprint.L4_DEFAULT)) || "";
     const sectionLine = sections.join(" → ");
-    const notesShort = (userNotes.trim() || "—").slice(0, 320);
+    const notesShort = userNotes.trim() || "—";
 
     const rec = style.recommendations;
     const recLine =
@@ -873,10 +1071,10 @@
           : buildWorkOrderLayer();
     const roleLineFull =
       creativeVoice === "dramatic"
-        ? `[ROLE] ${ROLE_VARIANTS.dramatic} spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`
+        ? `[ROLE] ${ROLE_VARIANTS.dramatic} Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`
         : creativeVoice === "wild_card"
-          ? `[ROLE] ${ROLE_VARIANTS.wild_card} spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`
-          : `[ROLE] Senior FE — implement UI per layers L0–L8; spec≤${MAX_PROMPT_CHARS}ch.Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`;
+          ? `[ROLE] ${ROLE_VARIANTS.wild_card} Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`
+          : `[ROLE] Senior FE — implement UI per layers L0–L8. Placeholders:<BRAND><HEADLINE><SUBHEAD><PRIMARY_HSL>.`;
 
     const contentLayer = buildContentLayer(industry, sectionLine, notesShort);
     const layoutLayer = buildLayoutLayer(style, platform, l4Short, l4Doc);
@@ -896,7 +1094,7 @@
 
     const indFit = cat.industryMotionFit?.[industry.id];
     const industryMotionLine = indFit?.hint
-      ? `[INDUSTRY_MOTION] ${industry.label}: ${indFit.hint.replace(/\s+/g, " ").trim().slice(0, 220)}`
+      ? `[INDUSTRY_MOTION] ${industry.label}: ${indFit.hint.replace(/\s+/g, " ").trim()}`
       : "";
 
     let baseThroughColor;
@@ -909,8 +1107,7 @@
       const titleLine = `TITLE: <HEADLINE> — ${style.name} · ${industry.label}`;
       const subLine = `SUB: ${platform.labelEn || platform.label} · style #${style.libraryNumber} · ${fvLabel} · ${cvLabel}`;
       const blurb = (style.userBlurb || style.libraryMood || "").replace(/\s+/g, " ").trim().slice(0, 200);
-      const noteLine =
-        notesShort && notesShort !== "—" ? `NOTES: ${notesShort.slice(0, 140)}` : "";
+      const noteLine = notesShort && notesShort !== "—" ? `NOTES: ${notesShort}` : "";
       const workShort =
         creativeVoice === "wild_card"
           ? "Ship: hero intent comment → tokens → sections → motion → DESIGN.md — then second pass if hero is cliché."
@@ -928,9 +1125,9 @@
       const fit = (cat.industryStyleFit && cat.industryStyleFit[industry.id]) || [];
       const fitHead = fit.slice(0, 6).join(" · ") || "—";
       const industryShort = `Vertical: ${industry.label}. Catalog primaries: ${fitHead}. Chosen: ${style.name}.`;
-      const contentShort = `Content: concrete headlines; no innovation clichés; CTAs Start|Book|Pricing. Flow: ${sectionLine.slice(0, 360)}`;
-      const docShort = (l4Doc || "").replace(/\s+/g, " ").trim().slice(0, 120);
-      const layoutShort = `Layout: ${style.layoutArchetype} · ${(l4Short || "").slice(0, 100)} · ${heroPlacementHint(style.layoutArchetype)} · ${docShort} · max-w-7xl unless spec.`;
+      const contentShort = `Content: concrete headlines; no innovation clichés; CTAs Start|Book|Pricing. Flow: ${sectionLine}`;
+      const docShort = (l4Doc || "").replace(/\s+/g, " ").trim();
+      const layoutShort = `Layout: ${style.layoutArchetype} · ${l4Short || ""} · ${heroPlacementHint(style.layoutArchetype)} · ${docShort} · max-w-7xl unless spec.`;
       const shellShort = `Hero: min-h-[100svh]; media absolute inset-0 object-cover behind; content z-20; CTA ${style.id === "neo-brutalism" ? "hard border/shadow" : "solid+ring or glass+lift"}.`;
       const spaceShort = "Spacing: px-4 md:px-12 · section py-16→28 · gap-6–8 · cards p-6–8 · touch ≥44px.";
       const tags = (style.skillTags || []).filter(Boolean).join(", ");
@@ -971,24 +1168,21 @@ ${refsShort}
 ${typoColorShort}`;
 
       const indMotPlain = indFit?.hint
-        ? `Industry motion (${industry.label}): ${indFit.hint.replace(/\s+/g, " ").trim().slice(0, 140)}`
+        ? `Industry motion (${industry.label}): ${indFit.hint.replace(/\s+/g, " ").trim()}`
         : "";
       motionPack = [
         indMotPlain,
-        buildStyleMotionUxBlock(style, motionEl, motionBg)
-          .replace(/^\[STYLE_MOTION_UX\]\s*/, "Interaction: ")
-          .slice(0, 320),
-        buildDualMotionLayer(motionEl, motionBg, style)
-          .replace(/^\[L7_MOTION_SPEC\]\s*/, "Motion layers: ")
-          .slice(0, 420),
-        animationRefBlockCompact,
+        buildStyleMotionUxBlock(style, motionEl, motionBg).replace(/^\[STYLE_MOTION_UX\]\s*/, "Interaction: "),
+        buildDualMotionLayer(motionEl, motionBg, style).replace(/^\[L7_MOTION_SPEC\]\s*/, "Motion layers: "),
+        motionInteractionBlock,
+        animationRefBlock,
       ]
         .filter(Boolean)
         .join("\n");
 
-      const dmRefPlain = buildDesignMdRefBlock(style, industry).replace(/^\[DESIGN_MD_REFS\]\s*/, "").slice(0, 220);
-      const govPlain = buildAgencyGuardBlock(style, industry).replace(/^\[L8_GOVERNANCE\]\s*/, "").slice(0, 180);
-      const mediaPlain = mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "").slice(0, 200);
+      const dmRefPlain = buildDesignMdRefBlock(style, industry).replace(/^\[DESIGN_MD_REFS\]\s*/, "");
+      const govPlain = buildAgencyGuardBlock(style, industry).replace(/^\[L8_GOVERNANCE\]\s*/, "");
+      const mediaPlain = mediaSlots.replace(/^\[MEDIA_ASSETS\]\s*/, "");
       const recShort =
         rec &&
         Array.isArray(rec.fontVibeIds) &&
@@ -1020,6 +1214,7 @@ ${typoColorShort}`;
         industryMotionLine,
         buildStyleMotionUxBlock(style, motionEl, motionBg),
         buildDualMotionLayer(motionEl, motionBg, style),
+        motionInteractionBlock,
         animationRefBlock,
       ]
         .filter(Boolean)
@@ -1082,7 +1277,7 @@ ${motionPack}
 ${restAfterMotion}`;
     }
 
-    return clampPrompt(body.trim(), MAX_PROMPT_CHARS);
+    return clampPrompt(body);
   }
 
   function applyStyleRecommendations(style) {
@@ -1230,6 +1425,7 @@ ${restAfterMotion}`;
           compactPrompt: Boolean(el("compactPrompt")?.checked),
           creativeVoice: (el("creativeVoice") && el("creativeVoice").value) || "spec_first",
           motionVibeId,
+          includeMotionInteractionCatalog: Boolean(el("includeMotionInteractionCatalog")?.checked),
         });
       } catch (err) {
         console.error(err);
@@ -1254,7 +1450,7 @@ ${restAfterMotion}`;
         if (outA) outA.value = "";
         if (outB) outB.value = "";
       }
-      el("pexelsNote").textContent = `This run: ${text.length} / ${MAX_PROMPT_CHARS} characters`;
+      el("pexelsNote").textContent = `This run: ${text.length} characters (no truncation)`;
     });
 
     el("copy").addEventListener("click", async () => {

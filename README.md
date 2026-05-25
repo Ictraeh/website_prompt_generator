@@ -1,10 +1,12 @@
 # Vibe Prompt Generator
 
-Static page: pick options → generate an English implementation spec (≤4999 characters) → optionally copy motion snippets from [React Bits](https://reactbits.dev), [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/), and [Anime.js](https://animejs.com/documentation/animation/) (≤20000 bytes per snippet).
+Static page: pick options → generate a full English implementation spec (no character cap) → optionally copy motion snippets from [React Bits](https://reactbits.dev), [GSAP ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/), and [Anime.js](https://animejs.com/documentation/animation/) (≤20000 bytes per snippet).
 
 ### Designer Style Layout Markdown (in this repo)
 
 The folder **`sources/design-style-layout-md/`** holds the **Style Library**, **Layout library**, **Font pairings**, and **Color system** markdown used by the product. On `npm run build`, `build-catalog.mjs` reads those files and embeds **`styleLibrary`** into `catalog.json` / `catalog.bundle.js` (excerpts + GitHub raw URLs per MotionSites **L4** archetype). Generated prompts include a **`[STYLE_LIB]`** block so vibe-coding agents apply the same layout and art-direction vocabulary. To refresh after editing the markdown locally, run **`npm run build`** and commit the updated catalog bundles.
+
+**Motion interaction catalog** (default on): generated prompts include a `[MOTION_INTERACTIONS]` block from `motion-interaction-catalog-out/` — concrete animation patterns (trigger → object → feel → slow/fast timing) chosen from the current **style**, **motion vibe**, **deliverable**, and auto-picked UI/BG motion kits. Regenerate the catalog JSON after editing patterns, then `npm run build`.
 
 When **Include DESIGN.md** is checked (default), the prompt adds a `[DESIGN_MD]` block that tells the coding agent to maintain `./DESIGN.md` using the format from [**Ictraeh/design.md**](https://github.com/Ictraeh/design.md): YAML front matter for design tokens (colors, typography, rounded, spacing, components with `{token}` refs) plus Markdown `##` sections in the canonical order (Overview → … → Do's and Don'ts). Validate with [`@google/design.md`](https://www.npmjs.com/package/@google/design.md) (`npx @google/design.md lint DESIGN.md`) when useful.
 

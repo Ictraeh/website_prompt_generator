@@ -1,15 +1,11 @@
 /* global window, document */
 (function () {
-  const MAX_PROMPT = 4999;
-
   function el(id) {
     return document.getElementById(id);
   }
 
-  function clamp(s, max) {
-    if (s.length <= max) return s;
-    const tail = "\n…[truncated]";
-    return s.slice(0, max - tail.length).trimEnd() + tail;
+  function clamp(s) {
+    return s.trim();
   }
 
   function resolveUrl(href, base) {
@@ -177,7 +173,7 @@
       "[GUARD] No trademark theft; replace brand names with <BRAND>; no hotlinking competitor assets in production.",
       "[QA] responsive sm/md/lg; CLS reserve; focus-visible; Lighthouse-sane bundle.",
     ];
-    return clamp(lines.filter(Boolean).join("\n"), MAX_PROMPT);
+    return clamp(lines.filter(Boolean).join("\n"));
   }
 
   async function fetchHtmlFromProxy(url) {
@@ -265,7 +261,7 @@
       try {
         const analysis = analyzeHtml(html, base);
         outEl.value = buildClonePrompt(analysis, url || base, finalUrl);
-        statusEl.textContent = `Prompt ready: ${outEl.value.length} / ${MAX_PROMPT} characters.`;
+        statusEl.textContent = `Prompt ready: ${outEl.value.length} characters (no truncation).`;
       } catch (err) {
         statusEl.textContent = "Could not parse HTML.";
         outEl.value = "";

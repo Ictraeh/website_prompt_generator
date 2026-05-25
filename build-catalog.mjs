@@ -19,6 +19,11 @@ import {
   industryAnimationRefFit,
 } from "./animation-ref-presets.mjs";
 import { motionVibeOptions } from "./motion-vibes.mjs";
+import {
+  loadMotionInteractionCatalog,
+  slimMotionInteractionCatalog,
+  motionKitPatternIds,
+} from "./motion-interaction-catalog-data.mjs";
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -923,7 +928,7 @@ const motionKitGroups = [
  * plane: element = UI/choreography on components; background = hero/ambient layers; both = allowed in either picker.
  * energy: gentle default bias; playful = extra delight; bold = heavier / scroll / 3D.
  */
-const motionKits = [
+const motionKitsRaw = [
   {
     id: "M-fade-rise",
     group: "site",
@@ -1075,6 +1080,13 @@ const motionKits = [
   },
 ];
 
+const motionKits = motionKitsRaw.map((k) => ({
+  ...k,
+  patternIds: motionKitPatternIds[k.id] || [],
+}));
+
+const motionInteractionCatalog = slimMotionInteractionCatalog(loadMotionInteractionCatalog());
+
 const GITHUB_REPO_STYLE_LIB_TREE =
   "https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md";
 const GITHUB_REPO_STYLE_LIB_RAW =
@@ -1152,7 +1164,7 @@ if (fs.existsSync(snippetBlurbsPath)) {
 }
 
 const out = {
-  version: "1.6.4",
+  version: "1.6.5",
   sourceDocs: [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     `Designer Style Layout Markdown (in-repo): ${GITHUB_REPO_STYLE_LIB_TREE}`,
@@ -1181,6 +1193,7 @@ const out = {
   motionVibes: motionVibeOptions,
   snippetBlurbs,
   motionKits,
+  motionInteractionCatalog,
   motionKitGroups,
   l4Blueprint,
   styleBlends,

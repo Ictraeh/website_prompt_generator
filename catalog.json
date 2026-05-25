@@ -1,5 +1,5 @@
 {
-  "version": "1.6.4",
+  "version": "1.6.5",
   "sourceDocs": [
     "MotionSites-Prompt-Guide-Skill-Base.md",
     "Designer Style Layout Markdown (in-repo): https://github.com/Ictraeh/website_prompt_generator/tree/main/sources/design-style-layout-md",
@@ -75,19 +75,6 @@
       ]
     },
     {
-      "slug": "claude",
-      "label": "Claude",
-      "hub": "https://getdesign.md/claude/design-md",
-      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/claude/README.md",
-      "tags": [
-        "claude",
-        "llm",
-        "assistant",
-        "ai",
-        "chat"
-      ]
-    },
-    {
       "slug": "clay",
       "label": "Clay",
       "hub": "https://getdesign.md/clay/design-md",
@@ -98,6 +85,19 @@
         "creative",
         "brand",
         "organic"
+      ]
+    },
+    {
+      "slug": "claude",
+      "label": "Claude",
+      "hub": "https://getdesign.md/claude/design-md",
+      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/claude/README.md",
+      "tags": [
+        "claude",
+        "llm",
+        "assistant",
+        "ai",
+        "chat"
       ]
     },
     {
@@ -334,6 +334,19 @@
       ]
     },
     {
+      "slug": "mistral.ai",
+      "label": "Mistral Ai",
+      "hub": "https://getdesign.md/mistral.ai/design-md",
+      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/mistral.ai/README.md",
+      "tags": [
+        "mistral",
+        "ai",
+        "llm",
+        "europe",
+        "api"
+      ]
+    },
+    {
       "slug": "mintlify",
       "label": "Mintlify",
       "hub": "https://getdesign.md/mintlify/design-md",
@@ -356,19 +369,6 @@
         "whiteboard",
         "collab",
         "workshop"
-      ]
-    },
-    {
-      "slug": "mistral.ai",
-      "label": "Mistral Ai",
-      "hub": "https://getdesign.md/mistral.ai/design-md",
-      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/mistral.ai/README.md",
-      "tags": [
-        "mistral",
-        "ai",
-        "llm",
-        "europe",
-        "api"
       ]
     },
     {
@@ -454,15 +454,6 @@
         "product",
         "funnel",
         "experiment"
-      ]
-    },
-    {
-      "slug": "raycast",
-      "label": "Raycast",
-      "hub": "https://getdesign.md/raycast/design-md",
-      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/raycast/README.md",
-      "tags": [
-        "raycast"
       ]
     },
     {
@@ -606,6 +597,18 @@
       ]
     },
     {
+      "slug": "superhuman",
+      "label": "Superhuman",
+      "hub": "https://getdesign.md/superhuman/design-md",
+      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/superhuman/README.md",
+      "tags": [
+        "superhuman",
+        "email",
+        "productivity",
+        "keyboard"
+      ]
+    },
+    {
       "slug": "supabase",
       "label": "Supabase",
       "hub": "https://getdesign.md/supabase/design-md",
@@ -617,18 +620,6 @@
         "realtime",
         "backend",
         "postgres"
-      ]
-    },
-    {
-      "slug": "superhuman",
-      "label": "Superhuman",
-      "hub": "https://getdesign.md/superhuman/design-md",
-      "repo": "https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/superhuman/README.md",
-      "tags": [
-        "superhuman",
-        "email",
-        "productivity",
-        "keyboard"
       ]
     },
     {
@@ -2347,7 +2338,11 @@
       "plane": "element",
       "energy": "gentle",
       "label": "Fade-rise — sections ease in upward",
-      "detail": "~0.8s ease-out; translateY(24px)→0; stagger via animation-delay"
+      "detail": "~0.8s ease-out; translateY(24px)→0; stagger via animation-delay",
+      "patternIds": [
+        "fade-rise-up",
+        "sequential-block-stagger"
+      ]
     },
     {
       "id": "M-char-cascade",
@@ -2355,7 +2350,10 @@
       "plane": "element",
       "energy": "playful",
       "label": "Character cascade — headline attention",
-      "detail": "~30ms/char; 200ms start delay; opacity + translateX on inline-block spans"
+      "detail": "~30ms/char; 200ms start delay; opacity + translateX on inline-block spans",
+      "patternIds": [
+        "typography-stagger-units"
+      ]
     },
     {
       "id": "M-delay-fade",
@@ -2363,7 +2361,10 @@
       "plane": "element",
       "energy": "gentle",
       "label": "Delayed fade — calmer entrance",
-      "detail": "opacity 0→1 after delay; transition-opacity ~1000ms"
+      "detail": "opacity 0→1 after delay; transition-opacity ~1000ms",
+      "patternIds": [
+        "opacity-fade"
+      ]
     },
     {
       "id": "M-media-zoom",
@@ -2371,7 +2372,10 @@
       "plane": "element",
       "energy": "gentle",
       "label": "Image/video hover zoom",
-      "detail": "group overflow-hidden rounded-[14px]; child duration-700 group-hover:scale-[1.03]"
+      "detail": "group overflow-hidden rounded-[14px]; child duration-700 group-hover:scale-[1.03]",
+      "patternIds": [
+        "hover-micro-feedback"
+      ]
     },
     {
       "id": "M-button-lift",
@@ -2379,7 +2383,11 @@
       "plane": "element",
       "energy": "gentle",
       "label": "Button hover lift",
-      "detail": "hover:-translate-y-0.5 transition-all duration-200 + subtle bg"
+      "detail": "hover:-translate-y-0.5 transition-all duration-200 + subtle bg",
+      "patternIds": [
+        "hover-micro-feedback",
+        "press-active-feedback"
+      ]
     },
     {
       "id": "M-video-raf-loop",
@@ -2387,7 +2395,11 @@
       "plane": "background",
       "energy": "gentle",
       "label": "Video loop crossfade — seamless feel",
-      "detail": "rAF near loop ends; guard re-entrancy; on ended reset currentTime"
+      "detail": "rAF near loop ends; guard re-entrancy; on ended reset currentTime",
+      "patternIds": [
+        "breathing-video-loop",
+        "media-poster-handoff"
+      ]
     },
     {
       "id": "M-scroll-text-reveal",
@@ -2395,7 +2407,10 @@
       "plane": "element",
       "energy": "playful",
       "label": "Scroll-linked text reveal",
-      "detail": "motion useScroll + useTransform per word/char opacity"
+      "detail": "motion useScroll + useTransform per word/char opacity",
+      "patternIds": [
+        "scroll-text-highlight"
+      ]
     },
     {
       "id": "M-horizontal-marquee",
@@ -2403,7 +2418,10 @@
       "plane": "element",
       "energy": "playful",
       "label": "Horizontal marquee — logos / ticker",
-      "detail": "duplicate row translateX(-50%) infinite linear; optional edge masks"
+      "detail": "duplicate row translateX(-50%) infinite linear; optional edge masks",
+      "patternIds": [
+        "infinite-marquee-horizontal"
+      ]
     },
     {
       "id": "M-scroll-scrub-video",
@@ -2411,7 +2429,10 @@
       "plane": "background",
       "energy": "bold",
       "label": "Scroll-scrubbed video — progress follows scroll",
-      "detail": "GSAP ScrollTrigger scrub→video.currentTime; seek coalescing; buffer overlay"
+      "detail": "GSAP ScrollTrigger scrub→video.currentTime; seek coalescing; buffer overlay",
+      "patternIds": [
+        "scroll-scrub-media"
+      ]
     },
     {
       "id": "M-clip-circle-menu",
@@ -2419,7 +2440,10 @@
       "plane": "element",
       "energy": "bold",
       "label": "Circular expanding fullscreen menu",
-      "detail": "clip-path circle expand; stagger links; body scroll lock"
+      "detail": "clip-path circle expand; stagger links; body scroll lock",
+      "patternIds": [
+        "menu-overlay-open"
+      ]
     },
     {
       "id": "M-slide-deck",
@@ -2427,7 +2451,11 @@
       "plane": "element",
       "energy": "playful",
       "label": "Slide deck / multi-screen",
-      "detail": "slides mounted; opacity+z+pointerEvents; keyboard + dots"
+      "detail": "slides mounted; opacity+z+pointerEvents; keyboard + dots",
+      "patternIds": [
+        "deck-slide-transition",
+        "opacity-fade"
+      ]
     },
     {
       "id": "M-spline-bg",
@@ -2435,7 +2463,8 @@
       "plane": "background",
       "energy": "bold",
       "label": "Spline 3D scene as background",
-      "detail": "lazy @splinetool/react-spline; pointer-events vs CTAs"
+      "detail": "lazy @splinetool/react-spline; pointer-events vs CTAs",
+      "patternIds": []
     },
     {
       "id": "M-spotlight-mask",
@@ -2443,7 +2472,10 @@
       "plane": "background",
       "energy": "playful",
       "label": "Cursor spotlight / masked reveal",
-      "detail": "SVG mask trails; perf gate + mobile fallback"
+      "detail": "SVG mask trails; perf gate + mobile fallback",
+      "patternIds": [
+        "cursor-reveal-effects"
+      ]
     },
     {
       "id": "minimal",
@@ -2451,7 +2483,10 @@
       "plane": "both",
       "energy": "gentle",
       "label": "Minimal — hover-only micro motion",
-      "detail": "No entrance choreography; respect prefers-reduced-motion"
+      "detail": "No entrance choreography; respect prefers-reduced-motion",
+      "patternIds": [
+        "hover-micro-feedback"
+      ]
     },
     {
       "id": "RB-Animations",
@@ -2460,7 +2495,11 @@
       "energy": "playful",
       "rbCategory": "Animations",
       "label": "React Bits · Animations (cursor, particles, GSAP, …)",
-      "detail": "React Bits / Animations: pick TSX in Motion code panel; layer lightly with site M-kits; mind §3.2 perf + reduced-motion"
+      "detail": "React Bits / Animations: pick TSX in Motion code panel; layer lightly with site M-kits; mind §3.2 perf + reduced-motion",
+      "patternIds": [
+        "cursor-reveal-effects",
+        "hover-micro-feedback"
+      ]
     },
     {
       "id": "RB-Backgrounds",
@@ -2469,7 +2508,11 @@
       "energy": "playful",
       "rbCategory": "Backgrounds",
       "label": "React Bits · Backgrounds (gradients, grids, aurora)",
-      "detail": "React Bits / Backgrounds: hero or section fills; watch z-index vs body text contrast"
+      "detail": "React Bits / Backgrounds: hero or section fills; watch z-index vs body text contrast",
+      "patternIds": [
+        "infinite-marquee-horizontal",
+        "breathing-video-loop"
+      ]
     },
     {
       "id": "RB-Components",
@@ -2478,7 +2521,11 @@
       "energy": "playful",
       "rbCategory": "Components",
       "label": "React Bits · Components (carousels, accordions, cards)",
-      "detail": "React Bits / Components: reusable blocks; trim props to need"
+      "detail": "React Bits / Components: reusable blocks; trim props to need",
+      "patternIds": [
+        "auto-cycle-content",
+        "hover-micro-feedback"
+      ]
     },
     {
       "id": "RB-TextAnimations",
@@ -2487,9 +2534,1312 @@
       "energy": "playful",
       "rbCategory": "TextAnimations",
       "label": "React Bits · Text (gradients, splits, scroll type)",
-      "detail": "React Bits / TextAnimations: headline/tagline hierarchy; avoid whole-page overload"
+      "detail": "React Bits / TextAnimations: headline/tagline hierarchy; avoid whole-page overload",
+      "patternIds": [
+        "typography-stagger-units",
+        "typography-mask-slide",
+        "ambient-text-surface"
+      ]
     }
   ],
+  "motionInteractionCatalog": {
+    "meta": {
+      "title": "Motion Interaction Catalog",
+      "version": "1.0.0",
+      "generated": "2026-05-25",
+      "description": "Deduplicated motion patterns categorized by interaction trigger and target object. Each pattern includes on-site feel, source excerpts, and slow-calm vs fast-playful timing. Use with mood-to-motion-map for feeling → pace."
+    },
+    "timingCheatSheet": {
+      "intent": [
+        "slowCalm",
+        "default",
+        "fastPlayful"
+      ],
+      "duration": [
+        "0.9–1.6s",
+        "0.5–0.8s",
+        "0.2–0.45s"
+      ],
+      "easing": [
+        "ease-out, cubic-bezier(0.22, 1, 0.36, 1)",
+        "ease-out",
+        "ease-out / spring / slight overshoot"
+      ],
+      "stagger": [
+        "0.12–0.35s",
+        "0.1–0.2s",
+        "0.04–0.08s"
+      ],
+      "movement": [
+        "12–20px",
+        "24–30px",
+        "32–48px"
+      ]
+    },
+    "taxonomy": {
+      "interactionTriggers": [
+        {
+          "id": "onPageLoad",
+          "label": "Page load / first paint",
+          "description": "Runs once when the page or hero mounts; often staggered across children."
+        },
+        {
+          "id": "onInViewOnce",
+          "label": "Scroll into view (once)",
+          "description": "Fires when element crosses viewport threshold; does not repeat."
+        },
+        {
+          "id": "onScrollScrub",
+          "label": "Scroll-scrubbed",
+          "description": "Progress tied 1:1 to scroll position (GSAP scrub, Framer useScroll)."
+        },
+        {
+          "id": "onScrollProgress",
+          "label": "Scroll-driven progress",
+          "description": "Opacity/color/transform mapped to scroll ranges without strict scrub."
+        },
+        {
+          "id": "onHover",
+          "label": "Pointer hover",
+          "description": "Mouse enter/leave on interactive or card surfaces."
+        },
+        {
+          "id": "onClickActive",
+          "label": "Press / active",
+          "description": "mousedown or active pseudo-state feedback."
+        },
+        {
+          "id": "onOpenToggle",
+          "label": "Open / close toggle",
+          "description": "Menus, modals, fleet panels, tab overlays."
+        },
+        {
+          "id": "onAutoInterval",
+          "label": "Timer / interval",
+          "description": "Carousels, tab cycles, loaders, rotating copy."
+        },
+        {
+          "id": "onAmbientLoop",
+          "label": "Ambient loop",
+          "description": "Infinite CSS/JS loops: marquees, video breath, text shine."
+        },
+        {
+          "id": "onCursorMove",
+          "label": "Cursor-driven",
+          "description": "Magnetic elements, masks, ripples, GIF trails follow pointer."
+        }
+      ],
+      "targetObjects": [
+        {
+          "id": "typography",
+          "label": "Headlines & copy",
+          "examples": [
+            "h1",
+            "words",
+            "lines",
+            "letters"
+          ]
+        },
+        {
+          "id": "heroSection",
+          "label": "Hero composition",
+          "examples": [
+            "badge → title → subhead → CTA chain"
+          ]
+        },
+        {
+          "id": "card",
+          "label": "Cards & tiles",
+          "examples": [
+            "feature cards",
+            "trust chips",
+            "portfolio stack"
+          ]
+        },
+        {
+          "id": "button",
+          "label": "Buttons & pills",
+          "examples": [
+            "CTA",
+            "nav pill",
+            "gradient border btn"
+          ]
+        },
+        {
+          "id": "navigation",
+          "label": "Navigation & menus",
+          "examples": [
+            "header links",
+            "fullscreen menu",
+            "liquid pill nav"
+          ]
+        },
+        {
+          "id": "overlayPanel",
+          "label": "Overlays & panels",
+          "examples": [
+            "tab content",
+            "wizard card",
+            "glass footer panel"
+          ]
+        },
+        {
+          "id": "media",
+          "label": "Video & imagery",
+          "examples": [
+            "HLS hero",
+            "poster",
+            "scroll video",
+            "fleet column"
+          ]
+        },
+        {
+          "id": "chartData",
+          "label": "Charts & stats",
+          "examples": [
+            "line draw",
+            "stat cards",
+            "investor charts"
+          ]
+        },
+        {
+          "id": "background",
+          "label": "Background & ambient",
+          "examples": [
+            "parallax layers",
+            "marquees",
+            "breathing video"
+          ]
+        },
+        {
+          "id": "deckSlide",
+          "label": "Slides & decks",
+          "examples": [
+            "pitch slides",
+            "horizontal deck",
+            "slide crossfade"
+          ]
+        }
+      ]
+    },
+    "lookupMatrix": {
+      "description": "Quick routing: trigger × object → pattern ids (primary first).",
+      "routes": [
+        {
+          "trigger": "onPageLoad",
+          "object": "heroSection",
+          "patterns": [
+            "sequential-block-stagger",
+            "blur-reveal",
+            "fade-rise-up"
+          ]
+        },
+        {
+          "trigger": "onPageLoad",
+          "object": "typography",
+          "patterns": [
+            "typography-stagger-units",
+            "typography-mask-slide",
+            "blur-reveal"
+          ]
+        },
+        {
+          "trigger": "onPageLoad",
+          "object": "card",
+          "patterns": [
+            "fade-rise-up",
+            "panel-slide-in"
+          ]
+        },
+        {
+          "trigger": "onInViewOnce",
+          "object": "card",
+          "patterns": [
+            "fade-rise-up"
+          ]
+        },
+        {
+          "trigger": "onInViewOnce",
+          "object": "typography",
+          "patterns": [
+            "typography-stagger-units",
+            "blur-reveal",
+            "fade-down-enter"
+          ]
+        },
+        {
+          "trigger": "onScrollScrub",
+          "object": "media",
+          "patterns": [
+            "scroll-scrub-media"
+          ]
+        },
+        {
+          "trigger": "onScrollScrub",
+          "object": "background",
+          "patterns": [
+            "scroll-parallax-layered",
+            "scroll-scrub-media"
+          ]
+        },
+        {
+          "trigger": "onScrollProgress",
+          "object": "typography",
+          "patterns": [
+            "scroll-text-highlight"
+          ]
+        },
+        {
+          "trigger": "onScrollProgress",
+          "object": "heroSection",
+          "patterns": [
+            "scroll-parallax-layered",
+            "cinematic-section-transition"
+          ]
+        },
+        {
+          "trigger": "onHover",
+          "object": "button",
+          "patterns": [
+            "hover-micro-feedback",
+            "press-active-feedback"
+          ]
+        },
+        {
+          "trigger": "onHover",
+          "object": "card",
+          "patterns": [
+            "hover-micro-feedback"
+          ]
+        },
+        {
+          "trigger": "onHover",
+          "object": "navigation",
+          "patterns": [
+            "hover-micro-feedback"
+          ]
+        },
+        {
+          "trigger": "onClickActive",
+          "object": "button",
+          "patterns": [
+            "press-active-feedback"
+          ]
+        },
+        {
+          "trigger": "onOpenToggle",
+          "object": "navigation",
+          "patterns": [
+            "menu-overlay-open"
+          ]
+        },
+        {
+          "trigger": "onOpenToggle",
+          "object": "overlayPanel",
+          "patterns": [
+            "opacity-fade",
+            "panel-slide-in",
+            "blur-reveal"
+          ]
+        },
+        {
+          "trigger": "onOpenToggle",
+          "object": "media",
+          "patterns": [
+            "panel-slide-in",
+            "blur-reveal",
+            "media-crossfade-chapters"
+          ]
+        },
+        {
+          "trigger": "onAutoInterval",
+          "object": "deckSlide",
+          "patterns": [
+            "auto-cycle-content",
+            "deck-slide-transition"
+          ]
+        },
+        {
+          "trigger": "onAutoInterval",
+          "object": "heroSection",
+          "patterns": [
+            "auto-cycle-content"
+          ]
+        },
+        {
+          "trigger": "onAmbientLoop",
+          "object": "background",
+          "patterns": [
+            "infinite-marquee-horizontal",
+            "infinite-marquee-vertical",
+            "breathing-video-loop"
+          ]
+        },
+        {
+          "trigger": "onAmbientLoop",
+          "object": "typography",
+          "patterns": [
+            "ambient-text-surface"
+          ]
+        },
+        {
+          "trigger": "onCursorMove",
+          "object": "background",
+          "patterns": [
+            "cursor-reveal-effects"
+          ]
+        },
+        {
+          "trigger": "onPageLoad",
+          "object": "chartData",
+          "patterns": [
+            "chart-draw-reveal",
+            "fade-rise-up"
+          ]
+        },
+        {
+          "trigger": "onOpenToggle",
+          "object": "deckSlide",
+          "patterns": [
+            "deck-slide-transition",
+            "chart-draw-reveal"
+          ]
+        }
+      ]
+    },
+    "patterns": [
+      {
+        "id": "fade-rise-up",
+        "name": "Fade rise up",
+        "aliases": [
+          "fadeInUp",
+          "animate-fade-in-up",
+          "useInView fade-in-up",
+          "popup-card-in"
+        ],
+        "interactionTriggers": [
+          "onPageLoad",
+          "onInViewOnce"
+        ],
+        "targetObjects": [
+          "typography",
+          "heroSection",
+          "card",
+          "chartData"
+        ],
+        "feel": "Element starts invisible and slightly below final position, then eases up into place. Smooth and unobtrusive—cards, paragraphs, buttons feel polished without stealing focus.",
+        "sourceExcerpts": [
+          "@keyframes fadeInUp: opacity 0, translateY(30px) → opacity 1, translateY(0); .animate-fade-in-up 0.6s ease-out forwards.",
+          "useInView: fadeInUp 0.8s ease-out, staggered delays 0.1–0.5s per element, threshold 0.1.",
+          "popup-card-in: opacity 0, translateY(16px) scale(0.96) → full; delay i * 150ms."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "duration": "1.0–1.2s",
+            "easing": "ease-out or cubic-bezier(0.22, 1, 0.36, 1)",
+            "translateY": "16px",
+            "stagger": "0.15–0.2s",
+            "mood": "luxury editorial, wellness, finance"
+          },
+          "fastPlayful": {
+            "duration": "0.35–0.45s",
+            "easing": "ease-out or cubic-bezier(0.34, 1.4, 0.64, 1)",
+            "translateY": "40px",
+            "stagger": "0.05–0.08s",
+            "mood": "startup landing, social app, promo grid"
+          }
+        }
+      },
+      {
+        "id": "sequential-block-stagger",
+        "name": "Sequential block stagger",
+        "aliases": [
+          "fade-rise",
+          "animate-fade-rise-delay",
+          "blur-fade-up hero chain",
+          "Digitwist hero stagger"
+        ],
+        "interactionTriggers": [
+          "onPageLoad"
+        ],
+        "targetObjects": [
+          "heroSection",
+          "navigation"
+        ],
+        "feel": "Same upward fade as fade-rise-up, but blocks appear in order (badge → title → body → CTA). Page reads like a short opening beat, not everything popping at once.",
+        "sourceExcerpts": [
+          "fade-rise: translateY(24px) + opacity; classes .animate-fade-rise, -delay 0.2s, -delay-2 0.4s.",
+          "blurFadeUp stagger: logo 0ms, nav 100–300ms, title 400ms, buttons 600–900ms.",
+          "Digitwist: pre-headline y 20→0; headline scale 0.9→1 delay 0.2s; subhead opacity delay 0.4s; buttons y delay 0.6s."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "perElement": "1.0–1.4s",
+            "delays": "0.35s / 0.7s / 1.05s",
+            "translateY": "12px",
+            "mood": "resort brand, focus tool, film hero"
+          },
+          "fastPlayful": {
+            "perElement": "0.45–0.55s",
+            "delays": "0.08s / 0.16s / 0.24s",
+            "translateY": "32px",
+            "overshoot": "optional on last item",
+            "mood": "consumer app, event page, bold marketing"
+          }
+        }
+      },
+      {
+        "id": "opacity-fade",
+        "name": "Opacity fade (no travel)",
+        "aliases": [
+          "plain fade-in",
+          "fadeInOverlay",
+          "animate-fade-in-overlay",
+          "slide-fade-deck"
+        ],
+        "interactionTriggers": [
+          "onPageLoad",
+          "onOpenToggle",
+          "onAutoInterval"
+        ],
+        "targetObjects": [
+          "overlayPanel",
+          "deckSlide",
+          "typography"
+        ],
+        "feel": "Opacity 0→1 only—no slide. Minimal and confident; content simply appears. For tab swaps, overlay content, or deck crossfades.",
+        "sourceExcerpts": [
+          "fade-in keyframe: opacity 0 → 1, 0.5s ease-out forwards.",
+          "fadeInOverlay: opacity 0 → 1, 0.4s ease-out.",
+          "Deck: opacity isActive ? 1 : 0, duration 0.35 easeInOut."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "duration": "0.8–1.2s",
+            "easing": "linear or ease-in-out",
+            "optionalDrift": "8px up",
+            "mood": "health dashboard, calm product tour"
+          },
+          "fastPlayful": {
+            "duration": "0.15–0.25s",
+            "optionalScale": "0.98→1",
+            "mood": "tab switcher, alerts, micro-feedback"
+          }
+        }
+      },
+      {
+        "id": "blur-reveal",
+        "name": "Blur reveal",
+        "aliases": [
+          "fade-up with blur",
+          "blur-fade-up",
+          "BlurIn",
+          "BlurReveal"
+        ],
+        "interactionTriggers": [
+          "onPageLoad",
+          "onInViewOnce",
+          "onOpenToggle"
+        ],
+        "targetObjects": [
+          "typography",
+          "heroSection",
+          "overlayPanel",
+          "media"
+        ],
+        "feel": "Heavy blur and low opacity resolve to sharp text or imagery—attention arriving, like rack focus or waking from a dream. Deck metadata and hero subtitles use lighter blur (8px); heroes use stronger (20px).",
+        "sourceExcerpts": [
+          "fade-up: translateY(20px) + blur(4px) → clear, 700ms cubic-bezier(0.16, 1, 0.3, 1).",
+          "BlurIn viewport: blur(20px) opacity 0 → blur(0) opacity 1 over 1.2s.",
+          "BlurReveal motion.div: blur(8px) opacity 0 → clear, 0.9s, delays 0.05–1.2s."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "duration": "1.1–2s",
+            "blur": "8–24px→0",
+            "translateY": "12px optional",
+            "mood": "biotech, meditation, enterprise AI, investor deck"
+          },
+          "fastPlayful": {
+            "duration": "0.45–0.65s",
+            "blur": "6–12px→0",
+            "translateY": "24–28px",
+            "mood": "consumer AI, agency launch, pitch energy"
+          }
+        }
+      },
+      {
+        "id": "fade-down-enter",
+        "name": "Fade down enter",
+        "aliases": [
+          "FadeDown",
+          "Framer hero subtitle drop"
+        ],
+        "interactionTriggers": [
+          "onInViewOnce",
+          "onPageLoad"
+        ],
+        "targetObjects": [
+          "typography",
+          "heroSection",
+          "button"
+        ],
+        "feel": "Content enters from slightly above final position while fading in—opposite of rise-up. Subtitles and CTAs settle gently under the main headline.",
+        "sourceExcerpts": [
+          "FadeDown: opacity 0, y: -20 → opacity 1, y: 0, duration 0.6s, configurable delay, once in view."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "y": "-12→0",
+            "duration": "0.9–1.1s",
+            "delay": "0.6–0.9s",
+            "mood": "clean energy, enterprise hero"
+          },
+          "fastPlayful": {
+            "y": "-28→0",
+            "duration": "0.35s",
+            "delay": "0.25s",
+            "bounce": "slight at end",
+            "mood": "consumer green tech, mobile-first hero"
+          }
+        }
+      },
+      {
+        "id": "typography-mask-slide",
+        "name": "Typography mask slide (curtain)",
+        "aliases": [
+          "SlideUpLine",
+          "WordByWordReveal"
+        ],
+        "interactionTriggers": [
+          "onPageLoad",
+          "onInViewOnce"
+        ],
+        "targetObjects": [
+          "typography",
+          "deckSlide"
+        ],
+        "feel": "Each line or word sits in overflow-hidden; inner text slides up from 100% masked—like blinds opening. Editorial, presentation-forward.",
+        "sourceExcerpts": [
+          "SlideUpLine: inner motion.span y 100% → 0%, 0.7s, ease [0.25, 0.1, 0.25, 1].",
+          "WordByWordReveal: per-word mask, stagger 0.035s, duration 0.55s."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "duration": "1.0–1.2s per unit",
+            "stagger": "0.25s lines / 0.08s words",
+            "mood": "investor keynote, film title, documentary narration"
+          },
+          "fastPlayful": {
+            "duration": "0.35–0.4s",
+            "stagger": "0.1s lines / 0.025s words",
+            "overshoot": "slight",
+            "mood": "sports opener, trailer, rapid manifesto"
+          }
+        }
+      },
+      {
+        "id": "typography-stagger-units",
+        "name": "Typography stagger (letter / word)",
+        "aliases": [
+          "StaggeredFade",
+          "SplitText",
+          "BlurText",
+          "WordsPullUp"
+        ],
+        "interactionTriggers": [
+          "onInViewOnce",
+          "onPageLoad"
+        ],
+        "targetObjects": [
+          "typography",
+          "heroSection"
+        ],
+        "feel": "Title built unit-by-unit: letters fade or slide; words rise with blur clearing; reading rhythm is guided—headline becomes performance without full mask curtain.",
+        "sourceExcerpts": [
+          "StaggeredFade: per letter opacity 0→1, delay i * 0.03s, duration 0.3s.",
+          "BlurText: per word blur(10px)→0, y 50→0, 0.35s, stagger 100ms.",
+          "SplitText: words y 40→0, opacity, 0.08s stagger, 0.6s duration.",
+          "WordsPullUp: word y 20→0, opacity, stagger 0.08s, useInView once."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "unitDuration": "0.5–0.9s",
+            "stagger": "0.06–0.18s",
+            "y": "14–24px",
+            "mood": "mindful editorial, climate brand, gallery hero"
+          },
+          "fastPlayful": {
+            "unitDuration": "0.18–0.35s",
+            "stagger": "0.02–0.06s",
+            "y": "40–48px",
+            "mood": "viral agency, growth SaaS, streetwear drop"
+          }
+        }
+      },
+      {
+        "id": "scroll-text-highlight",
+        "name": "Scroll-driven text highlight",
+        "aliases": [
+          "reading highlight",
+          "ScrollRevealText",
+          "AnimatedLetter",
+          "Veloce text fill scroll"
+        ],
+        "interactionTriggers": [
+          "onScrollProgress"
+        ],
+        "targetObjects": [
+          "typography"
+        ],
+        "feel": "Words or letters brighten as you scroll—highlighter following read pace. Long quotes and manifestos feel guided; clip-path fill variant paints brand gradient left-to-right.",
+        "sourceExcerpts": [
+          "Per word: scroll range → opacity [0.2, 1], color dark gray → white; offset start end / end center.",
+          "ScrollRevealText: offset start 0.9 / start 0.3, opacity 0.15 → 1 per word.",
+          "AnimatedLetter: charProgress range → opacity 0.2 to 1.",
+          "TextFill: clipPath inset driven by scroll 80%–20% viewport."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "scrollRange": "wide per word",
+            "opacityFloor": "0.35",
+            "clipTransition": "0.2s",
+            "mood": "meditative read, annual report narrative"
+          },
+          "fastPlayful": {
+            "scrollRange": "narrow",
+            "opacityJump": "0.1→1",
+            "mood": "karaoke highlight, rally speech, progress-bar race"
+          }
+        }
+      },
+      {
+        "id": "scroll-parallax-layered",
+        "name": "Scroll parallax (layered)",
+        "aliases": [
+          "scroll-linked hero",
+          "Neuralyn hero parallax",
+          "ContentFlow hero fade on scroll"
+        ],
+        "interactionTriggers": [
+          "onScrollScrub",
+          "onScrollProgress"
+        ],
+        "targetObjects": [
+          "heroSection",
+          "background",
+          "card"
+        ],
+        "feel": "Foreground text rises and fades while background image/video moves slower—depth on scroll. Hero exit variant: first screen translates up and fades as next section scales in.",
+        "sourceExcerpts": [
+          "Hero text y [0,-200] opacity [1,0] first 50% scroll; dashboard y [0,-250].",
+          "ContentFlow: opacity max(1 - progress*2.5,0); translateY progress*-60; showcase scale 0.88→1.",
+          "Portfolio cards: targetScale 1 - (total-index)*0.03 sticky stack."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "scrollRange": "0–80% section",
+            "textY": "-80px",
+            "scaleStep": "0.015",
+            "mood": "analytics SaaS, calm product story"
+          },
+          "fastPlayful": {
+            "scrollRange": "0–30%",
+            "textY": "-280px",
+            "scaleStep": "0.05",
+            "mood": "mobile app, bold product site, fast portfolio shuffle"
+          }
+        }
+      },
+      {
+        "id": "scroll-scrub-media",
+        "name": "Scroll-scrubbed media",
+        "aliases": [
+          "ScrollVideo",
+          "Urban Jungle scrub",
+          "glass panel scroll rise"
+        ],
+        "interactionTriggers": [
+          "onScrollScrub"
+        ],
+        "targetObjects": [
+          "media",
+          "overlayPanel",
+          "background"
+        ],
+        "feel": "Video time or panel position locked to scroll—user scrubs the timeline. Glass panel rises from bottom at section end like a chapter card landing.",
+        "sourceExcerpts": [
+          "ScrollTrigger scrub: targetTime = progress * duration, seek throttling.",
+          "GlassPanel: gsap panel y 100% → 0%, scrub 1.5, trigger container end.",
+          "ScrollFloat: chars opacity 1→0, yPercent 0→250, scaleY 1→1.2, scrub 1.5."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "pageHeight": "600vh+",
+            "seekSmoothing": "heavy",
+            "scrub": "2.5",
+            "mood": "documentary explore, city skyline dawn"
+          },
+          "fastPlayful": {
+            "scrollMapping": "tight",
+            "scrub": "0.8–0.9",
+            "yPercent": "350",
+            "mood": "interactive game demo, snappy chapter break"
+          }
+        }
+      },
+      {
+        "id": "cinematic-section-transition",
+        "name": "Cinematic section transition",
+        "aliases": [
+          "full-screen section blur scale",
+          "aerospace multi-chapter landing"
+        ],
+        "interactionTriggers": [
+          "onInViewOnce",
+          "onScrollProgress"
+        ],
+        "targetObjects": [
+          "heroSection",
+          "background"
+        ],
+        "feel": "Full-viewport sections swap with blur, scale, and vertical shift—hard cut energy like a lens change. Distinct from simple opacity crossfade.",
+        "sourceExcerpts": [
+          "Enter: opacity 0→1, scale 1.05→1, blur 10px→0 (0.8s). Exit: scale 0.92, blur 12px, y -60. Sections y 80→0, scale 1.08→1, blur 14px→0."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "duration": "1.2–1.5s",
+            "blur": "16px",
+            "scaleDelta": "small",
+            "mood": "IMAX consulting, aerospace"
+          },
+          "fastPlayful": {
+            "duration": "0.45–0.55s",
+            "blur": "8px",
+            "scale": "1.12→1 with overshoot",
+            "mood": "action trailer, fast chapter landing"
+          }
+        }
+      },
+      {
+        "id": "media-crossfade-chapters",
+        "name": "Media crossfade (chapter videos)",
+        "aliases": [
+          "three fixed videos crossfade",
+          "scene opacity transition"
+        ],
+        "interactionTriggers": [
+          "onScrollProgress",
+          "onOpenToggle"
+        ],
+        "targetObjects": [
+          "media",
+          "background"
+        ],
+        "feel": "Stacked fullscreen videos; active chapter fades in ~700ms while others fade out—atmosphere shifts without black frames.",
+        "sourceExcerpts": [
+          "Three fixed videos: transition-opacity duration-700, active opacity-100 others opacity-0."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "crossfade": "1200–1500ms",
+            "mood": "nature documentary chapters"
+          },
+          "fastPlayful": {
+            "crossfade": "350–450ms",
+            "mood": "channel zap, game load screen"
+          }
+        }
+      },
+      {
+        "id": "breathing-video-loop",
+        "name": "Breathing video loop",
+        "aliases": [
+          "requestAnimationFrame fade loop",
+          "hero video soft loop"
+        ],
+        "interactionTriggers": [
+          "onAmbientLoop"
+        ],
+        "targetObjects": [
+          "media",
+          "background"
+        ],
+        "feel": "Background video never hard-cuts: fades out at loop end, fades in at start—page feels alive, slow breath.",
+        "sourceExcerpts": [
+          "FADE_DURATION 0.5s rAF: first 0.5s fade up, last 0.5s fade down; on ended reset currentTime, play. Variants 250–500ms."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "fade": "1.2–1.8s each",
+            "pauseBetween": "200–400ms black",
+            "mood": "spa, poetry brand, Aethera hero"
+          },
+          "fastPlayful": {
+            "fade": "0.2–0.25s",
+            "pause": "50ms",
+            "mood": "music promo, sports, nightlife"
+          }
+        }
+      },
+      {
+        "id": "infinite-marquee-horizontal",
+        "name": "Infinite horizontal marquee",
+        "aliases": [
+          "logo marquee",
+          "scroll keyframes translateX",
+          "InfiniteSlider logo cloud",
+          "GSAP footer xPercent"
+        ],
+        "interactionTriggers": [
+          "onAmbientLoop"
+        ],
+        "targetObjects": [
+          "background",
+          "heroSection"
+        ],
+        "feel": "Brand row moves endlessly; duplicated list hides seam. Gradient masks at edges—social proof without grabbing focus.",
+        "sourceExcerpts": [
+          "@keyframes scroll translateX(0)→translateX(-50%), 15s mobile / 30s desktop linear infinite.",
+          "GSAP xPercent -50, duration 40, repeat -1. InfiniteSlider motion/react horizontal."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "cycle": "45–60s",
+            "speedPx": "~40px/s",
+            "mood": "luxury trust, enterprise footer"
+          },
+          "fastPlayful": {
+            "cycle": "12–18s",
+            "speedPx": "~120px/s",
+            "optionalPulse": "logo scale",
+            "mood": "tech expo, consumer viral"
+          }
+        }
+      },
+      {
+        "id": "infinite-marquee-vertical",
+        "name": "Infinite vertical marquee",
+        "aliases": [
+          "marquee Y",
+          "product wall columns"
+        ],
+        "interactionTriggers": [
+          "onAmbientLoop"
+        ],
+        "targetObjects": [
+          "background",
+          "card"
+        ],
+        "feel": "Image columns scroll up/down continuously—product wall or inspiration grid with top/bottom fade masks.",
+        "sourceExcerpts": [
+          "marquee translateY(0)→translateY(-50%), marquee-reverse 30s linear infinite; 4 images repeated per column."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "cycle": "50–70s",
+            "mood": "wellness storefront, beauty grid"
+          },
+          "fastPlayful": {
+            "cycle": "15–20s",
+            "mood": "streetwear, snacks, youth culture"
+          }
+        }
+      },
+      {
+        "id": "panel-slide-in",
+        "name": "Panel slide in",
+        "aliases": [
+          "slide-in-right dashboard",
+          "animate-slide-up-overlay",
+          "fleet panel slide-in",
+          "fadeInDialog"
+        ],
+        "interactionTriggers": [
+          "onPageLoad",
+          "onOpenToggle"
+        ],
+        "targetObjects": [
+          "overlayPanel",
+          "heroSection",
+          "media"
+        ],
+        "feel": "Product mock or wizard card enters from side or below after hero—classic product reveal beat. Fleet columns stagger from right on open.",
+        "sourceExcerpts": [
+          ".dashboard-animate slide-in-right 0.9s delay 1.2s from translateX(40px).",
+          "animate-slide-up-overlay: opacity + translate centered, 0.5s.",
+          "Fleet columns x 100vw → 0, delay i*0.1, duration 1.56."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "translate": "24px",
+            "duration": "1.4–2.2s",
+            "delay": "1.6s+",
+            "stagger": "0.18s",
+            "mood": "enterprise showcase, yacht showroom"
+          },
+          "fastPlayful": {
+            "translate": "60px",
+            "duration": "0.5–0.7s",
+            "delay": "0.6s",
+            "stagger": "0.05s",
+            "mood": "app window snap, carousel cut"
+          }
+        }
+      },
+      {
+        "id": "chart-draw-reveal",
+        "name": "Chart draw & data reveal",
+        "aliases": [
+          "AnimatedChart stroke dash",
+          "investor StatCard stagger",
+          "line path draw"
+        ],
+        "interactionTriggers": [
+          "onPageLoad",
+          "onInViewOnce",
+          "onOpenToggle"
+        ],
+        "targetObjects": [
+          "chartData"
+        ],
+        "feel": "Line charts self-draw via stroke-dashoffset; area and dots follow. Stat cards rise in with index stagger on slide activation.",
+        "sourceExcerpts": [
+          "stroke-dashoffset transition 1.8s; area opacity 800ms; dot scale-in 1600ms.",
+          "StatCard y 30 opacity 0 → y 0 opacity 1, delay 0.6 + index*0.1."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "draw": "3s ease-in-out",
+            "statDelay": "+0.15s",
+            "y": "16px",
+            "mood": "annual report, board reveal"
+          },
+          "fastPlayful": {
+            "draw": "0.9s",
+            "statDelay": "+0.05s",
+            "y": "48px",
+            "mood": "live ticker, scoreboard pop"
+          }
+        }
+      },
+      {
+        "id": "hover-micro-feedback",
+        "name": "Hover micro-feedback",
+        "aliases": [
+          "hover scale button",
+          "card lift",
+          "liquid nav pill GSAP",
+          "service card NexaCore"
+        ],
+        "interactionTriggers": [
+          "onHover"
+        ],
+        "targetObjects": [
+          "button",
+          "card",
+          "navigation",
+          "typography"
+        ],
+        "feel": "Subtle scale, lift, shadow, fill, or magnetic pull on pointer—affordance without page-level choreography.",
+        "sourceExcerpts": [
+          "hover:scale-[1.03], whileHover scale 1.03–1.05.",
+          "Card: translateY(-4px), shadow deepen.",
+          "Nav pill: circle scale 3, label swap 0.3s.",
+          "Magnet: strength 3, padding 150, transition 0.3s active.",
+          "Shimmer border: backgroundPosition 0→200% 0.8s."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "scale": "1.015",
+            "transition": "0.45s",
+            "magnetStrength": "1.5",
+            "mood": "premium SaaS, calm ecommerce"
+          },
+          "fastPlayful": {
+            "scale": "1.08",
+            "transition": "0.12s spring",
+            "magnetStrength": "5",
+            "mood": "playful app, neon CTA"
+          }
+        }
+      },
+      {
+        "id": "press-active-feedback",
+        "name": "Press / active feedback",
+        "aliases": [
+          "active scale",
+          "Duolingo translateY press",
+          "Sentinel scale 0.97"
+        ],
+        "interactionTriggers": [
+          "onClickActive"
+        ],
+        "targetObjects": [
+          "button"
+        ],
+        "feel": "Button depresses or shrinks on click—physical switch affordance.",
+        "sourceExcerpts": [
+          "Duolingo active: box-shadow removed, translateY(4px). Sentinel active:scale-[0.97]."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "translateY": "2px",
+            "duration": "0.25s",
+            "mood": "mechanical switch"
+          },
+          "fastPlayful": {
+            "scale": "0.92",
+            "duration": "0.08s",
+            "mood": "arcade button"
+          }
+        }
+      },
+      {
+        "id": "menu-overlay-open",
+        "name": "Menu & overlay open",
+        "aliases": [
+          "clipPath circle menu",
+          "bubble menu GSAP stagger",
+          "EVR Ventures circle expand"
+        ],
+        "interactionTriggers": [
+          "onOpenToggle"
+        ],
+        "targetObjects": [
+          "navigation",
+          "overlayPanel"
+        ],
+        "feel": "Navigation takes over screen: circular mask expands from corner, or menu pills pop in with bounce stagger.",
+        "sourceExcerpts": [
+          "clipPath circle(0% at 80px 40px) → circle(150%), 0.7s ease [0.76, 0, 0.24, 1].",
+          "Bubbles scale 0→1, labels y 24→0, stagger 0.12s, back.out(1.5)."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "duration": "1.1s clip / 0.75s bubbles",
+            "stagger": "0.18s",
+            "mood": "ink bloom, balloons rising"
+          },
+          "fastPlayful": {
+            "duration": "0.4s clip / 0.35s bubbles",
+            "stagger": "0.06s",
+            "ease": "back.out(2)",
+            "mood": "portal snap, pinball menu"
+          }
+        }
+      },
+      {
+        "id": "auto-cycle-content",
+        "name": "Auto-cycle content",
+        "aliases": [
+          "tabs auto interval",
+          "testimonial carousel",
+          "rotating words hero",
+          "Word cycle loader"
+        ],
+        "interactionTriggers": [
+          "onAutoInterval"
+        ],
+        "targetObjects": [
+          "deckSlide",
+          "heroSection",
+          "typography",
+          "card"
+        ],
+        "feel": "Tabs, testimonials, or hero words advance on timer—passive product tour or brand personality before interaction.",
+        "sourceExcerpts": [
+          "Stellar AI tabs setInterval 4s.",
+          "Carousel 3s interval pause on hover, exit fade+scale.",
+          "Loader: words cycle 900ms, counter 000→100 rAF 2.7s.",
+          "roles cycle 2s animate-fade-in key={roleIndex}."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "interval": "7–8s tabs / 5.5s carousel / 3.5s words",
+            "crossfade": "0.6s",
+            "mood": "museum screen, gallery opening"
+          },
+          "fastPlayful": {
+            "interval": "2s tabs / 1.8s carousel / 1.2s words",
+            "crossfade": "0.25s",
+            "mood": "TV ad reel, slot machine, arcade attract"
+          }
+        }
+      },
+      {
+        "id": "deck-slide-transition",
+        "name": "Deck slide transition",
+        "aliases": [
+          "Slide fade investor",
+          "Pro AI Deck horizontal",
+          "activationCount remount"
+        ],
+        "interactionTriggers": [
+          "onOpenToggle",
+          "onAutoInterval"
+        ],
+        "targetObjects": [
+          "deckSlide"
+        ],
+        "feel": "Whole slide crossfades or slides horizontally with scale—pitch deck behavior; remount replays inner animations.",
+        "sourceExcerpts": [
+          "opacity isActive 0.35s easeInOut; activationCount remounts.",
+          "enter x ±100% opacity 0 scale 0.95; exit x ±30% duration 0.65s ease [0.4,0,0.2,1]."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "fade": "0.6–0.8s",
+            "horizontal": "1s scale 0.98→1",
+            "mood": "keynote pace"
+          },
+          "fastPlayful": {
+            "fade": "0.18s",
+            "horizontal": "0.35s scale bounce",
+            "mood": "rapid fundraising reel"
+          }
+        }
+      },
+      {
+        "id": "cursor-reveal-effects",
+        "name": "Cursor reveal effects",
+        "aliases": [
+          "flashlight mask",
+          "liquid ripple trail",
+          "partner GIF spawn trail"
+        ],
+        "interactionTriggers": [
+          "onCursorMove"
+        ],
+        "targetObjects": [
+          "background",
+          "media",
+          "heroSection"
+        ],
+        "feel": "Pointer unveils video under image mask, leaves glass ripples, or spawns rotating GIF stamps—exploratory, agency-playful.",
+        "sourceExcerpts": [
+          "Flashlight: 6 lag circles, SVG radialGradient mask on image over video.",
+          "Liquid: 80 ripples spawn distance>25px, age+=0.012, backdropFilter liquid-trail.",
+          "Partner: spawn GIF at cursor every 80ms, fade 1000ms, rotation ±10deg."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "maskRadius": "520+",
+            "trailSmooth": "0.12",
+            "spawnMs": "150",
+            "fadeMs": "1800",
+            "mood": "underwater torch, fireflies"
+          },
+          "fastPlayful": {
+            "maskRadius": "small",
+            "ripples": "100 dense",
+            "spawnMs": "40",
+            "fadeMs": "600",
+            "mood": "hide-and-seek, confetti drag"
+          }
+        }
+      },
+      {
+        "id": "ambient-text-surface",
+        "name": "Ambient text surface effects",
+        "aliases": [
+          "ShinyText gradient sweep",
+          "Neon text glow",
+          "liquid-glass static chrome"
+        ],
+        "interactionTriggers": [
+          "onAmbientLoop",
+          "onHover"
+        ],
+        "targetObjects": [
+          "typography",
+          "button"
+        ],
+        "feel": "Continuous gradient sweep on emphasis words, or layered blur neon glow—Crypto/Web3 or glass UI chrome. Liquid-glass is often static blur+border; pair with hover scale for motion.",
+        "sourceExcerpts": [
+          "ShinyText: framer gradient sweep 3s, backgroundClip text.",
+          "Neon: two absolute spans blur-sm/md gradient masks.",
+          ".liquid-glass backdrop-filter blur(4px) gradient border mask — 40+ prompts."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "shineCycle": "6–8s",
+            "neonPulse": "4s soft",
+            "glassBlur": "8px hover 1.02 0.4s",
+            "mood": "candle shimmer, bioluminescence"
+          },
+          "fastPlayful": {
+            "shineCycle": "1.2s",
+            "neonPulse": "1.2s bright",
+            "glassBlur": "2px hover 1.06 0.12s",
+            "mood": "disco type, arcade neon, acrylic toy"
+          }
+        },
+        "notes": "liquid-glass alone = visual style; combine with fade-rise-up or hover-micro for motion."
+      },
+      {
+        "id": "scroll-indicator-ambient",
+        "name": "Scroll indicator pulse",
+        "aliases": [
+          "scroll-down keyframes",
+          "Dark Portfolio scroll cue"
+        ],
+        "interactionTriggers": [
+          "onAmbientLoop"
+        ],
+        "targetObjects": [
+          "heroSection"
+        ],
+        "feel": "Small dot travels down a thin line—gentle nudge to scroll without copy.",
+        "sourceExcerpts": [
+          "@keyframes scroll-down translateY(-100%)→200% 1.5s ease-in-out infinite."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "cycle": "2.5s",
+            "opacityPulse": "subtle",
+            "mood": "tide mark"
+          },
+          "fastPlayful": {
+            "cycle": "0.9s linear",
+            "brightDot": true,
+            "mood": "bouncy arrow"
+          }
+        }
+      },
+      {
+        "id": "media-poster-handoff",
+        "name": "Media poster handoff",
+        "aliases": [
+          "Datacore poster fade",
+          "HLS hero ambient"
+        ],
+        "interactionTriggers": [
+          "onPageLoad"
+        ],
+        "targetObjects": [
+          "media"
+        ],
+        "feel": "Poster image holds until video actually plays, then fades—no flash of black. Many heroes are video-led with minimal UI motion.",
+        "sourceExcerpts": [
+          "Video poster fades once playing starts. Numerous: autoPlay loop muted playsInline object-cover HLS/MP4 absolute inset-0."
+        ],
+        "speedVariations": {
+          "slowCalm": {
+            "posterFade": "0.8s",
+            "grade": "desaturated slower footage",
+            "mood": "observational documentary hero"
+          },
+          "fastPlayful": {
+            "posterFade": "0.2s",
+            "grade": "saturated fast loop",
+            "mood": "hype reel hero"
+          }
+        }
+      }
+    ]
+  },
   "motionKitGroups": [
     {
       "id": "site",
